@@ -1,1 +1,3 @@
-<template>About</template>
+<template>
+    HireSript base project
+</template>
