@@ -1,9 +1,8 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  compatibilityDate: '2025-07-15',
+  compatibilityDate: "2024-11-01",
   devtools: { enabled: true },
   tailwindcss: {
     exposeConfig: true,
   },
-  modules: ['@pinia/nuxt', '@nuxtjs/tailwindcss', '@nuxt/icon']
-})
+  modules: ["@pinia/nuxt", "@nuxt/icon", "@nuxtjs/tailwindcss"],
+});

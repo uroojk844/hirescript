@@ -2,8 +2,12 @@
 const users: string[] = ["Urooj", "Belal"];
 </script>
 <template>
-  <h1>Users</h1>
-  <ul>
-    <li v-for="(user, index) in users" :key="index">{{ user }}</li>
-  </ul>
+  <main class="grid gap-4 p-4">
+    <h1 class="text-primary font-bold text-4xl">Users</h1>
+    <ol class="">
+      <li v-for="(user, index) in users" :key="index">
+        {{ index+1 }}. {{ user }}
+      </li>
+    </ol>
+  </main>
 </template>
