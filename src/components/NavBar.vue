@@ -1,9 +1,10 @@
 <script setup lang="ts">
+import MaxWidth from "./MaxWidth.vue";
 import PrimaryButton from "./PrimaryButton.vue";
 </script>
 
 <template>
-  <nav class="py-6">
+  <nav class="py-6 xl:py-8">
     <MaxWidth class="flex items-center justify-between">
       <div class="text-2xl font-bold text-primary">HireScript</div>
       <div class="flex gap-8">
@@ -19,11 +20,13 @@ import PrimaryButton from "./PrimaryButton.vue";
 </template>
 
 <style scoped>
+@reference "@/style.css";
+
 a {
-  @apply text-gray;
+  @apply text-primary;
 
   &.router-link-exact-active {
-    @apply text-primary;
+    @apply text-primary font-medium;
   }
 }
 </style>
