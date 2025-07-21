@@ -7,6 +7,7 @@ export default {
         primary: "#013b52",
         accent: "#d6fd60",
         gray: "#5a595f",
+        'light-gray': 'gainsboro'
       }
     },
   },

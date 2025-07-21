@@ -4,5 +4,6 @@ export default defineNuxtConfig({
   tailwindcss: {
     exposeConfig: true,
   },
+  css: ["~/assets/css/main.css"],
   modules: ["@pinia/nuxt", "@nuxt/icon", "@nuxtjs/tailwindcss"],
 });
