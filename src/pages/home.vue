@@ -1,6 +1,121 @@
 <script setup lang="ts">
+import JobTypes from "@/components/Home/JobTypes.vue";
 import SearchBar from "@/components/Home/SearchBar.vue";
+import Header from "@/components/Header.vue";
 import NavBar from "@/components/NavBar.vue";
+import MaxWidth from "@/components/MaxWidth.vue";
+import JobCard from "@/components/JobCard.vue";
+
+const jobs = [
+  {
+    title: "Senior UI Designer",
+    company: "Microsoft",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Microsoft_logo.svg/1200px-Microsoft_logo.svg.png",
+    description: "Design and improve user interfaces for our core products.",
+    location: "New York, USA",
+    type: "Full Time",
+    salary: "$20K",
+    salaryType: "Annual",
+    color: "#e2f5cd",
+  },
+  {
+    title: "Frontend Engineer",
+    company: "Meta",
+    logo: "https://cdn.pixabay.com/photo/2021/12/14/22/29/meta-6871457_1280.png",
+    description:
+      "Work on scalable frontend applications for billions of users.",
+    location: "Menlo Park, USA",
+    type: "Full Time",
+    salary: "$25K",
+    salaryType: "Annual",
+    color: "#e9ecf8",
+  },
+  {
+    title: "Backend Developer",
+    company: "Flipkart",
+    logo: "https://thumbs.dreamstime.com/b/flipcart-logo-219165303.jpg",
+    description:
+      "Build robust backend systems for e-commerce platform and enhance the user experience",
+    location: "Bangalore, India",
+    type: "Full Time",
+    salary: "$18K",
+    salaryType: "Annual",
+    color: "#e4eefa",
+  },
+];
+
+const jobstwo = [
+  {
+    title: "Senior UI Designer",
+    company: "Microsoft",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Microsoft_logo.svg/1200px-Microsoft_logo.svg.png",
+    description: "Design and improve user interfaces for our core products.",
+    location: "New York, USA",
+    type: "Full Time",
+    salary: "$20K",
+    salaryType: "Annual",
+    color: "#e2f5cd",
+  },
+  {
+    title: "Frontend Engineer",
+    company: "Meta",
+    logo: "https://cdn.pixabay.com/photo/2021/12/14/22/29/meta-6871457_1280.png",
+    description:
+      "Work on scalable frontend applications for billions of users.",
+    location: "Menlo Park, USA",
+    type: "Full Time",
+    salary: "$25K",
+    salaryType: "Annual",
+    color: "#e9ecf8",
+  },
+  {
+    title: "Backend Developer",
+    company: "Flipkart",
+    logo: "https://thumbs.dreamstime.com/b/flipcart-logo-219165303.jpg",
+    description:
+      "Build robust backend systems for e-commerce platform and enhance the user experience",
+    location: "Bangalore, India",
+    type: "Full Time",
+    salary: "$18K",
+    salaryType: "Annual",
+    color: "#e4eefa",
+  },
+  {
+    title: "Senior UI Designer",
+    company: "Microsoft",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Microsoft_logo.svg/1200px-Microsoft_logo.svg.png",
+    description: "Design and improve user interfaces for our core products.",
+    location: "New York, USA",
+    type: "Full Time",
+    salary: "$20K",
+    salaryType: "Annual",
+    color: "#e2f5cd",
+  },
+  {
+    title: "Frontend Engineer",
+    company: "Meta",
+    logo: "https://cdn.pixabay.com/photo/2021/12/14/22/29/meta-6871457_1280.png",
+    description:
+      "Work on scalable frontend applications for billions of users.",
+    location: "Menlo Park, USA",
+    type: "Full Time",
+    salary: "$25K",
+    salaryType: "Annual",
+    color: "#e9ecf8",
+  },
+  {
+    title: "Backend Developer",
+    company: "Flipkart",
+    logo: "https://thumbs.dreamstime.com/b/flipcart-logo-219165303.jpg",
+    description:
+      "Build robust backend systems for e-commerce platform and enhance the user experience",
+    location: "Bangalore, India",
+    type: "Full Time",
+    salary: "$18K",
+    salaryType: "Annual",
+    color: "#e4eefa",
+  },
+];
 </script>
 
 <template>
@@ -15,7 +130,35 @@ import NavBar from "@/components/NavBar.vue";
       1,80,570 jobs listed here! Your dream jobs is waiting.
     </p>
     <SearchBar />
-    
+  </section>
+  <section class="py-12">
+    <MaxWidth>
+      <Header text="Trending Jobs" />
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <JobCard
+          v-for="job in jobs"
+          :key="job.company"
+          v-bind="job"
+          variant="filled"
+          :color="job.color"
+        />
+      </div>
+    </MaxWidth>
+  </section>
+  <section>
+    <JobTypes />
+  </section>
+  <section class="py-12">
+    <MaxWidth>
+      <Header text="Featured job circulars" />
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <JobCard
+          v-for="job in jobstwo"
+          :key="job.company"
+          v-bind="job"
+        />
+      </div>
+    </MaxWidth>
   </section>
 </template>
 
