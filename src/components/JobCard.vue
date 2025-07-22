@@ -20,7 +20,7 @@ const isFilled = props.variant === "filled";
 <template>
   <div
     :class="[
-      'rounded-lg p-4 grid gap-y-2',
+      'rounded-lg p-6 grid gap-y-2',
       isFilled ? '' : 'border border-gray-300',
     ]"
     :style="isFilled && props.color ? { backgroundColor: props.color } : {}"
