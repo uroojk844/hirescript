@@ -5,6 +5,8 @@ import Header from "@/components/Header.vue";
 import NavBar from "@/components/NavBar.vue";
 import MaxWidth from "@/components/MaxWidth.vue";
 import JobCard from "@/components/JobCard.vue";
+import PrimaryButton from "@/components/PrimaryButton.vue";
+import Footer from "@/components/Footer.vue";
 
 const jobs = [
   {
@@ -152,13 +154,40 @@ const jobstwo = [
     <MaxWidth>
       <Header text="Featured job circulars" />
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <JobCard
-          v-for="job in jobstwo"
-          :key="job.company"
-          v-bind="job"
-        />
+        <JobCard v-for="job in jobstwo" :key="job.company" v-bind="job" />
+      </div>
+      <PrimaryButton class="mt-12 mx-auto block">Find More Jobs</PrimaryButton>
+    </MaxWidth>
+  </section>
+  <section>
+    <MaxWidth>
+      <div class="bg-primary rounded-xl p-12">
+        <div class="text-4xl font-bold text-white w-[40%] mx-auto text-center">
+          Never want to miss any job news?
+        </div>
+        <div
+          class="text-gray w-[40%] mx-auto text-white text-sm text-center mt-4"
+        >
+          Subscribe to stay up to date on insights, events and new solutions.
+          You can unsubscribe anytime
+        </div>
+        <div class="bg-white w-[50%] mx-auto rounded-full overflow-hidden mt-6">
+          <input
+            class="w-[80%] outline-none px-4 text-sm"
+            type="text"
+            placeholder="Enter your email address"
+          />
+          <button
+            class="w-[20%] text-primary text-sm bg-accent p-4 cursor-pointer"
+          >
+            Subscribe
+          </button>
+        </div>
       </div>
     </MaxWidth>
+    <section>
+      <Footer />
+    </section>
   </section>
 </template>
 
