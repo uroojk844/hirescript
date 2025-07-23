@@ -1,12 +1,21 @@
 import { createMemoryHistory, createRouter } from "vue-router";
 import Home from "./pages/home.vue";
-import Job from "./pages/jobs/job.vue";
 
 const routes = [
-  { path: "/", component: Job },
+  { path: "/", component: Home },
   {
-    path: "/jobs/:id",
-    component: Job,
+    path: "/jobs",
+    component: () => import("@/pages/jobs/JobView.vue"),
+    children: [
+      {
+        path: "",
+        component: () => import("@/pages/jobs/list.vue"),
+      },
+      {
+        path: ":id",
+        component: () => import("@/pages/jobs/job.vue"),
+      },
+    ],
   },
 ];
 
