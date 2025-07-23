@@ -15,8 +15,8 @@ import NavBar from "@/components/NavBar.vue";
       1,80,570 jobs listed here! Your dream jobs is waiting.
     </p>
     <SearchBar />
-    
   </section>
+  <RouterLink to="/jobs/123">123</RouterLink>
 </template>
 
 <style>

@@ -19,6 +19,6 @@ const { loading = false, disabled = false } = defineProps<{
     <span :class="{ invisible: loading }">
       <slot>Primary Button</slot>
     </span>
-    <Icon v-if="loading" class="absolute" name="svg-spinners:3-dots-fade" />
+    <Icon v-if="loading" class="absolute" icon="svg-spinners:3-dots-fade" />
   </button>
 </template>
