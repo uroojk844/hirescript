@@ -1,7 +1,7 @@
 <template>
   <div class="bg-[#ecf4f6] py-16">
     <MaxWidth>
-      <Header text="One platform Many Solutions" />
+      <Header text="One Platform Many Solutions" />
       <div
         class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6"
       >

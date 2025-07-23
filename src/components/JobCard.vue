@@ -49,7 +49,7 @@ const isFilled = props.variant === "filled";
         <div class="text-gray text-sm">{{ props.salaryType }}</div>
       </div>
       <button
-        class="text-sm font-medium border border-primary rounded-full px-22 py-3 hover:bg-primary hover:text-white transition-all duration-300"
+        class="text-sm font-medium border border-primary rounded-full px-22 py-3 hover:bg-primary hover:text-white transition-all duration-300 cursor-pointer"
       >
         Apply Now
       </button>
