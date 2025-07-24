@@ -22,7 +22,7 @@ import PrimaryButton from "../PrimaryButton.vue";
         class="outline-none w-full"
       />
     </div>
-    <div class="flex-1 px-4 flex gap-2 items-center border-primary border-l">
+    <div class="max-sm:hidden flex-1 px-4 flex gap-2 items-center border-primary border-l">
       <label class="grid place-items-center" for="search-job-location">
         <Icon
           icon="material-symbols:location-on-outline"

@@ -18,7 +18,7 @@
 </template>
 
 <script setup lang="ts">
-import Header from "../Header.vue";
+import Header from "../AppHeader.vue";
 import JobTypesCard from "../JobTypesCard.vue";
 import MaxWidth from "../MaxWidth.vue";
 const jobTypes = [
