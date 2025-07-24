@@ -7,7 +7,7 @@ import PrimaryButton from "../PrimaryButton.vue";
     class="flex items-center border border-light-gray p-2 rounded-full bg-white max-w-2xl w-full mx-auto"
   >
     <div
-      class="w-56 transition-all duration-300 [&:has(input:focus)]:w-[350px] px-4 flex gap-2 items-center"
+      class="w-full sm:w-56 transition-all duration-300 [&:has(input:focus)]:w-[350px] px-4 flex gap-2 items-center"
     >
       <label
         class="grid place-items-center cursor-pointer"

@@ -20,18 +20,20 @@ import AppFooter from "@/components/AppFooter.vue";
       >
         Get The Right Job You Deserve
       </h1>
+
       <p class="text-gray text-center mt-4 mb-8 xl:text-lg">
         1,80,570 jobs listed here! Your dream jobs is waiting.
       </p>
+
       <SearchBar />
-    </MaxWidth>
-  </section>
-  <section class="py-12">
-    <MaxWidth>
-      <AppHeader text="Trending Jobs" />
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <JobCard v-for="job in trendingJobs" :key="job.company" :job />
-      </div>
+
+      <section class="my-16">
+        <AppHeader text="Trending Jobs" />
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <JobCard v-for="job in trendingJobs" :key="job.company" :job />
+        </div>
+      </section>
     </MaxWidth>
   </section>
   <section>
@@ -86,7 +88,8 @@ import AppFooter from "@/components/AppFooter.vue";
 @reference "@/style.css";
 
 .bg {
-  background-image: url("@/assets/images/plus.svg");
-  background-size: 40px 40px;
+  background-image: linear-gradient(#fff0, #fff),
+    url("@/assets/images/plus.svg");
+  background-size: cover,40px 40px;
 }
 </style>
