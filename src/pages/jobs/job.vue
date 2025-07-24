@@ -6,7 +6,7 @@ import JobCard from "@/components/JobCard.vue";
 import OutlinedCard from "@/components/OutlinedCard.vue";
 import PrimaryButton from "@/components/PrimaryButton.vue";
 import Tag from "@/components/Tag.vue";
-import type { IJob, IJobDetails } from "@/interface/jobs.interface";
+import type { IJobDetails } from "@/interface/jobs.interface";
 import { computed, ref } from "vue";
 
 const jobDetails = ref<IJobDetails>({
