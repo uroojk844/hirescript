@@ -1,8 +1,9 @@
-type TJobType = "Full Time" | "Part time" | "Contract" | "Internship" 
+type TJobType = "Full Time" | "Part time" | "Contract" | "Internship";
 
-type TSalaryType = "Annual" | "Monthly"
+type TSalaryType = "Annual" | "Monthly";
 
 export interface IJob {
+  id: number;
   title: string;
   company: string;
   logo: string;
@@ -12,4 +13,11 @@ export interface IJob {
   salary: number;
   salaryType: TSalaryType;
   color?: string;
+}
+
+export interface IJobDetails extends IJob {
+  postedBy?: string;
+  skills: string[];
+  about?:string,
+  website?: string
 }

@@ -7,7 +7,7 @@ import JobCard from "@/components/JobCard.vue";
 <template>
   <AppHeader text="All jobs" />
 
-  <section v-for="(job, index) in featuredJobs" :key="index">
-    <JobCard :job />
+  <section class="grid-view">
+    <JobCard v-for="job in featuredJobs" :key="job.id" :job />
   </section>
 </template>

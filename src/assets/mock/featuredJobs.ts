@@ -1,7 +1,7 @@
 import type { IJob } from "@/interface/jobs.interface";
 
 export const featuredJobs: IJob[] = [
-  {
+  { id:1,
     title: "Senior UI Designer",
     company: "Microsoft",
     logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Microsoft_logo.svg/1200px-Microsoft_logo.svg.png",
@@ -12,6 +12,7 @@ export const featuredJobs: IJob[] = [
     salaryType: "Annual",
   },
   {
+    id:2,
     title: "Frontend Engineer",
     company: "Meta",
     logo: "https://cdn.pixabay.com/photo/2021/12/14/22/29/meta-6871457_1280.png",
@@ -23,6 +24,7 @@ export const featuredJobs: IJob[] = [
     salaryType: "Annual",
   },
   {
+    id:3,
     title: "Backend Developer",
     company: "Flipkart",
     logo: "https://thumbs.dreamstime.com/b/flipcart-logo-219165303.jpg",
@@ -34,6 +36,7 @@ export const featuredJobs: IJob[] = [
     salaryType: "Annual",
   },
   {
+    id:4,
     title: "Senior UI Designer",
     company: "Microsoft",
     logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Microsoft_logo.svg/1200px-Microsoft_logo.svg.png",
@@ -44,6 +47,7 @@ export const featuredJobs: IJob[] = [
     salaryType: "Annual",
   },
   {
+    id:5,
     title: "Frontend Engineer",
     company: "Meta",
     logo: "https://cdn.pixabay.com/photo/2021/12/14/22/29/meta-6871457_1280.png",
@@ -55,6 +59,7 @@ export const featuredJobs: IJob[] = [
     salaryType: "Annual",
   },
   {
+    id:6,
     title: "Backend Developer",
     company: "Flipkart",
     logo: "https://thumbs.dreamstime.com/b/flipcart-logo-219165303.jpg",

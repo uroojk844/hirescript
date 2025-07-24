@@ -7,7 +7,7 @@ const { loading = false, disabled = false } = defineProps<{
 
 <template>
   <button
-    class="bg-accent transition-all text-primary font-semibold py-3 px-6 rounded-full focus:brightness-90 focus-within:outline-primary"
+    class="bg-accent cursor-pointer transition-all text-primary font-semibold py-3 px-6 rounded-full focus:brightness-90 focus-within:outline-primary"
     :class="{
       'hover:brightness-90': !(disabled || loading),
       'inline-grid place-items-center': loading,
