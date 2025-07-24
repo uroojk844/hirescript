@@ -13,3 +13,6 @@ body {
     font-family: Inter, sans-serif;
 }
 
+.grid-view {
+    @apply grid gap-4 md:grid-cols-2 lg:grid-cols-3;
+}
