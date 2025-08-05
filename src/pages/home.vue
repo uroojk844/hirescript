@@ -9,6 +9,16 @@ import { trendingJobs } from "@/assets/mock/trendingJobs";
 import { featuredJobs } from "@/assets/mock/featuredJobs";
 import AppHeader from "@/components/AppHeader.vue";
 import AppFooter from "@/components/AppFooter.vue";
+import { onMounted } from "vue";
+import { useJobStore } from "@/stores/jobs.store";
+// import { storeToRefs } from "pinia";
+
+const jobsStore = useJobStore();
+// const { getIsLoadingJobs, getJobs } = storeToRefs(jobsStore);
+
+onMounted(() => {
+  jobsStore.fetchJobs();
+});
 </script>
 
 <template>
