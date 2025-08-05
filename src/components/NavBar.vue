@@ -3,6 +3,8 @@ import { ref } from "vue";
 import MaxWidth from "./MaxWidth.vue";
 import PrimaryButton from "./PrimaryButton.vue";
 import { useHandleClickOutside } from "@/composables/use-handle-click-outside";
+import Logo from "./Logo.vue";
+
 
 const mobileNav = ref<HTMLElement | null>(null);
 const isOpen = ref(false);
@@ -13,14 +15,14 @@ useHandleClickOutside(mobileNav, isOpen);
 <template>
   <nav class="py-6 xl:py-8">
     <MaxWidth class="flex items-center justify-between">
-      <div class="text-2xl font-bold text-primary">HireScript</div>
+      <div class="flex items-center gap-2 text-2xl font-bold text-primary"><Logo /> HireScript</div>
       <div
         ref="mobileNav"
         class="mobile-nav sm:contents"
         :class="{ open: isOpen }"
       >
-        <div class="text-2xl font-bold text-primary mb-8 mobile-title">
-          HireScript
+        <div class="flex items-center gap-2 text-2xl font-bold text-primary mb-8 mobile-title">
+          <Logo /> HireScript
         </div>
 
         <div class="flex gap-8 links">
