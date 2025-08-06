@@ -5,16 +5,15 @@ import NavBar from "@/components/NavBar.vue";
 import MaxWidth from "@/components/MaxWidth.vue";
 import JobCard from "@/components/JobCard.vue";
 import PrimaryButton from "@/components/PrimaryButton.vue";
-import { trendingJobs } from "@/assets/mock/trendingJobs";
-import { featuredJobs } from "@/assets/mock/featuredJobs";
 import AppHeader from "@/components/AppHeader.vue";
 import AppFooter from "@/components/AppFooter.vue";
 import { onMounted } from "vue";
 import { useJobStore } from "@/stores/jobs.store";
-// import { storeToRefs } from "pinia";
+import { storeToRefs } from "pinia";
+import Loader from "@/components/Loader.vue";
 
 const jobsStore = useJobStore();
-// const { getIsLoadingJobs, getJobs } = storeToRefs(jobsStore);
+const { getIsLoadingJobs, getJobs } = storeToRefs(jobsStore);
 
 onMounted(() => {
   jobsStore.fetchJobs();
@@ -40,8 +39,9 @@ onMounted(() => {
       <section class="my-16">
         <AppHeader text="Trending Jobs" />
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          <JobCard v-for="job in trendingJobs" :key="job.company" :job />
+        <Loader v-if="getIsLoadingJobs" /> 
+        <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <JobCard v-for="(job, index) in getJobs.slice(0,3)" :key="job.id" :job :trending="true" :index />
         </div>
       </section>
     </MaxWidth>
@@ -52,8 +52,9 @@ onMounted(() => {
   <section class="py-12">
     <MaxWidth>
       <AppHeader text="Featured job circulars" />
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <JobCard v-for="job in featuredJobs" :key="job.company" :job />
+      <Loader v-if="getIsLoadingJobs" /> 
+      <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <JobCard v-for="job in getJobs" :key="job.id" :job />
       </div>
       <PrimaryButton class="mt-12 mx-auto block">Find More Jobs</PrimaryButton>
     </MaxWidth>

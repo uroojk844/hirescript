@@ -2,19 +2,17 @@
 import { useSalary } from "@/composables/use-salary";
 import type { IJob } from "@/interface/jobs.interface";
 
-defineProps<{ job: IJob }>();
+const { trending = false } = defineProps<{ job: IJob, trending?: boolean, index?: number }>();
+const colors = ["#e2f5cd", "#e4eefa", "#e9ecf8"];
 </script>
 
 <template>
   <RouterLink :to="'/jobs/' + job.id">
-    <div
-      class="rounded-lg p-6 grid gap-y-2"
-      :class="{ 'border border-gray-300': !job.color }"
-      :style="job.color && { backgroundColor: job.color }"
-    >
+    <div class="rounded-lg p-6 grid gap-y-2" :class="{ 'border border-gray-300': !trending }"
+      :style="trending && { backgroundColor: colors[index! % 2] }">
       <div class="flex items-center justify-between">
-        <div class="text-primary font-medium">{{ job.title }}</div>
-        <img class="size-8" :src="job.logo" :alt="job.company + ' logo'" />
+        <div class="text-primary font-medium line-clamp-1">{{ job.title }}</div>
+        <img class="size-8 object-cover object-center" :src="job.companyLogo" :alt="job.company + ' logo'" />
       </div>
       <div class="text-primary text-sm">{{ job.company }}</div>
       <div class="text-gray text-sm line-clamp-2 text-ellipsis">
@@ -38,8 +36,7 @@ defineProps<{ job: IJob }>();
           <div class="text-gray text-sm">{{ job.salaryType }}</div>
         </div>
         <button
-          class="text-sm font-medium border border-primary rounded-full flex-1 py-3 hover:bg-primary hover:text-white transition-all duration-300 cursor-pointer"
-        >
+          class="text-sm font-medium border border-primary rounded-full flex-1 py-3 hover:bg-primary hover:text-white transition-all duration-300 cursor-pointer">
           View Details
         </button>
       </div>
