@@ -3,13 +3,13 @@ import { useSalary } from "@/composables/use-salary";
 import type { IJob } from "@/interface/jobs.interface";
 
 const { trending = false } = defineProps<{ job: IJob, trending?: boolean, index?: number }>();
-const colors = ["#e2f5cd", "#e4eefa", "#e9ecf8"];
+const colors = ["#e2f5cd", "#e9ecf8", "#e4eefa"];
 </script>
 
 <template>
   <RouterLink :to="'/jobs/' + job.id">
     <div class="rounded-lg p-6 grid gap-y-2" :class="{ 'border border-gray-300': !trending }"
-      :style="trending && { backgroundColor: colors[index! % 2] }">
+      :style="trending && { backgroundColor: colors[index! % 3] }">
       <div class="flex items-center justify-between">
         <div class="text-primary font-medium line-clamp-1">{{ job.title }}</div>
         <img class="size-8 object-cover object-center" :src="job.companyLogo" :alt="job.company + ' logo'" />

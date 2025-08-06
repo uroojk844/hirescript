@@ -15,15 +15,15 @@ useHandleClickOutside(mobileNav, isOpen);
 <template>
   <nav class="py-6 xl:py-8">
     <MaxWidth class="flex items-center justify-between">
-      <div class="flex items-center gap-2 text-2xl font-bold text-primary"><Logo /> HireScript</div>
+      <RouterLink to="/" class="flex items-center gap-2 text-2xl font-bold text-primary"><Logo /> HireScript</RouterLink>
       <div
         ref="mobileNav"
         class="mobile-nav sm:contents"
         :class="{ open: isOpen }"
       >
-        <div class="flex items-center gap-2 text-2xl font-bold text-primary mb-8 mobile-title">
+        <RouterLink to="/" class="flex items-center gap-2 text-2xl font-bold text-primary mb-8 mobile-title">
           <Logo /> HireScript
-        </div>
+        </RouterLink>
 
         <div class="flex gap-8 links">
           <RouterLink to="/">Home</RouterLink>
