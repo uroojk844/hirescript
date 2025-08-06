@@ -9,7 +9,7 @@ import Tag from "@/components/Tag.vue";
 import { useJobStore } from "@/stores/jobs.store";
 import moment from "moment";
 import { storeToRefs } from "pinia";
-import { computed, onMounted, } from "vue";
+import { computed, onMounted, ref, watch, } from "vue";
 import { useRoute } from "vue-router";
 
 const jobsStore = useJobStore();
@@ -20,13 +20,10 @@ const id = route.params?.id as string;
 
 const similarJobs = computed(() => {
   if (getJobs.value && getJobDetails.value) {
-    return getJobs.value.filter((job) => {
-      if (job.id != getJobDetails.value?.id)
-        return getJobDetails.value?.title.split(" ").map((word) => job.title.includes(word));
-
-      return [];
-    });
-  }
+    return getJobs.value.
+      filter((job) => job.id != id && getJobDetails.value?.title.split(" ")
+        .map((word) => job.title.includes(word)));
+  } else return [];
 });
 
 const lastDate = computed(() => {
@@ -34,6 +31,13 @@ const lastDate = computed(() => {
     return moment(getJobDetails.value.createdAt.seconds * 1000).add(7, "day").format('ll');
   }
 })
+
+const top = ref<HTMLElement | null>(null);
+
+watch(() => route.params.id, async (newId, _) => {
+  await jobsStore.fetchJobById(newId as string);
+  top.value?.scrollIntoView({behavior: "smooth"});
+}, { deep: true, immediate: true })
 
 onMounted(() => {
   jobsStore.fetchJobs();
@@ -44,8 +48,8 @@ onMounted(() => {
 
 <template>
   <Loader v-if="getIsLoadingJobDetails" />
-  <div v-else-if="getJobDetails == null">Not found</div>
-  <main v-else class="job-container">
+  <div v-else-if="getJobDetails == null">Job not found!</div>
+  <main ref="top" v-else class="job-container">
     <section class="flex items-center gap-6 mb-8 title">
       <Avatar :src="getJobDetails.companyLogo" class="size-20" />
       <div>
@@ -131,7 +135,7 @@ onMounted(() => {
           <small class="text-gray">3/5 of your skills match for this iob</small>
         </span>
       </div>
-      <OutlinedCard direction="row" class="my-2">
+      <OutlinedCard direction="row" class="my-2 flex-wrap">
         <Tag v-for="(tag, index) in getJobDetails.skills.split(',')" :key="index" v-text="tag" />
       </OutlinedCard>
     </section>
@@ -188,7 +192,7 @@ onMounted(() => {
     <AppHeader text="Similar jobs" class="text-xl" />
 
     <section class="grid-view">
-      <JobCard v-for="job in similarJobs?.slice(0,6)" :key="job.id" :job />
+      <JobCard v-for="job in similarJobs?.slice(0, 6)" :key="job.id" :job />
     </section>
   </section>
 </template>
