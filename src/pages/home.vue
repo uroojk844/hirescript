@@ -55,7 +55,9 @@ onMounted(() => {
       <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <JobCard v-for="job in getJobs.slice(0, 12)" :key="job.id" :job />
       </div>
-      <PrimaryButton class="mt-12 mx-auto block">Find More Jobs</PrimaryButton>
+      <RouterLink to="/jobs">
+        <PrimaryButton class="mt-12 mx-auto block">Find More Jobs</PrimaryButton>
+      </RouterLink>
     </MaxWidth>
   </section>
   <section>
