@@ -1,53 +1,61 @@
 <script setup lang="ts">
-import { featuredJobs } from "@/assets/mock/featuredJobs";
 import AppHeader from "@/components/AppHeader.vue";
 import Avatar from "@/components/Avatar.vue";
 import JobCard from "@/components/JobCard.vue";
+import Loader from "@/components/Loader.vue";
 import OutlinedCard from "@/components/OutlinedCard.vue";
 import PrimaryButton from "@/components/PrimaryButton.vue";
 import Tag from "@/components/Tag.vue";
-import type { IJobDetails } from "@/interface/jobs.interface";
-import { computed, ref } from "vue";
+import { useJobStore } from "@/stores/jobs.store";
+import moment from "moment";
+import { storeToRefs } from "pinia";
+import { computed, onMounted, } from "vue";
+import { useRoute } from "vue-router";
 
-const jobDetails = ref<IJobDetails>({
-  id: 1,
-  logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLfm0ooWZDodEBD2zlKPK3xt37ot4lUZHIBw&s",
-  title: "UI Designer",
-  company: "facebook Meta Inc.",
-  postedBy: "sam smith",
-  salary: 23443,
-  salaryType: "Monthly",
-  description: "this is a job.",
-  location: "lucknow",
-  skills: ["UI Design", "figma", "web design"],
-  type: "Internship",
-  about:
-    "We are seekjng a talented graphic designer to join our Product team, In this role. you Will be responsible for creating illustrations for our digital product- You Will work closely With our product teams to create compelling. on-brand illustrations that commumcate complex Ideas and make our products more engaging for our users.",
-  website: "https://www.facebook.com",
-});
+const jobsStore = useJobStore();
+const { getIsLoadingJobDetails, getJobDetails, getJobs } = storeToRefs(jobsStore);
+
+const route = useRoute();
+const id = route.params?.id as string;
 
 const similarJobs = computed(() => {
-  return featuredJobs.filter(
-    (job) =>
-      job.id != jobDetails.value.id &&
-      job.title.includes(jobDetails.value.title)
-  );
+  if (getJobs.value && getJobDetails.value) {
+    return getJobs.value.filter((job) => {
+      if (job.id != getJobDetails.value?.id)
+        return getJobDetails.value?.title.split(" ").map((word) => job.title.includes(word));
+
+      return [];
+    });
+  }
 });
+
+const lastDate = computed(() => {
+  if (getJobDetails.value != null) {
+    return moment(getJobDetails.value.createdAt.seconds * 1000).add(7, "day").format('ll');
+  }
+})
+
+onMounted(() => {
+  jobsStore.fetchJobs();
+  jobsStore.fetchJobById(id);
+})
 </script>
 +
 
 <template>
-  <main class="job-container">
+  <Loader v-if="getIsLoadingJobDetails" />
+  <div v-else-if="getJobDetails == null">Not found</div>
+  <main v-else class="job-container">
     <section class="flex items-center gap-6 mb-8 title">
-      <Avatar :src="jobDetails.logo" class="size-20" />
+      <Avatar :src="getJobDetails.companyLogo" class="size-20" />
       <div>
-        <div class="font-bold text-2xl capitalize">{{ jobDetails.title }}</div>
+        <div class="font-bold text-2xl capitalize">{{ getJobDetails.title }}</div>
         <div class="text-sm text-gray mb-2 capitalize">
-          {{ jobDetails.company }}
+          {{ getJobDetails.company }}
         </div>
 
         <div class="text-xs text-gray">Posted by</div>
-        <div class="text-sm capitalize">{{ jobDetails.postedBy }}</div>
+        <div class="text-sm capitalize">{{ getJobDetails.postedBy }}</div>
       </div>
     </section>
 
@@ -124,34 +132,23 @@ const similarJobs = computed(() => {
         </span>
       </div>
       <OutlinedCard direction="row" class="my-2">
-        <Tag
-          v-for="(tag, index) in jobDetails.skills"
-          :key="index"
-          v-text="tag"
-        />
+        <Tag v-for="(tag, index) in getJobDetails.skills.split(',')" :key="index" v-text="tag" />
       </OutlinedCard>
     </section>
 
     <section class="grid gap-4 content-start submit">
       <div class="flex items-center justify-between gap-4">
         <div class="font-bold">Submit Application</div>
-        <Tag
-          class="flex items-center gap-1 bg-red-100 text-red-500 font-medium"
-        >
-          <span>Apply before 7 Dec</span>
+        <Tag v-if="getJobDetails.createdAt" class="flex items-center gap-1 bg-red-100 text-red-500 font-medium">
+          <span>Apply before {{ lastDate }}</span>
           <Icon icon="uil:info-circle" />
         </Tag>
       </div>
 
       <div class="flex items-center gap-6">
-        <PrimaryButton class="bg-primary text-white flex-1"
-          >Apply</PrimaryButton
-        >
+        <PrimaryButton class="bg-primary text-white flex-1">Apply</PrimaryButton>
         <Icon icon="uil:share-alt" class="text-lg text-gray" />
-        <Icon
-          icon="material-symbols:favorite-rounded"
-          class="text-lg text-red-400"
-        />
+        <Icon icon="material-symbols:favorite-rounded" class="text-lg text-red-400" />
       </div>
     </section>
 
@@ -161,16 +158,16 @@ const similarJobs = computed(() => {
         <div class="font-bold">Job Type</div>
         <div class="grid grid-cols-2 gap-4 capitalize">
           <OutlinedCard direction="row" size="sm">
-            <Icon icon="uil:suitcase-alt" /> {{ jobDetails.type }}
+            <Icon icon="uil:suitcase-alt" /> {{ getJobDetails.type }}
           </OutlinedCard>
           <OutlinedCard direction="row" size="sm">
-            <Icon icon="uil:location-point" /> {{ jobDetails.location }}
+            <Icon icon="uil:location-point" /> {{ getJobDetails.location }}
           </OutlinedCard>
           <OutlinedCard direction="row" size="sm">
-            <Icon icon="uil:location-point" /> {{ jobDetails.location }}
+            <Icon icon="uil:location-point" /> {{ getJobDetails.location }}
           </OutlinedCard>
           <OutlinedCard direction="row" size="sm">
-            <Icon icon="uil:location-point" /> {{ jobDetails.location }}
+            <Icon icon="uil:location-point" /> {{ getJobDetails.location }}
           </OutlinedCard>
         </div>
       </OutlinedCard>
@@ -179,15 +176,10 @@ const similarJobs = computed(() => {
     <div class="company sm:max-w-80">
       <div class="mb-2">Company</div>
       <OutlinedCard>
-        <div class="font-bold">About {{ jobDetails.company }}</div>
-        <p class="text-gray text-xs">{{ jobDetails.about }}</p>
-        <a
-          v-if="jobDetails.website"
-          class="text-blue-700 hover:underline text-xs"
-          :href="jobDetails.website"
-          target="_blank"
-          >{{ jobDetails.website }}</a
-        >
+        <div class="font-bold">About {{ getJobDetails.company }}</div>
+        <p class="text-gray text-xs">{{ getJobDetails.about }}</p>
+        <a v-if="getJobDetails.website" class="text-blue-700 hover:underline text-xs" :href="getJobDetails.website"
+          target="_blank">{{ getJobDetails.website }}</a>
       </OutlinedCard>
     </div>
   </main>
@@ -196,7 +188,7 @@ const similarJobs = computed(() => {
     <AppHeader text="Similar jobs" class="text-xl" />
 
     <section class="grid-view">
-      <JobCard v-for="job in similarJobs" :key="job.id" :job />
+      <JobCard v-for="job in similarJobs?.slice(0,6)" :key="job.id" :job />
     </section>
   </section>
 </template>

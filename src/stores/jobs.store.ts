@@ -26,6 +26,8 @@ export const useJobStore = defineStore("jobs", {
   },
   actions: {
     async fetchJobs() {
+      if(this.jobs.length) return;
+      
       try {
         this.isLoadingJobs = true;
         this.jobs = await getJobs();
