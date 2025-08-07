@@ -5,7 +5,7 @@
         <div v-else-if="jobs.length === 0" class="text-center text-gray py-12 text-lg">
             No jobs found matching your criteria.
         </div>
-        <div v-else class="grid grid-cols-3 gap-6">
+        <div v-else class="grid-view gap-6">
             <JobCard v-for="job in jobs" :key="job.id" :job="job" />
         </div>
     </MaxWidth>
