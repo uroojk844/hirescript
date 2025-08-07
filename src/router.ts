@@ -12,6 +12,14 @@ const routes = [
         component: () => import("@/pages/jobs/List.vue"),
       },
       {
+        path: "category/:category",
+        component: () => import("@/pages/jobs/category.vue"),
+      },
+      {
+        path: "/jobs/search/:params(.*)*",
+        component: () => import("@/pages/jobs/search.vue"),
+      },
+      {
         path: ":id",
         component: () => import("@/pages/jobs/job.vue"),
       },
