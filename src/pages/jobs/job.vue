@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import AppHeader from "@/components/AppHeader.vue";
+import { useSalary } from "@/composables/use-salary";
 import Avatar from "@/components/Avatar.vue";
 import JobCard from "@/components/JobCard.vue";
 import Loader from "@/components/Loader.vue";
@@ -11,6 +12,7 @@ import moment from "moment";
 import { storeToRefs } from "pinia";
 import { computed, onMounted, ref, watch, } from "vue";
 import { useRoute } from "vue-router";
+import { shareJob } from "@/api/jobs.api";
 
 const jobsStore = useJobStore();
 const { getIsLoadingJobDetails, getJobDetails, getJobs } = storeToRefs(jobsStore);
@@ -36,7 +38,7 @@ const top = ref<HTMLElement | null>(null);
 
 watch(() => route.params.id, async (newId, _) => {
   await jobsStore.fetchJobById(newId as string);
-  top.value?.scrollIntoView({behavior: "smooth"});
+  top.value?.scrollIntoView({ behavior: "smooth" });
 }, { deep: true, immediate: true })
 
 onMounted(() => {
@@ -58,7 +60,7 @@ onMounted(() => {
           {{ getJobDetails.company }}
         </div>
 
-        <div class="text-xs text-gray">Posted by</div>
+        <div v-if="getJobDetails.postedBy" class="text-xs text-gray">Posted by</div>
         <div class="text-sm capitalize">{{ getJobDetails.postedBy }}</div>
       </div>
     </section>
@@ -74,24 +76,7 @@ onMounted(() => {
           ideas and make our products more engaging for our users.
         </p>
         <strong class="uppercase">responsibilities</strong>
-        <ul>
-          <li>
-            Develop and maintain a consistent product illustration style that
-            aligns with our brand Identity and values
-          </li>
-          <li>
-            Develop and maintain a library of reusable illustrations that can be
-            used across our product portfolio
-          </li>
-          <li>
-            Work closely with the design and product teams to understand their
-            needs and create custom illustrations that meet their requirement
-          </li>
-          <li>
-            Collaborate with other designers to ensure that illustrations are
-            integrated seamlessly into our products and interfaces
-          </li>
-        </ul>
+        <div v-html="getJobDetails.jobDescription"></div>
       </OutlinedCard>
     </section>
 
@@ -106,24 +91,7 @@ onMounted(() => {
           ideas and make our products more engaging for our users.
         </p>
         <strong class="uppercase">responsibilities</strong>
-        <ul>
-          <li>
-            Develop and maintain a consistent product illustration style that
-            aligns with our brand Identity and values
-          </li>
-          <li>
-            Develop and maintain a library of reusable illustrations that can be
-            used across our product portfolio
-          </li>
-          <li>
-            Work closely with the design and product teams to understand their
-            needs and create custom illustrations that meet their requirement
-          </li>
-          <li>
-            Collaborate with other designers to ensure that illustrations are
-            integrated seamlessly into our products and interfaces
-          </li>
-        </ul>
+        <div v-html="getJobDetails.jobRequirements"></div>
       </OutlinedCard>
     </section>
 
@@ -150,8 +118,10 @@ onMounted(() => {
       </div>
 
       <div class="flex items-center gap-6">
-        <PrimaryButton class="bg-primary text-white flex-1">Apply</PrimaryButton>
-        <Icon icon="uil:share-alt" class="text-lg text-gray" />
+        <a :href="getJobDetails.applyLink" target="_blank" rel="noopener noreferrer">
+          <PrimaryButton class="bg-primary text-white flex-1">Apply</PrimaryButton>
+        </a>
+        <Icon @click="shareJob(getJobDetails)" icon="uil:share-alt" class="text-lg text-gray" />
         <Icon icon="material-symbols:favorite-rounded" class="text-lg text-red-400" />
       </div>
     </section>
@@ -162,13 +132,14 @@ onMounted(() => {
         <div class="font-bold">Job Type</div>
         <div class="grid grid-cols-2 gap-4 capitalize">
           <OutlinedCard direction="row" size="sm">
-            <Icon icon="uil:suitcase-alt" /> {{ getJobDetails.type }}
+            <Icon icon="ic:round-computer" /> {{ getJobDetails.type }}
           </OutlinedCard>
           <OutlinedCard direction="row" size="sm">
-            <Icon icon="uil:location-point" /> {{ getJobDetails.location }}
+            <Icon icon="uil:suitcase-alt" /> {{ getJobDetails.experience == null ? "Not specified" :
+              getJobDetails.experience }}
           </OutlinedCard>
-          <OutlinedCard direction="row" size="sm">
-            <Icon icon="uil:location-point" /> {{ getJobDetails.location }}
+          <OutlinedCard  direction="row" size="sm">
+            <Icon icon="tdesign:money" /> <span :title="useSalary(getJobDetails.salary , 'standard')" class="max-w-32 text-ellipsis overflow-hidden">{{ useSalary(getJobDetails.salary , "standard") }}</span>
           </OutlinedCard>
           <OutlinedCard direction="row" size="sm">
             <Icon icon="uil:location-point" /> {{ getJobDetails.location }}
@@ -181,7 +152,9 @@ onMounted(() => {
       <div class="mb-2">Company</div>
       <OutlinedCard>
         <div class="font-bold">About {{ getJobDetails.company }}</div>
-        <p class="text-gray text-xs">{{ getJobDetails.about }}</p>
+        <p class="text-gray text-xs">
+        <div v-html="getJobDetails.companyDescription"></div>
+        </p>
         <a v-if="getJobDetails.website" class="text-blue-700 hover:underline text-xs" :href="getJobDetails.website"
           target="_blank">{{ getJobDetails.website }}</a>
       </OutlinedCard>
