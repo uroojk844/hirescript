@@ -55,14 +55,16 @@ export async function searchJobs(title: string, location?: string) {
 }
 
 export const shareJob = async (job:IJobDetails) => {
+  console.log("Sharing job:", job);
   const shareData = {
     title: `${job.title} at ${job.company}`,
     text: `Check out this ${job.title} job at ${job.company}!`,
-    url: `${window.location.origin}/jobs/${job.id}`,
+    url: `https://hirescript.vercel.app/#/jobs/${job.id}`,
   };
 
   try {
     if (navigator.share) {
+      console.log(shareData)
       await navigator.share(shareData);
     } else {
       await navigator.clipboard.writeText(shareData.url);

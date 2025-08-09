@@ -8,6 +8,9 @@ import ProfileSocials from "@/components/Profile/ProfileSocials.vue";
 import SectionCard from "@/components/Profile/SectionCard.vue";
 import { Icon } from "@iconify/vue";
 import { ref } from "vue";
+import { useUserStore } from "@/stores/user.store";
+
+const userStore = useUserStore();
 
 const edit = ref(false);
 </script>
@@ -36,7 +39,7 @@ const edit = ref(false);
               class="w-20 h-20 sm:size-42 inline-block rounded-full -mt-20 sm:-mt-20"
             />
             <div class="grid gap-y-2">
-              <div class="font-bold text-primary text-lg">Jenny Wilson</div>
+              <div class="font-bold text-primary text-lg">{{ userStore.name }}</div>
               <div class="text-sm text-gray">Product designer @ Google</div>
               <div
                 class="text-xs bg-[#c3dce3] text-primary text-center p-1 flex items-center justify-center gap-2 rounded"

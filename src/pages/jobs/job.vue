@@ -3,7 +3,7 @@ import AppHeader from "@/components/AppHeader.vue";
 import { useSalary } from "@/composables/use-salary";
 import Avatar from "@/components/Avatar.vue";
 import JobCard from "@/components/JobCard.vue";
-import Loader from "@/components/Loader.vue";
+// import Loader from "@/components/Loader.vue";
 import OutlinedCard from "@/components/OutlinedCard.vue";
 import PrimaryButton from "@/components/PrimaryButton.vue";
 import Tag from "@/components/Tag.vue";
@@ -13,6 +13,8 @@ import { storeToRefs } from "pinia";
 import { computed, onMounted, ref, watch, } from "vue";
 import { useRoute } from "vue-router";
 import { shareJob } from "@/api/jobs.api";
+import Loader from "@/components/Loader.vue";
+// import JobDetailSkeleton from "@/components/jobDetailSkeleton.vue";
 
 const jobsStore = useJobStore();
 const { getIsLoadingJobDetails, getJobDetails, getJobs } = storeToRefs(jobsStore);
@@ -27,6 +29,8 @@ const similarJobs = computed(() => {
         .map((word) => job.title.includes(word)));
   } else return [];
 });
+
+
 
 const lastDate = computed(() => {
   if (getJobDetails.value != null) {
@@ -121,7 +125,7 @@ onMounted(() => {
         <a :href="getJobDetails.applyLink" target="_blank" rel="noopener noreferrer">
           <PrimaryButton class="bg-primary text-white flex-1">Apply</PrimaryButton>
         </a>
-        <Icon @click="shareJob(getJobDetails)" icon="uil:share-alt" class="text-lg text-gray" />
+        <Icon @click="shareJob(getJobDetails)" icon="uil:share-alt" class="text-lg cursor-pointer text-gray" />
         <Icon icon="material-symbols:favorite-rounded" class="text-lg text-red-400" />
       </div>
     </section>
