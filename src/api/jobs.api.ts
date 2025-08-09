@@ -3,6 +3,7 @@ import { fireDB } from "@/firebase/config";
 import type { IJobDetails } from "@/interface/jobs.interface";
 import { useSortByTime } from "@/composables/use-sort-by-time";
 
+
 const jobs = useSortByTime(collection(fireDB, "jobs"));
 
 export async function getJobs() {
@@ -14,7 +15,7 @@ export async function getJobs() {
 
 export async function getJobByID(id: string) {
   const res = await getDoc(doc(fireDB, "jobs", id));
-  return res.data() as IJobDetails;
+  return  { ...res.data(), id } as IJobDetails;
 }
 
 export async function searchJobs(title: string, location?: string) {
@@ -52,3 +53,26 @@ export async function searchJobs(title: string, location?: string) {
     return titleMatches && locationMatches;
   });
 }
+
+export const shareJob = async (job:IJobDetails) => {
+  console.log("Sharing job:", job);
+  const shareData = {
+    title: `${job.title} at ${job.company}`,
+    text: `Check out this ${job.title} job at ${job.company}!`,
+    url: `https://hirescript.vercel.app/#/jobs/${job.id}`,
+  };
+
+  try {
+    if (navigator.share) {
+      console.log(shareData)
+      await navigator.share(shareData);
+    } else {
+      await navigator.clipboard.writeText(shareData.url);
+      alert("Link copied to clipboard!");
+    }
+  } catch (err: any) {
+    console.error("Error sharing:", err);
+    alert("Error sharing: " + err.message);
+    throw err;
+  }
+};

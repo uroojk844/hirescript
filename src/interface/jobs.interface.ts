@@ -8,6 +8,7 @@ export interface IJob {
   company: string;
   companyLogo: string;
   description: string;
+  experience: string;
   location: string;
   type: TJobType;
   salary: number;
@@ -18,6 +19,10 @@ export interface IJob {
     nanoseconds: number;
   };
   updatedAt: string;
+  jobDescription: string; 
+  jobRequirements: string;
+  companyDescription: string;
+  applyLink: string;
 }
 
 export interface IJobDetails extends IJob {

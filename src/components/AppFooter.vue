@@ -34,36 +34,26 @@ import { Icon } from "@iconify/vue";
         class="flex flex-col md:flex-row md:items-center md:justify-between gap-4"
       >
         <div class="flex items-center justify-center md:justify-start gap-4">
-          <a href="https://twitter.com" target="_blank" rel="noopener">
+          <a href="https://blogs.hirescript.tech/" target="_blank" rel="noopener">
             <Icon
-              icon="mdi:twitter"
+              icon="mdi:blogger"
               class="text-xl text-gray hover:text-primary transition"
             />
           </a>
-          <a href="https://facebook.com" target="_blank" rel="noopener">
-            <Icon
-              icon="mdi:facebook"
-              class="text-xl text-gray hover:text-primary transition"
-            />
-          </a>
-          <a href="https://linkedin.com" target="_blank" rel="noopener">
+          
+          <a href="https://www.linkedin.com/company/hirescript-app/" target="_blank" rel="noopener">
             <Icon
               icon="mdi:linkedin"
               class="text-xl text-gray hover:text-primary transition"
             />
           </a>
-          <a href="https://instagram.com" target="_blank" rel="noopener">
+          <a href="https://instagram.com/hellohirescript" target="_blank" rel="noopener">
             <Icon
               icon="mdi:instagram"
               class="text-xl text-gray hover:text-primary transition"
             />
           </a>
-          <a href="https://github.com" target="_blank" rel="noopener">
-            <Icon
-              icon="mdi:github"
-              class="text-xl text-gray hover:text-primary transition"
-            />
-          </a>
+          
         </div>
         <div class="text-sm text-gray flex gap-4 justify-center">
           <div>Privacy Policy</div>

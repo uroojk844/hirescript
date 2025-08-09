@@ -1,24 +1,58 @@
 <script setup lang="ts">
-import { inject } from 'vue';
+import { inject, ref } from 'vue';
 import GoogleLogin from './GoogleLogin.vue';
+import { saveUser } from '@/api/user.api';
+import { useUserStore } from '@/stores/user.store';
 
 const current = inject('authCurrent');
+const userStore = useUserStore();
 
+const fullname = ref('');
+const email = ref('');
+const password = ref('');
+const loading = ref(false);
+
+async function handleSignup() {
+    if (!fullname.value || !email.value || !password.value) {
+        alert("Please fill all fields");
+        return;
+    }
+
+    loading.value = true;
+
+    const res = await saveUser({
+        fullname: fullname.value,
+        email: email.value,
+        password: password.value,
+        phone: "", // optional for now
+    });
+
+    if (res.success) {
+        userStore.setUser(res.user); 
+        console.log("Signup successful", res.user);
+        current.value = "Login";
+        // Switch to logged-in state or close popup
+    } else {
+        alert(res.message);
+    }
+
+    loading.value = false;
+}
 </script>
 
 <template>
     <div class="grid gap-y-5">
         <div class="text-2xl font-bold text-primary">Create your account</div>
 
-        <input type="text" class="border border-gray-300 w-full p-3 rounded-full text-sm"
+        <input v-model="fullname" type="text" class="border border-gray-300 w-full p-3 rounded-full text-sm"
             placeholder="Enter your Full name" />
-        <input type="text" class="border border-gray-300 w-full p-3 rounded-full text-sm"
+        <input v-model="email" type="text" class="border border-gray-300 w-full p-3 rounded-full text-sm"
             placeholder="Enter your email" />
-        <input type="password" class="border border-gray-300 w-full p-3 rounded-full text-sm"
+        <input v-model="password" type="password" class="border border-gray-300 w-full p-3 rounded-full text-sm"
             placeholder="Create a password" />
 
-        <button class="w-full p-3 text-sm bg-primary text-white rounded-full">
-            Continue
+        <button class="w-full p-3 text-sm bg-primary text-white rounded-full" :disabled="loading" @click="handleSignup">
+            {{ loading ? "Creating..." : "Continue" }}
         </button>
 
         <div class="flex items-center justify-center gap-4">

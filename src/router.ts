@@ -1,8 +1,9 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 import Home from "./pages/home.vue";
+import { useUserStore } from "@/stores/user.store";
 
 const routes = [
-  { path: "/", component: Home },
+  { path: "/", component: Home , name: "home" },
   {
     path: "/jobs",
     component: () => import("@/pages/jobs/JobView.vue"),
@@ -25,10 +26,23 @@ const routes = [
       },
     ],
   },
-  { path: "/profile", component: () => import("./pages/profile.vue") },
+  { path: "/profile", component: () => import("./pages/profile.vue") ,meta: { requiresAuth: true } },
 ];
+
+
 
 export const router = createRouter({
   history: createWebHashHistory(),
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  const userStore = useUserStore();
+  
+  if (to.meta.requiresAuth && !userStore.user) {
+    // No user found → redirect to home (or login)
+    return next("/");
+  }
+
+  next();
 });
