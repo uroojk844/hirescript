@@ -8,19 +8,16 @@ import Logo from "./Logo.vue";
 
 const mobileNav = ref<HTMLElement | null>(null);
 const isOpen = ref(false);
-
 useHandleClickOutside(mobileNav, isOpen);
 </script>
 
 <template>
   <nav class="py-6 xl:py-8">
     <MaxWidth class="flex items-center justify-between">
-      <RouterLink to="/" class="flex items-center gap-2 text-2xl font-bold text-primary"><Logo /> HireScript</RouterLink>
-      <div
-        ref="mobileNav"
-        class="mobile-nav sm:contents"
-        :class="{ open: isOpen }"
-      >
+      <RouterLink to="/" class="flex items-center gap-2 text-2xl font-bold text-primary">
+        <Logo /> HireScript
+      </RouterLink>
+      <div ref="mobileNav" class="mobile-nav sm:contents" :class="{ open: isOpen }">
         <RouterLink to="/" class="flex items-center gap-2 text-2xl font-bold text-primary mb-8 mobile-title">
           <Logo /> HireScript
         </RouterLink>
@@ -34,11 +31,8 @@ useHandleClickOutside(mobileNav, isOpen);
         <PrimaryButton>Register Now</PrimaryButton>
       </div>
 
-      <Icon
-        @click.stop="isOpen = !isOpen"
-        :icon="!isOpen ? 'uil:bars' : 'uil:times'"
-        class="text-3xl text-primary toggle-sidebar"
-      />
+      <Icon @click.stop="isOpen = !isOpen" :icon="!isOpen ? 'uil:bars' : 'uil:times'"
+        class="text-3xl text-primary toggle-sidebar" />
     </MaxWidth>
   </nav>
 </template>
@@ -59,7 +53,8 @@ a {
   display: none;
 }
 
-@media screen and (width <= 768px) {
+@media screen and (width <=768px) {
+
   .toggle-sidebar,
   .mobile-title {
     display: block;
