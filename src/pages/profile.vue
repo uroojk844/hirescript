@@ -9,9 +9,14 @@ import SectionCard from "@/components/Profile/SectionCard.vue";
 import { Icon } from "@iconify/vue";
 import { ref } from "vue";
 import { useUserStore } from "@/stores/user.store";
+import { storeToRefs } from "pinia";
+
 
 const userStore = useUserStore();
-
+const { getUser } = storeToRefs(userStore);
+// async function handlelogout() {
+//   await userStore.handleLogout();
+//   router
 const edit = ref(false);
 </script>
 
@@ -22,7 +27,7 @@ const edit = ref(false);
     <MaxWidth>
       <NavBar />
 
-      <section class="rounded-xl overflow-hidden">
+      <section v-if="getUser" class="rounded-xl overflow-hidden">
         <div class="h-[160px] bg-gray-100 overflow-hidden max-sm:h-[100px]">
           <img
             src="https://images.pexels.com/photos/167699/pexels-photo-167699.jpeg"
@@ -39,7 +44,7 @@ const edit = ref(false);
               class="w-20 h-20 sm:size-42 inline-block rounded-full -mt-20 sm:-mt-20"
             />
             <div class="grid gap-y-2">
-              <div class="font-bold text-primary text-lg">{{ userStore.name }}</div>
+              <div class="font-bold text-primary text-lg">{{ getUser.name }}</div>
               <div class="text-sm text-gray">Product designer @ Google</div>
               <div
                 class="text-xs bg-[#c3dce3] text-primary text-center p-1 flex items-center justify-center gap-2 rounded"
@@ -70,13 +75,22 @@ const edit = ref(false);
                 <div class="text-gray">Uttar Pradesh</div>
               </div>
             </div>
-
+            <div class="flex flex-col items-center gap-4">
+              
             <button
               @click="edit = true"
               class="text-white bg-primary px-4 py-3 rounded-lg font-medium text-sm w-full md:w-auto"
             >
               Edit profile
             </button>
+            <button
+              v-if="userStore.user"
+              @click="userStore.handleLogout"
+              class="text-white cursor-pointer bg-red-500 px-7 py-3 rounded-lg font-medium text-sm w-full md:w-auto"
+            >
+              Logout
+            </button>
+            </div>
           </div>
         </div>
       </section>
