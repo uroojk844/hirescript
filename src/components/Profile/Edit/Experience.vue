@@ -134,5 +134,6 @@ const handleDelete = (id: number) => {
     >
       + Add Experience
     </button>
+    <button class="mt-4 bg-primary text-white text-sm px-4 py-2 rounded-md">Save</button>
   </div>
 </template>

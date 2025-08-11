@@ -28,4 +28,5 @@
       class="w-full border border-gray-300 rounded-lg p-2 text-sm"
     />
   </div>
+  <button class="mt-4 bg-primary text-white text-sm px-4 py-2 rounded-md">Save</button>
 </template>

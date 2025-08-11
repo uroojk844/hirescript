@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import { ref } from 'vue';
 import Auth from './components/Auth/Auth.vue';
-
-const auth = ref(false);
+import { useAuthStore } from '@/stores/authShow.store';
+const authStore = useAuthStore();
 </script>
 
 <template>
-  <Auth v-if="auth" />
   <RouterView></RouterView>
+  <Auth v-if="authStore.isAuthVisible" />
 </template>
