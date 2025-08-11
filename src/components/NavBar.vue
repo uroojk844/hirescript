@@ -38,8 +38,7 @@ function handleAuthClick() {
         <div class="flex gap-8 links">
           <RouterLink to="/">Home</RouterLink>
           <RouterLink to="/jobs">Find Jobs</RouterLink>
-          <RouterLink to="/Courses">Courses</RouterLink>
-          <RouterLink to="/campus">Master Classes</RouterLink>
+          <RouterLink to="/courses">Master Classes</RouterLink>
         </div>
 
         <template v-if="userStore.user">
