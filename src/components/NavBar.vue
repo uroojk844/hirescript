@@ -5,7 +5,6 @@ import PrimaryButton from "./PrimaryButton.vue";
 import { useHandleClickOutside } from "@/composables/use-handle-click-outside";
 import Logo from "./Logo.vue";
 import { useUserStore } from "@/stores/user.store";
-import Auth from "./Auth/Auth.vue";
 import { useAuthStore } from "@/stores/authShow.store";
 
 const mobileNav = ref<HTMLElement | null>(null);

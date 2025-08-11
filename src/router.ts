@@ -36,13 +36,13 @@ export const router = createRouter({
   routes,
 });
 
-router.beforeEach((to, from, next) => {
+router.beforeEach((to, _from, next) => {
   const userStore = useUserStore();
-  
-  if (to.meta.requiresAuth && !userStore.user) {
-    // No user found → redirect to home (or login)
-    return next("/");
-  }
 
-  next();
+  if (to.meta.requiresAuth && !userStore.user) {
+    next("/"); // redirect to home or login
+  } else {
+    next();
+  }
 });
+
