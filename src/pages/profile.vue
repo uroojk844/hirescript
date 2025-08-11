@@ -65,13 +65,14 @@ const edit = ref(false);
               class="flex flex-col sm:flex-row border border-gray-300 rounded-lg p-2 w-full max-sm:hidden md:w-auto"
             >
               <div
+                v-if="getUser?.experience"
                 class="text-sm p-3 pr-6 border-b sm:border-b-0 sm:border-r border-gray-300"
               >
-                <div class="font-bold text-primary">Work</div>
+                <div  class="font-bold text-primary">Work</div>
                 <div class="text-gray">{{ getUser.experience?.[0] || "company name" }}, {{ getUser.experience?.[0] || "company location" }}</div>
                 <div class="text-gray">{{getUser.experience?.[0] || "company state"}}</div>
               </div>
-              <div class="text-sm p-3 pl-6">
+              <div v-if="getUser?.education" class="text-sm p-3 pl-6">
                 <div class="font-bold">Education</div>
                 <div class="text-gray">{{ getUser.education?.college || "College Name" }}, {{ getUser.education?.city || "College city" }} </div>
                 <div class="text-gray">{{ getUser.education?.state || "College State" }}</div>
@@ -84,13 +85,6 @@ const edit = ref(false);
               class="text-white bg-primary px-4 py-3 rounded-lg font-medium text-sm w-full md:w-auto"
             >
               Edit profile
-            </button>
-            <button
-              v-if="userStore.user"
-              @click="userStore.handleLogout"
-              class="text-white cursor-pointer bg-red-500 px-7 py-3 rounded-lg font-medium text-sm w-full md:w-auto"
-            >
-              Logout
             </button>
             </div>
           </div>
