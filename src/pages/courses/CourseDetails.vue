@@ -121,6 +121,7 @@ const courseDetails = computed(() => {
 <style>
 .overview {
     li {
+        list-style: none;
         position: relative;
         padding-left: 24px;
     }
