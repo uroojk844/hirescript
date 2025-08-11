@@ -5,56 +5,83 @@ import {doc, collection, getDoc, setDoc } from 'firebase/firestore';
 import { auth, fireDB } from '@/firebase/config';
 import { useUserStore } from '@/stores/user.store';
 import { useAuthStore } from '@/stores/authShow.store';
+import type { IUser } from '@/interface/user.interface';
+
 
 const userStore = useUserStore();
 const authStore = useAuthStore();
 const loading = ref(false);
 
 const handleGoogleLogin = async () => {
-    loading.value = true;
-    const provider = new GoogleAuthProvider();
+  loading.value = true;
+  const provider = new GoogleAuthProvider();
 
-    try{
-        const result = await signInWithPopup(auth, provider);
-        const user = result.user;
-        console.log("Google login successful", user);
-        const userRef = doc(collection(fireDB, 'users'), user.uid);
-        const userSnap = await getDoc(userRef);
-        let userData;
-       if (userSnap.exists()) {
-      
-      userData = userSnap.data();
+  try {
+    const result = await signInWithPopup(auth, provider);
+    const firebaseUser = result.user;
+
+    console.log("Google login successful", firebaseUser);
+
+    const userRef = doc(collection(fireDB, "users"), firebaseUser.uid);
+    const userSnap = await getDoc(userRef);
+
+    let userData: IUser;
+
+    if (userSnap.exists()) {
+      userData = userSnap.data() as IUser;
     } else {
-      // Create new user document
+      // Create IUser object for a new Google user
       userData = {
-        name: user.displayName || "",
-        email: user.email,
+        name: firebaseUser.displayName || "",
+        profilePhotoUrl: firebaseUser.photoURL || "",
+        email: firebaseUser.email || "",
         password: "",
-        photoUrl: user.photoURL || "",
-        phoneNumber: user.phoneNumber || "",
+        coverPhotoUrl: "",
         bio: "",
-        designation: "",
-        skills: "",
-        college: {
-          collegeName: "",
-          collegeEmail: "",
+        skills: [],
+        education: {
+          college: "",
+          city: "",
+          state: "",
+          mail: "",
         },
-        saved: [],
-        visited: [],
-        applied: [],
-        uid: user.uid,
+        location: {
+          city: "",
+          state: "",
+          country: "",
+        },
+        socialLinks: {
+          facebook: "",
+          instagram: "",
+          dribbble: "",
+          mail: firebaseUser.email || "",
+          whatsapp: "",
+        },
+        portfolioLinks: {
+          behance: "",
+          dribbble: "",
+          canva: "",
+          github: "",
+        },
+        experience: [],
+        portfolio: [],
+        uid: firebaseUser.uid,
       };
 
       await setDoc(userRef, userData);
       console.log("Account created successfully");
     }
+
     userStore.setUser(userData);
     authStore.hideAuth();
     console.log("Signed in successfully");
-  } catch (error:any) {
+  } catch (error: any) {
     console.error("Google sign-in failed:", error.message);
+  } finally {
+    loading.value = false;
   }
 };
+
 
 
 
