@@ -25,6 +25,20 @@ const routes = [
       },
     ],
   },
+  {
+    path: "/courses",
+    component: () => import("@/pages/courses/CourseView.vue"),
+    children: [
+      {
+        path: "",
+        component: () => import("@/pages/courses/AllCourse.vue"),
+      },
+      {
+        path: ":id",
+        component: () => import("@/pages/courses/CourseDetails.vue"),
+      },
+    ],
+  },
   { path: "/profile", component: () => import("./pages/profile.vue") },
 ];
 

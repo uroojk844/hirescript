@@ -8,7 +8,7 @@ const colors = ["#e2f5cd", "#e9ecf8", "#e4eefa"];
 
 <template>
   <RouterLink :to="'/jobs/' + job.id">
-    <div class="rounded-lg p-6 grid gap-y-2" :class="{ 'border border-gray-300': !trending }"
+    <div class="rounded-lg p-6 grid gap-y-2 bg-white" :class="{ 'border border-gray-300': !trending }"
       :style="trending && { backgroundColor: colors[index! % 3] }">
       <div class="flex items-center justify-between">
         <div class="text-primary font-medium line-clamp-1">{{ job.title }}</div>

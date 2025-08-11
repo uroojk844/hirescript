@@ -25,7 +25,7 @@ useHandleClickOutside(mobileNav, isOpen);
         <div class="flex gap-8 links">
           <RouterLink to="/">Home</RouterLink>
           <RouterLink to="/jobs">Find Jobs</RouterLink>
-          <RouterLink to="/campus">Campus Ambassador</RouterLink>
+          <RouterLink to="/Courses">Courses</RouterLink>
         </div>
 
         <PrimaryButton>Register Now</PrimaryButton>
