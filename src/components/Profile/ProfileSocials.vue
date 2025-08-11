@@ -9,7 +9,7 @@ const { getUser } = storeToRefs(userStore);
 <template>
   <div class="flex items-center gap-2">
     <div class="rounded-full border border-gray-300 p-0.5">
-      <a :href="getUser?.socialLinks.facebook" target="_blank" rel="noopener noreferrer"><svg class="size-10"
+      <a :href="getUser?.socialLinks?.facebook" target="_blank" rel="noopener noreferrer"><svg class="size-10"
           xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100" height="100" viewBox="0,0,256,256">
           <g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt"
             stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none"
@@ -26,7 +26,7 @@ const { getUser } = storeToRefs(userStore);
         </svg></a>
     </div>
     <div class="rounded-full border border-gray-300 p-0.5">
-      <a :href="getUser?.socialLinks.instagram" target="_blank" rel="noopener noreferrer">
+      <a :href="getUser?.socialLinks?.instagram" target="_blank" rel="noopener noreferrer">
         <svg class="size-10" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100" height="100"
           viewBox="0 0 48 48">
           <path fill="#0288D1"
@@ -38,7 +38,7 @@ const { getUser } = storeToRefs(userStore);
         </svg></a>
     </div>
     <div class="rounded-full border border-gray-300 p-0.5">
-     <a :href="getUser?.socialLinks.dribbble" target="_blank" rel="noopener noreferrer"> <svg class="size-10" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100" height="100"
+     <a :href="getUser?.socialLinks?.dribbble" target="_blank" rel="noopener noreferrer"> <svg class="size-10" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100" height="100"
         viewBox="0 0 48 48">
         <circle cx="24" cy="24" r="19.375" fill="#ed3675"></circle>
         <path fill="#bd1949" fill-rule="evenodd"
@@ -48,7 +48,7 @@ const { getUser } = storeToRefs(userStore);
     </a>
     </div>
     <div class="rounded-full border border-gray-300 p-0.5">
-      <a :href="getUser?.socialLinks.whatsapp" target="_blank" rel="noopener noreferrer">
+      <a :href="getUser?.socialLinks?.whatsapp" target="_blank" rel="noopener noreferrer">
       <svg class="size-10" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100" height="100"
         viewBox="0 0 48 48">
         <path fill="#fff"

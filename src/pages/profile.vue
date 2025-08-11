@@ -25,7 +25,7 @@ const edit = ref(false);
   
   <EditProfile v-if="edit" />
 
-  <div class="bg-[#ecf4f6]">
+  <div v-if="getUser" class="bg-[#ecf4f6]">
     <MaxWidth>
       <NavBar />
 
@@ -42,12 +42,12 @@ const edit = ref(false);
         >
           <div class="flex flex-col sm:flex-row items-start gap-4">
             <img
-              :src="getUser.profilePhotoUrl||'https://cdn1.iconfinder.com/data/icons/user-pictures/100/male3-512.png'"
+              :src="getUser?.profilePhotoUrl||'https://cdn1.iconfinder.com/data/icons/user-pictures/100/male3-512.png'"
               class="w-20 h-20 sm:size-42 inline-block rounded-full -mt-20 sm:-mt-20"
             />
             <div class="grid gap-y-2">
               <div class="font-bold text-primary text-lg">{{ getUser.name || "User Name" }}</div>
-              <div class="text-sm text-gray">{{ getUser.experience[0] || "Current Workplace" }}</div>
+              <div class="text-sm text-gray">{{ getUser?.experience?.[0] || "Current Workplace" }}</div>
               <div
                 class="text-xs bg-[#c3dce3] text-primary text-center p-1 flex items-center justify-center gap-2 rounded"
               >
@@ -55,7 +55,7 @@ const edit = ref(false);
                   class="text-xl"
                   icon="material-symbols-light:location-on"
                 />
-                {{ getUser.location.city || "Current City" }}, {{ getUser.location.state || "Current State" }}
+                {{ getUser?.location?.city || "Current City" }}, {{ getUser?.location?.state || "Current State" }}
               </div>
               <ProfileSocials class="mt-3" />
             </div>
@@ -68,16 +68,16 @@ const edit = ref(false);
                 class="text-sm p-3 pr-6 border-b sm:border-b-0 sm:border-r border-gray-300"
               >
                 <div class="font-bold text-primary">Work</div>
-                <div class="text-gray">{{ getUser.experience[0] || "company name" }}, {{ getUser.experience[0] || "company location" }}</div>
-                <div class="text-gray">{{getUser.experience[0] || "company state"}}</div>
+                <div class="text-gray">{{ getUser.experience?.[0] || "company name" }}, {{ getUser.experience?.[0] || "company location" }}</div>
+                <div class="text-gray">{{getUser.experience?.[0] || "company state"}}</div>
               </div>
               <div class="text-sm p-3 pl-6">
                 <div class="font-bold">Education</div>
-                <div class="text-gray">{{ getUser.education.college || "College Name" }}, {{ getUser.education.city || "College city" }} </div>
-                <div class="text-gray">{{ getUser.education.state || "College State" }}</div>
+                <div class="text-gray">{{ getUser.education?.college || "College Name" }}, {{ getUser.education?.city || "College city" }} </div>
+                <div class="text-gray">{{ getUser.education?.state || "College State" }}</div>
               </div>
             </div>
-            <div class="flex flex-col items-center gap-4">
+            <div class="flex flex-col  items-center gap-4">
               
             <button
               @click="edit = true"
@@ -102,7 +102,7 @@ const edit = ref(false);
           <SectionCard title="Skills">
              <div class="flex gap-3 flex-wrap">
               <div
-                v-if="getUser?.skills.length"
+                v-if="getUser?.skills?.length"
                 v-for="(skill, idx) in getUser?.skills"
                 :key="idx"
                 class="rounded text-xs border py-0.5 px-2 border-gray-300"
@@ -147,20 +147,20 @@ const edit = ref(false);
                 <div class="text-primary pb-4 font-medium">Experience</div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <div
-                    v-if="getUser?.experience.length"
+                    v-if="getUser?.experience?.length"
                     v-for="(exp, idx) in getUser?.experience"
                     :key="idx"
                     class="flex items-center gap-4"
                   >
                     <img
-                      :src="exp.logo || 'https://via.placeholder.com/64'"
+                      :src="exp?.logo || 'https://via.placeholder.com/64'"
                       alt="Company Logo"
                       class="size-16 object-cover"
                     />
                     <div class="grid gap-y-1">
-                      <div class="text-primary font-medium">{{ exp.company }}</div>
-                      <div class="text-primary">{{ exp.years }}</div>
-                      <div class="text-sm text-gray">{{ exp.position }}</div>
+                      <div class="text-primary font-medium">{{ exp?.company }}</div>
+                      <div class="text-primary">{{ exp?.years }}</div>
+                      <div class="text-sm text-gray">{{ exp?.position }}</div>
                     </div>
                   </div>
                   <div
@@ -176,7 +176,7 @@ const edit = ref(false);
               <!-- Responsive portfolio image grid -->
               <section class="border-gray-300 py-4">
                 <div class="text-primary pb-4 font-medium">Portfolio</div>
-                <div v-if="getUser?.portfolio.length" class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+                <div v-if="getUser?.portfolio?.length" class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
                   <img
                     v-for="(item, idx) in getUser?.portfolio"
                     :key="idx"
@@ -196,5 +196,14 @@ const edit = ref(false);
 
       <AppFooter />
     </MaxWidth>
+  </div>
+  <div v-else class="flex items-center justify-center h-screen">
+    <button
+              v-if="userStore.user"
+              @click="userStore.handleLogout"
+              class="text-white cursor-pointer bg-red-500 px-7 py-3 rounded-lg font-medium text-sm w-full md:w-auto"
+            >
+              Logout
+            </button>
   </div>
 </template>

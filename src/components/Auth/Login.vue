@@ -13,10 +13,12 @@ const authStore = useAuthStore();
 const email = ref('');
 const password = ref('');
 const loading = ref(false);
+const message = ref('');
 
 async function handlelogin() {
+    message.value = '';
     if (!email.value || !password.value) {
-        alert("Please fill all fields");
+        message.value = "Please enter Required  Field.";
         return;
     }
     loading.value = true;
@@ -31,7 +33,7 @@ async function handlelogin() {
         authStore.hideAuth();
     }
     else {
-        alert(res.message || "Login failed");
+        message.value=res.message || "Login failed";
     }
     loading.value = false;
 }
@@ -47,6 +49,9 @@ async function handlelogin() {
             placeholder="Enter your email" />
         <input v-model="password" type="password" class="border border-gray-300 w-full py-3 px-4 rounded-full text-sm"
             placeholder="Enter password" />
+        <div v-if="!password || message">
+            <div class="text-sm text-red-500">{{ message }}</div>
+        </div>
 
         <button class="w-full p-3 text-sm bg-primary text-white rounded-full" :disabled="loading" @click="handlelogin">
             {{ loading ? "Signing in..." : "Continue" }}
