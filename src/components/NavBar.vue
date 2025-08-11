@@ -57,7 +57,7 @@ a {
 
   .toggle-sidebar,
   .mobile-title {
-    display: block;
+    display: flex;
   }
 
   .mobile-nav {
