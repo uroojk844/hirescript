@@ -48,8 +48,6 @@ const handleGoogleLogin = async () => {
       await setDoc(userRef, userData);
       console.log("Account created successfully");
     }
-
-    // Update your Pinia store
     userStore.setUser(userData);
     authStore.hideAuth();
     console.log("Signed in successfully");

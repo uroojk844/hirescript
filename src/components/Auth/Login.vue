@@ -4,7 +4,8 @@ import GoogleLogin from './GoogleLogin.vue';
 import { loginUser } from '@/api/user.api';
 import { useAuthStore } from '@/stores/authShow.store';
 import { useUserStore } from '@/stores/user.store';
-import { auth } from '@/firebase/config';
+import type { IUser } from '@/interface/user.interface';
+
 const current = inject('authCurrent');
 const userStore = useUserStore();
 const authStore = useAuthStore();
@@ -25,7 +26,7 @@ async function handlelogin() {
         password: password.value,
     });
     if (res.success) {
-        userStore.setUser(res.user);
+        userStore.setUser(res.user as IUser);
         console.log("Login successful", res.user);
         authStore.hideAuth();
     }

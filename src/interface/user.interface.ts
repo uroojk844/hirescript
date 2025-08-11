@@ -1,17 +1,36 @@
 export interface IUser {
   name: string;
+  profilePhotoUrl: string;
   email: string;
-  photoUrl: string;
+  password: string;
+  coverPhotoUrl: string;
   bio: string;
-  phone: string;
-  designation: string;
-  skills: string;
-  college: {
-    collegeName: string;
-    collegeEmail: string;
+  skills: string[];
+  education: {
+    college: string;
+    city: string;
+    state: string;
+    mail: string;
   };
-  saved: string[];     // Array of saved job IDs
-  visited: string[];   // Array of visited job IDs
-  applied: string[];   // Array of applied job IDs
-  uid: string;         // Firebase Auth UID
+  location: {
+    city: string;
+    state: string;
+    country: string;
+  };
+  socialLinks: {
+    facebook: string;
+    instagram: string;
+    dribbble: string;
+    mail: string;
+    whatsapp: string;
+  };
+  portfolioLinks: {
+    behance: string;
+    dribbble: string;
+    canva: string;
+    github: string;
+  };
+  experience: any[];
+  portfolio: any[];
+  uid: string;
 }

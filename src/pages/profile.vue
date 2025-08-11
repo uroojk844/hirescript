@@ -17,10 +17,12 @@ const { getUser } = storeToRefs(userStore);
 // async function handlelogout() {
 //   await userStore.handleLogout();
 //   router
+
 const edit = ref(false);
 </script>
 
 <template>
+  console.log({{ getUser }});
   <EditProfile v-if="edit" />
 
   <div class="bg-[#ecf4f6]">
@@ -138,29 +140,10 @@ const edit = ref(false);
             </div>
 
             <div class="py-4 px-8">
-              <section class="border-b border-gray-300 pb-4">
+              <section v-if="getUser" class="border-b border-gray-300 pb-4">
                 <div class="text-primary pb-2 font-medium">About me</div>
                 <div class="text-sm">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet
-                  vero quae a corrupti error vel soluta perspiciatis facilis
-                  doloremque unde fugiat quis fugit qui ipsa eum non, harum
-                  atque tenetur. Lorem ipsum dolor sit amet consectetur
-                  adipisicing elit. Amet vero quae a corrupti error vel soluta
-                  perspiciatis facilis doloremque unde fugiat quis fugit qui
-                  ipsa eum non, harum atque tenetur. Lorem ipsum dolor sit amet
-                  consectetur adipisicing elit. Amet vero quae a corrupti error
-                  vel soluta perspiciatis facilis doloremque unde fugiat quis
-                  fugit qui ipsa eum non, harum atque tenetur. Lorem ipsum dolor
-                  sit amet consectetur adipisicing elit. Amet vero quae a
-                  corrupti error vel soluta perspiciatis facilis doloremque unde
-                  fugiat quis fugit qui ipsa eum non, harum atque tenetur. Lorem
-                  ipsum dolor sit amet consectetur adipisicing elit. Amet vero
-                  quae a corrupti error vel soluta perspiciatis facilis
-                  doloremque unde fugiat quis fugit qui ipsa eum non, harum
-                  atque tenetur. Lorem ipsum dolor sit amet consectetur
-                  adipisicing elit. Amet vero quae a corrupti error vel soluta
-                  perspiciatis facilis doloremque unde fugiat quis fugit qui
-                  ipsa eum non, harum atque tenetur.
+                  {{ getUser.bio || "No description provided." }}
                 </div>
               </section>
 
