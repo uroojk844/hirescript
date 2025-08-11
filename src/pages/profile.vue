@@ -8,22 +8,32 @@ import ProfileSocials from "@/components/Profile/ProfileSocials.vue";
 import SectionCard from "@/components/Profile/SectionCard.vue";
 import { Icon } from "@iconify/vue";
 import { ref } from "vue";
+import { useUserStore } from "@/stores/user.store";
+import { storeToRefs } from "pinia";
+
+
+const userStore = useUserStore();
+const { getUser } = storeToRefs(userStore);
+// async function handlelogout() {
+//   await userStore.handleLogout();
+//   router
 
 const edit = ref(false);
 </script>
 
 <template>
+  
   <EditProfile v-if="edit" />
 
   <div class="bg-[#ecf4f6]">
     <MaxWidth>
       <NavBar />
 
-      <section class="rounded-xl overflow-hidden">
+      <section v-if="getUser" class="rounded-xl overflow-hidden">
         <div class="h-[160px] bg-gray-100 overflow-hidden max-sm:h-[100px]">
           <img
-            src="https://images.pexels.com/photos/167699/pexels-photo-167699.jpeg"
-            alt=""
+            :src="getUser.coverPhotoUrl || 'https://images.pexels.com/photos/167699/pexels-photo-167699.jpeg'"
+            alt="Cover"
             class="w-full h-full object-cover"
           />
         </div>
@@ -32,12 +42,12 @@ const edit = ref(false);
         >
           <div class="flex flex-col sm:flex-row items-start gap-4">
             <img
-              src="https://cdn1.iconfinder.com/data/icons/user-pictures/100/male3-512.png"
+              :src="getUser.profilePhotoUrl||'https://cdn1.iconfinder.com/data/icons/user-pictures/100/male3-512.png'"
               class="w-20 h-20 sm:size-42 inline-block rounded-full -mt-20 sm:-mt-20"
             />
             <div class="grid gap-y-2">
-              <div class="font-bold text-primary text-lg">Jenny Wilson</div>
-              <div class="text-sm text-gray">Product designer @ Google</div>
+              <div class="font-bold text-primary text-lg">{{ getUser.name || "User Name" }}</div>
+              <div class="text-sm text-gray">{{ getUser.experience[0] || "Current Workplace" }}</div>
               <div
                 class="text-xs bg-[#c3dce3] text-primary text-center p-1 flex items-center justify-center gap-2 rounded"
               >
@@ -45,7 +55,7 @@ const edit = ref(false);
                   class="text-xl"
                   icon="material-symbols-light:location-on"
                 />
-                London, United Kingdom
+                {{ getUser.location.city || "Current City" }}, {{ getUser.location.state || "Current State" }}
               </div>
               <ProfileSocials class="mt-3" />
             </div>
@@ -58,22 +68,31 @@ const edit = ref(false);
                 class="text-sm p-3 pr-6 border-b sm:border-b-0 sm:border-r border-gray-300"
               >
                 <div class="font-bold text-primary">Work</div>
-                <div class="text-gray">Whitefield, Bangalore</div>
-                <div class="text-gray">Karnataka</div>
+                <div class="text-gray">{{ getUser.experience[0] || "company name" }}, {{ getUser.experience[0] || "company location" }}</div>
+                <div class="text-gray">{{getUser.experience[0] || "company state"}}</div>
               </div>
               <div class="text-sm p-3 pl-6">
                 <div class="font-bold">Education</div>
-                <div class="text-gray">Integral University, Lucknow</div>
-                <div class="text-gray">Uttar Pradesh</div>
+                <div class="text-gray">{{ getUser.education.college || "College Name" }}, {{ getUser.education.city || "College city" }} </div>
+                <div class="text-gray">{{ getUser.education.state || "College State" }}</div>
               </div>
             </div>
-
+            <div class="flex flex-col items-center gap-4">
+              
             <button
               @click="edit = true"
               class="text-white bg-primary px-4 py-3 rounded-lg font-medium text-sm w-full md:w-auto"
             >
               Edit profile
             </button>
+            <button
+              v-if="userStore.user"
+              @click="userStore.handleLogout"
+              class="text-white cursor-pointer bg-red-500 px-7 py-3 rounded-lg font-medium text-sm w-full md:w-auto"
+            >
+              Logout
+            </button>
+            </div>
           </div>
         </div>
       </section>
@@ -81,24 +100,20 @@ const edit = ref(false);
       <section class="grid grid-cols-1 md:grid-cols-4 gap-4 mt-4 max-sm:gap-0">
         <div class="col-span-1">
           <SectionCard title="Skills">
-            <div class="flex gap-3 flex-wrap">
-              <div class="rounded text-xs border py-0.5 px-2 border-gray-300">
-                C++
+             <div class="flex gap-3 flex-wrap">
+              <div
+                v-if="getUser?.skills.length"
+                v-for="(skill, idx) in getUser?.skills"
+                :key="idx"
+                class="rounded text-xs border py-0.5 px-2 border-gray-300"
+              >
+                {{ skill }}
               </div>
-              <div class="rounded text-xs border py-0.5 px-2 border-gray-300">
-                Java
-              </div>
-              <div class="rounded text-xs border py-0.5 px-2 border-gray-300">
-                HTML
-              </div>
-              <div class="rounded text-xs border py-0.5 px-2 border-gray-300">
-                React
-              </div>
-              <div class="rounded text-xs border py-0.5 px-2 border-gray-300">
-                CSS
-              </div>
-              <div class="rounded text-xs border py-0.5 px-2 border-gray-300">
-                App development
+              <div
+                v-else
+                class="text-gray text-xs"
+                >
+                No skills added yet.
               </div>
             </div>
           </SectionCard>
@@ -121,112 +136,57 @@ const edit = ref(false);
             </div>
 
             <div class="py-4 px-8">
-              <section class="border-b border-gray-300 pb-4">
+              <section v-if="getUser" class="border-b border-gray-300 pb-4">
                 <div class="text-primary pb-2 font-medium">About me</div>
                 <div class="text-sm">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet
-                  vero quae a corrupti error vel soluta perspiciatis facilis
-                  doloremque unde fugiat quis fugit qui ipsa eum non, harum
-                  atque tenetur. Lorem ipsum dolor sit amet consectetur
-                  adipisicing elit. Amet vero quae a corrupti error vel soluta
-                  perspiciatis facilis doloremque unde fugiat quis fugit qui
-                  ipsa eum non, harum atque tenetur. Lorem ipsum dolor sit amet
-                  consectetur adipisicing elit. Amet vero quae a corrupti error
-                  vel soluta perspiciatis facilis doloremque unde fugiat quis
-                  fugit qui ipsa eum non, harum atque tenetur. Lorem ipsum dolor
-                  sit amet consectetur adipisicing elit. Amet vero quae a
-                  corrupti error vel soluta perspiciatis facilis doloremque unde
-                  fugiat quis fugit qui ipsa eum non, harum atque tenetur. Lorem
-                  ipsum dolor sit amet consectetur adipisicing elit. Amet vero
-                  quae a corrupti error vel soluta perspiciatis facilis
-                  doloremque unde fugiat quis fugit qui ipsa eum non, harum
-                  atque tenetur. Lorem ipsum dolor sit amet consectetur
-                  adipisicing elit. Amet vero quae a corrupti error vel soluta
-                  perspiciatis facilis doloremque unde fugiat quis fugit qui
-                  ipsa eum non, harum atque tenetur.
+                  {{ getUser.bio || "No description provided." }}
                 </div>
               </section>
 
               <section class="border-b border-gray-300 py-4">
                 <div class="text-primary pb-4 font-medium">Experience</div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  <div class="flex items-center gap-4">
+                  <div
+                    v-if="getUser?.experience.length"
+                    v-for="(exp, idx) in getUser?.experience"
+                    :key="idx"
+                    class="flex items-center gap-4"
+                  >
                     <img
-                      src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/800px-Google_%22G%22_logo.svg.png"
-                      alt=""
-                      class="size-16"
+                      :src="exp.logo || 'https://via.placeholder.com/64'"
+                      alt="Company Logo"
+                      class="size-16 object-cover"
                     />
                     <div class="grid gap-y-1">
-                      <div class="text-primary font-medium">Google</div>
-                      <div class="text-primary">2024 - Present</div>
-                      <div class="text-sm text-gray">
-                        Senior software engineer
-                      </div>
+                      <div class="text-primary font-medium">{{ exp.company }}</div>
+                      <div class="text-primary">{{ exp.years }}</div>
+                      <div class="text-sm text-gray">{{ exp.position }}</div>
                     </div>
                   </div>
-
-                  <div class="flex items-center gap-4">
-                    <img
-                      src="https://static.vecteezy.com/system/resources/previews/014/018/561/non_2x/amazon-logo-on-transparent-background-free-vector.jpg"
-                      alt=""
-                      class="size-16"
-                    />
-                    <div class="grid gap-y-1">
-                      <div class="text-primary font-medium">Amazon</div>
-                      <div class="text-primary">2022 - 2024</div>
-                      <div class="text-sm text-gray">
-                        Senior software engineer
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="flex items-center gap-4">
-                    <img
-                      src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Firefox_logo%2C_2019.svg/1200px-Firefox_logo%2C_2019.svg.png"
-                      alt=""
-                      class="size-16"
-                    />
-                    <div class="grid gap-y-1">
-                      <div class="text-primary font-medium">Firefox</div>
-                      <div class="text-primary">2020 - 2022</div>
-                      <div class="text-sm text-gray">
-                        Senior software engineer
-                      </div>
-                    </div>
+                  <div
+                    v-else
+                    class="text-gray text-sm"
+                    >
+                    No experience added yet.
                   </div>
                 </div>
+
               </section>
 
               <!-- Responsive portfolio image grid -->
               <section class="border-gray-300 py-4">
                 <div class="text-primary pb-4 font-medium">Portfolio</div>
-                <div
-                  class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
-                >
+                <div v-if="getUser?.portfolio.length" class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
                   <img
-                    src="https://i.pinimg.com/736x/17/d9/fe/17d9fe516c658a77922213fd2feaab85.jpg"
-                    alt=""
+                    v-for="(item, idx) in getUser?.portfolio"
+                    :key="idx"
+                    :src="item.image || 'https://via.placeholder.com/300'"
+                    alt="Portfolio item"
+                    class="rounded-lg object-cover w-full h-48"
                   />
-                  <img
-                    src="https://i.pinimg.com/736x/17/d9/fe/17d9fe516c658a77922213fd2feaab85.jpg"
-                    alt=""
-                  />
-                  <img
-                    src="https://i.pinimg.com/736x/17/d9/fe/17d9fe516c658a77922213fd2feaab85.jpg"
-                    alt=""
-                  />
-                  <img
-                    src="https://i.pinimg.com/736x/17/d9/fe/17d9fe516c658a77922213fd2feaab85.jpg"
-                    alt=""
-                  />
-                  <img
-                    src="https://i.pinimg.com/736x/17/d9/fe/17d9fe516c658a77922213fd2feaab85.jpg"
-                    alt=""
-                  />
-                  <img
-                    src="https://i.pinimg.com/736x/17/d9/fe/17d9fe516c658a77922213fd2feaab85.jpg"
-                    alt=""
-                  />
+                </div>
+                <div v-else class="text-gray text-sm">
+                  No portfolio items added yet.
                 </div>
               </section>
             </div>

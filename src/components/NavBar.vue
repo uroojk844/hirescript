@@ -4,11 +4,24 @@ import MaxWidth from "./MaxWidth.vue";
 import PrimaryButton from "./PrimaryButton.vue";
 import { useHandleClickOutside } from "@/composables/use-handle-click-outside";
 import Logo from "./Logo.vue";
-
+import { useUserStore } from "@/stores/user.store";
+import { useAuthStore } from "@/stores/authShow.store";
 
 const mobileNav = ref<HTMLElement | null>(null);
 const isOpen = ref(false);
 useHandleClickOutside(mobileNav, isOpen);
+
+const userStore = useUserStore();
+const authStore = useAuthStore();
+
+function handleAuthClick() {
+  if(userStore.user) {
+    alert("You are already logged in");
+    return;
+  }
+  authStore.showAuth();
+}
+
 </script>
 
 <template>
@@ -25,10 +38,18 @@ useHandleClickOutside(mobileNav, isOpen);
         <div class="flex gap-8 links">
           <RouterLink to="/">Home</RouterLink>
           <RouterLink to="/jobs">Find Jobs</RouterLink>
-          <RouterLink to="/campus">Campus Ambassador</RouterLink>
+          <RouterLink to="/campus">Master Classes</RouterLink>
         </div>
 
-        <PrimaryButton>Register Now</PrimaryButton>
+        <template v-if="userStore.user">
+          <RouterLink to="/profile">
+            <PrimaryButton>My Profile</PrimaryButton>
+          </RouterLink>
+        </template>
+        <template v-else>
+          <PrimaryButton @click="handleAuthClick">Register Now</PrimaryButton>
+        </template>
+        
       </div>
 
       <Icon @click.stop="isOpen = !isOpen" :icon="!isOpen ? 'uil:bars' : 'uil:times'"

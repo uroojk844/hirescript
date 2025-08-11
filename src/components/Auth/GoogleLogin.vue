@@ -1,7 +1,95 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { ref } from 'vue';
+import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import {doc, collection, getDoc, setDoc } from 'firebase/firestore';
+import { auth, fireDB } from '@/firebase/config';
+import { useUserStore } from '@/stores/user.store';
+import { useAuthStore } from '@/stores/authShow.store';
+import type { IUser } from '@/interface/user.interface';
+
+
+const userStore = useUserStore();
+const authStore = useAuthStore();
+const loading = ref(false);
+
+const handleGoogleLogin = async () => {
+  loading.value = true;
+  const provider = new GoogleAuthProvider();
+
+  try {
+    const result = await signInWithPopup(auth, provider);
+    const firebaseUser = result.user;
+
+    console.log("Google login successful", firebaseUser);
+
+    const userRef = doc(collection(fireDB, "users"), firebaseUser.uid);
+    const userSnap = await getDoc(userRef);
+
+    let userData: IUser;
+
+    if (userSnap.exists()) {
+      userData = userSnap.data() as IUser;
+    } else {
+      // Create IUser object for a new Google user
+      userData = {
+        name: firebaseUser.displayName || "",
+        profilePhotoUrl: firebaseUser.photoURL || "",
+        email: firebaseUser.email || "",
+        password: "",
+        coverPhotoUrl: "",
+        bio: "",
+        skills: [],
+        education: {
+          college: "",
+          city: "",
+          state: "",
+          mail: "",
+        },
+        location: {
+          city: "",
+          state: "",
+          country: "",
+        },
+        socialLinks: {
+          facebook: "",
+          instagram: "",
+          dribbble: "",
+          mail: firebaseUser.email || "",
+          whatsapp: "",
+        },
+        portfolioLinks: {
+          behance: "",
+          dribbble: "",
+          canva: "",
+          github: "",
+        },
+        experience: [],
+        portfolio: [],
+        uid: firebaseUser.uid,
+      };
+
+      await setDoc(userRef, userData);
+      console.log("Account created successfully");
+    }
+
+    userStore.setUser(userData);
+    authStore.hideAuth();
+    console.log("Signed in successfully");
+  } catch (error: any) {
+    console.error("Google sign-in failed:", error.message);
+  } finally {
+    loading.value = false;
+  }
+};
+
+
+
+
+</script>
 <template>
     <button
-        class="w-full flex items-center justify-center gap-3 p-3 border border-gray-300 rounded-full text-sm hover:bg-gray-100 transition cursor-pointer">
+        class="w-full flex items-center justify-center gap-3 p-3 border border-gray-300 rounded-full text-sm hover:bg-gray-100 transition cursor-pointer"
+        @click="handleGoogleLogin" :disabled="loading">
         <svg class="w-5 h-5" viewBox="0 0 533.5 544.3" xmlns="http://www.w3.org/2000/svg">
             <path fill="#4285F4"
                 d="M533.5 278.4c0-18.5-1.6-36.4-4.6-53.6H272v101.4h146.9c-6.4 34.8-25.4 64.3-54 84.2v69.9h87.2c51-47 81.4-116.2 81.4-201.9z" />
