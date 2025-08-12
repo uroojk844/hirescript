@@ -3,7 +3,6 @@ import AppHeader from "@/components/AppHeader.vue";
 import { useSalary } from "@/composables/use-salary";
 import Avatar from "@/components/Avatar.vue";
 import JobCard from "@/components/JobCard.vue";
-// import Loader from "@/components/Loader.vue";
 import OutlinedCard from "@/components/OutlinedCard.vue";
 import PrimaryButton from "@/components/PrimaryButton.vue";
 import Tag from "@/components/Tag.vue";
@@ -12,15 +11,19 @@ import moment from "moment";
 import { storeToRefs } from "pinia";
 import { computed, onMounted, ref, watch, } from "vue";
 import { useRoute } from "vue-router";
-import { shareJob } from "@/api/jobs.api";
+import { applyJob, shareJob } from "@/api/jobs.api";
 import Loader from "@/components/Loader.vue";
 import { useUserStore } from "@/stores/user.store";
 import NotFound from "@/components/NotFound.vue";
+import { useAuthStore } from "@/stores/authShow.store";
+import ModalBox from "@/components/ModalBox.vue";
 
 const jobsStore = useJobStore();
 const { getIsLoadingJobDetails, getJobDetails, getJobs } = storeToRefs(jobsStore);
+
 const userStore = useUserStore();
 const { getUser } = storeToRefs(userStore);
+
 const route = useRoute();
 const id = route.params?.id as string;
 
@@ -45,14 +48,39 @@ watch(() => route.params.id, async (newId, _) => {
   top.value?.scrollIntoView({ behavior: "smooth" });
 }, { deep: true, immediate: true })
 
+const isModelActive = ref<boolean>(false);
+
+function confirmApplied() {
+  isModelActive.value = true;
+  window.removeEventListener("focus", confirmApplied);
+}
+
+function handleApplyJob() {
+  if(getUser.value) {
+    window.open(getJobDetails.value?.applyLink, "_blank");
+    window.addEventListener("focus", confirmApplied);
+  } else {
+    useAuthStore().showAuth();   
+  }
+}
+
+async function markJobApplied() {
+  await applyJob(id);
+  isModelActive.value = false;
+}
+
+const isApplied = computed(()=> {
+  return getUser.value?.jobs.appliedJobs.includes(id);
+});
+
 onMounted(() => {
   jobsStore.fetchJobs();
   jobsStore.fetchJobById(id);
 })
 </script>
-+
 
 <template>
+  <ModalBox v-model="isModelActive" @confirm="markJobApplied" />
   <Loader v-if="getIsLoadingJobDetails" />
   <NotFound v-else-if="getJobDetails == null">Job not found!</NotFound>
   <main ref="top" v-else class="grid lg:flex gap-4">
@@ -107,7 +135,8 @@ onMounted(() => {
           </Tag>
         </div>
         <div class="flex items-center gap-6">
-          <PrimaryButton class="bg-primary text-white flex-1">Apply</PrimaryButton>
+          <PrimaryButton v-if="!isApplied" @click="handleApplyJob" class="bg-primary text-white flex-1">Apply</PrimaryButton>
+          <PrimaryButton v-else class="bg-primary text-white flex-1">Applied</PrimaryButton>
           <Icon @click="shareJob(getJobDetails)" icon="uil:share-alt" class="text-lg cursor-pointer text-gray" />
           <Icon v-if="getUser?.jobs?.savedJobs" icon="material-symbols:favorite-rounded" class="text-lg text-red-400" />
         </div>
