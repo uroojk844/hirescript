@@ -15,7 +15,7 @@ import { useRoute } from "vue-router";
 import { shareJob } from "@/api/jobs.api";
 import Loader from "@/components/Loader.vue";
 import { useUserStore } from "@/stores/user.store";
-// import JobDetailSkeleton from "@/components/jobDetailSkeleton.vue";
+import NotFound from "@/components/NotFound.vue";
 
 const jobsStore = useJobStore();
 const { getIsLoadingJobDetails, getJobDetails, getJobs } = storeToRefs(jobsStore);
@@ -31,8 +31,6 @@ const similarJobs = computed(() => {
         .map((word) => job.title.includes(word)));
   } else return [];
 });
-
-
 
 const lastDate = computed(() => {
   if (getJobDetails.value != null) {
@@ -56,97 +54,99 @@ onMounted(() => {
 
 <template>
   <Loader v-if="getIsLoadingJobDetails" />
-  <div v-else-if="getJobDetails == null">Job not found!</div>
-  <main ref="top" v-else class="job-container">
-    <section class="flex items-center gap-6 mb-8 title">
-      <Avatar :src="getJobDetails.companyLogo" class="size-20" />
-      <div>
-        <div class="font-bold text-2xl capitalize">{{ getJobDetails.title }}</div>
-        <div class="text-sm text-gray mb-2 capitalize">
-          {{ getJobDetails.company }}
+  <NotFound v-else-if="getJobDetails == null">Job not found!</NotFound>
+  <main ref="top" v-else class="grid lg:flex gap-4">
+    <div class="contents lg:grid gap-4 content-start">
+      <section class="flex items-center gap-6 mb-2">
+        <Avatar :src="getJobDetails.companyLogo" class="size-20" />
+        <div>
+          <div class="font-bold text-2xl capitalize">{{ getJobDetails.title }}</div>
+          <div class="text-sm text-gray mb-2 capitalize">
+            {{ getJobDetails.company }}
+          </div>
+          <div v-if="getJobDetails.postedBy" class="text-xs text-gray">Posted by</div>
+          <div class="text-sm capitalize">{{ getJobDetails.postedBy }}</div>
         </div>
+      </section>
 
-        <div v-if="getJobDetails.postedBy" class="text-xs text-gray">Posted by</div>
-        <div class="text-sm capitalize">{{ getJobDetails.postedBy }}</div>
-      </div>
-    </section>
+      <section>
+        <div>Job Description</div>
+        <OutlinedCard class="my-2 max-w-none">
+          <div v-html="getJobDetails.jobDescription || getJobDetails.description"></div>
+        </OutlinedCard>
+      </section>
 
-    <section class="jd">
-      <div>Job Description</div>
-      <OutlinedCard class="my-2">
-        <div v-html="getJobDetails.jobDescription || getJobDetails.description"></div>
-      </OutlinedCard>
-    </section>
+      <section v-if="getJobDetails.jobRequirements">
+        <div>Requirement And Responsibilities</div>
+        <OutlinedCard class="my-2 max-w-none">
+          <div v-html="getJobDetails.jobRequirements"></div>
+        </OutlinedCard>
+      </section>
 
-    <section v-if="getJobDetails.jobRequirements" class="req">
-      <div>Requirement And Responsibilities</div>
-      <OutlinedCard class="my-2">
-        <div v-html="getJobDetails.jobRequirements"></div>
-      </OutlinedCard>
-    </section>
-
-    <section class="skills">
-      <div class="flex items-center gap-4">
-        <span>Skill Needed</span>
-        <!-- <span class="flex items-center gap-2">
-          <Icon icon="material-symbols:check-circle" class="text-emerald-600" />
-          <small class="text-gray">3/5 of your skills match for this iob</small>
-        </span> -->
-      </div>
-      <OutlinedCard direction="row" class="my-2 flex-wrap">
-        <Tag v-for="(tag, index) in getJobDetails.skills.split(',')" :key="index" v-text="tag" />
-      </OutlinedCard>
-    </section>
-
-    <section class="grid gap-4 content-start submit">
-      <div class="flex items-center justify-between gap-4">
-        <div class="font-bold">Submit Application</div>
-        <Tag v-if="getJobDetails.createdAt" class="flex items-center gap-1 bg-red-100 text-red-500 font-medium">
-          <span>Apply before {{ lastDate }}</span>
-          <Icon icon="uil:info-circle" />
-        </Tag>
-      </div>
-
-      <div class="flex items-center gap-6">
-          <PrimaryButton class="bg-primary text-white flex-1">Apply</PrimaryButton>
-        <Icon @click="shareJob(getJobDetails)" icon="uil:share-alt" class="text-lg cursor-pointer text-gray" />
-        <Icon   
-        v-if="getUser?.jobs?.savedJobs" icon="material-symbols:favorite-rounded" class="text-lg text-red-400" />
-      </div>
-    </section>
-
-    <div class="info">
-      <div>Job Information & Benefits</div>
-      <OutlinedCard class="mt-2">
-        <div class="font-bold">Job Type</div>
-        <div class="grid grid-cols-2 gap-4 capitalize">
-          <OutlinedCard direction="row" size="sm">
-            <Icon icon="ic:round-computer" /> {{ getJobDetails.type }}
-          </OutlinedCard>
-          <OutlinedCard direction="row" size="sm">
-            <Icon icon="uil:suitcase-alt" /> {{ getJobDetails.experience == null ? "Not specified" :
-              getJobDetails.experience }}
-          </OutlinedCard>
-          <OutlinedCard  direction="row" size="sm">
-            <Icon icon="tdesign:money" /> <span :title="useSalary(getJobDetails.salary , 'standard')" class="max-w-32 text-ellipsis overflow-hidden">{{ useSalary(getJobDetails.salary , "standard") }}</span>
-          </OutlinedCard>
-          <OutlinedCard direction="row" size="sm">
-            <Icon icon="uil:location-point" /> {{ getJobDetails.location }}
-          </OutlinedCard>
+      <section>
+        <div class="flex items-center gap-4">
+          <span>Skill Needed</span>
+          <!-- <span class="flex items-center gap-2">
+            <Icon icon="material-symbols:check-circle" class="text-emerald-600" />
+            <small class="text-gray">3/5 of your skills match for this iob</small>
+          </span> -->
         </div>
-      </OutlinedCard>
+        <OutlinedCard direction="row" class="my-2 flex-wrap max-w-none">
+          <Tag v-for="(tag, index) in getJobDetails.skills.split(',')" :key="index" v-text="tag" />
+        </OutlinedCard>
+      </section>
     </div>
 
-    <div v-if="getJobDetails.companyDescription" class="company sm:max-w-80">
-      <div class="mb-2">Company</div>
-      <OutlinedCard>
-        <div class="font-bold">About {{ getJobDetails.company }}</div>
-        <p class="text-gray text-xs">
-        <div v-html="getJobDetails.companyDescription"></div>
-        </p>
-        <a v-if="getJobDetails.website" class="text-blue-700 hover:underline text-xs" :href="getJobDetails.website"
-          target="_blank">{{ getJobDetails.website }}</a>
-      </OutlinedCard>
+    <div class="contents lg:grid gap-4 md:min-w-sm md:max-w-sm content-start">
+      <section class="grid gap-4 content-start max-lg:row-start-2">
+        <div class="flex max-sm:flex-col max-sm:items-start items-center justify-between gap-4">
+          <div class="font-bold max-sm:hidden">Submit Application</div>
+          <Tag v-if="getJobDetails.createdAt" class="flex items-center gap-1 bg-red-100 text-red-500 font-medium">
+            <span>Apply before {{ lastDate }}</span>
+            <Icon icon="uil:info-circle" />
+          </Tag>
+        </div>
+        <div class="flex items-center gap-6">
+          <PrimaryButton class="bg-primary text-white flex-1">Apply</PrimaryButton>
+          <Icon @click="shareJob(getJobDetails)" icon="uil:share-alt" class="text-lg cursor-pointer text-gray" />
+          <Icon v-if="getUser?.jobs?.savedJobs" icon="material-symbols:favorite-rounded" class="text-lg text-red-400" />
+        </div>
+      </section>
+      
+      <div>
+        <div>Job Information & Benefits</div>
+        <OutlinedCard class="mt-2 max-w-none">
+          <div class="font-bold">Job Type</div>
+          <div class="grid grid-cols-2 gap-4 capitalize">
+            <OutlinedCard direction="row" size="sm">
+              <Icon icon="ic:round-computer" /> {{ getJobDetails.type }}
+            </OutlinedCard>
+            <OutlinedCard direction="row" size="sm">
+              <Icon icon="uil:suitcase-alt" /> {{ getJobDetails.experience == null ? "Not specified" :
+                getJobDetails.experience }}
+            </OutlinedCard>
+            <OutlinedCard direction="row" size="sm">
+              <Icon icon="tdesign:money" /> <span :title="useSalary(getJobDetails.salary, 'standard')"
+                class="max-w-32 text-ellipsis overflow-hidden">{{ useSalary(getJobDetails.salary, "standard") }}</span>
+            </OutlinedCard>
+            <OutlinedCard direction="row" size="sm">
+              <Icon icon="uil:location-point" /> {{ getJobDetails.location }}
+            </OutlinedCard>
+          </div>
+        </OutlinedCard>
+      </div>
+
+      <div v-if="getJobDetails.companyDescription">
+        <div class="mb-2">Company</div>
+        <OutlinedCard class="max-w-none">
+          <div class="font-bold">About {{ getJobDetails.company }}</div>
+          <p class="text-gray text-xs">
+          <div v-html="getJobDetails.companyDescription"></div>
+          </p>
+          <a v-if="getJobDetails.website" class="text-blue-700 hover:underline text-xs" :href="getJobDetails.website"
+            target="_blank">{{ getJobDetails.website }}</a>
+        </OutlinedCard>
+      </div>
     </div>
   </main>
 
@@ -171,59 +171,6 @@ ul {
 
   li::marker {
     color: var(--color-primary);
-  }
-}
-
-.job-container {
-  display: grid;
-  gap: 16px;
-  grid-template-areas:
-    "title submit"
-    "jd info"
-    "req company"
-    "skills company";
-  grid-template-columns: auto max-content;
-}
-
-.title {
-  grid-area: title;
-}
-
-.jd {
-  grid-area: jd;
-}
-
-.req {
-  grid-area: req;
-}
-
-.skills {
-  grid-area: skills;
-}
-
-.submit {
-  grid-area: submit;
-}
-
-.info {
-  grid-area: info;
-}
-
-.company {
-  grid-area: company;
-}
-
-@media screen and (width < 768px) {
-  .job-container {
-    grid-template-areas:
-      "title"
-      "submit"
-      "info"
-      "jd"
-      "req"
-      "skills"
-      "company";
-    grid-template-columns: 1fr;
   }
 }
 </style>
