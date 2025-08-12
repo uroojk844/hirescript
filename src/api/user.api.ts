@@ -86,7 +86,7 @@ export async function loginUser({
     let msg = "Login failed.";
     if (error.code === "auth/user-not-found") msg = "User not found.";
     if (error.code === "auth/invalid-credential" || error.code === "auth/wrong-password") {
-      msg = "Incorrect password.";
+      msg = "Incorrect Email or Password.";
     }
     return { success: false, message: msg };
   }

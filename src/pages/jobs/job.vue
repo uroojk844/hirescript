@@ -14,11 +14,13 @@ import { computed, onMounted, ref, watch, } from "vue";
 import { useRoute } from "vue-router";
 import { shareJob } from "@/api/jobs.api";
 import Loader from "@/components/Loader.vue";
+import { useUserStore } from "@/stores/user.store";
 // import JobDetailSkeleton from "@/components/jobDetailSkeleton.vue";
 
 const jobsStore = useJobStore();
 const { getIsLoadingJobDetails, getJobDetails, getJobs } = storeToRefs(jobsStore);
-
+const userStore = useUserStore();
+const { getUser } = storeToRefs(userStore);
 const route = useRoute();
 const id = route.params?.id as string;
 
@@ -72,29 +74,13 @@ onMounted(() => {
     <section class="jd">
       <div>Job Description</div>
       <OutlinedCard class="my-2">
-        <p class="text-md">
-          We are seeking a talented graphic designer to join our Product team.
-          In this role. you will be responsible for creating illustrations for
-          our digital product. You will work closely with our product teams to
-          create compelling. on-brand illustrations that communicate complex
-          ideas and make our products more engaging for our users.
-        </p>
-        <strong class="uppercase">responsibilities</strong>
-        <div v-html="getJobDetails.jobDescription"></div>
+        <div v-html="getJobDetails.jobDescription || getJobDetails.description"></div>
       </OutlinedCard>
     </section>
 
-    <section class="req">
-      <div>Requirement</div>
+    <section v-if="getJobDetails.jobRequirements" class="req">
+      <div>Requirement And Responsibilities</div>
       <OutlinedCard class="my-2">
-        <p class="text-md">
-          We are seeking a talented graphic designer to join our Product team.
-          In this role. you will be responsible for creating illustrations for
-          our digital product. You will work closely with our product teams to
-          create compelling. on-brand illustrations that communicate complex
-          ideas and make our products more engaging for our users.
-        </p>
-        <strong class="uppercase">responsibilities</strong>
         <div v-html="getJobDetails.jobRequirements"></div>
       </OutlinedCard>
     </section>
@@ -102,10 +88,10 @@ onMounted(() => {
     <section class="skills">
       <div class="flex items-center gap-4">
         <span>Skill Needed</span>
-        <span class="flex items-center gap-2">
+        <!-- <span class="flex items-center gap-2">
           <Icon icon="material-symbols:check-circle" class="text-emerald-600" />
           <small class="text-gray">3/5 of your skills match for this iob</small>
-        </span>
+        </span> -->
       </div>
       <OutlinedCard direction="row" class="my-2 flex-wrap">
         <Tag v-for="(tag, index) in getJobDetails.skills.split(',')" :key="index" v-text="tag" />
@@ -122,11 +108,10 @@ onMounted(() => {
       </div>
 
       <div class="flex items-center gap-6">
-        <a :href="getJobDetails.applyLink" target="_blank" rel="noopener noreferrer">
           <PrimaryButton class="bg-primary text-white flex-1">Apply</PrimaryButton>
-        </a>
         <Icon @click="shareJob(getJobDetails)" icon="uil:share-alt" class="text-lg cursor-pointer text-gray" />
-        <Icon icon="material-symbols:favorite-rounded" class="text-lg text-red-400" />
+        <Icon   
+        v-if="getUser?.jobs?.savedJobs" icon="material-symbols:favorite-rounded" class="text-lg text-red-400" />
       </div>
     </section>
 
@@ -152,7 +137,7 @@ onMounted(() => {
       </OutlinedCard>
     </div>
 
-    <div class="company sm:max-w-80">
+    <div v-if="getJobDetails.companyDescription" class="company sm:max-w-80">
       <div class="mb-2">Company</div>
       <OutlinedCard>
         <div class="font-bold">About {{ getJobDetails.company }}</div>

@@ -47,6 +47,10 @@ async function handleSignup() {
       mail: "",
       whatsapp: "",
     },
+    jobs:{
+    savedJobs:[],
+    appliedJobs: [],
+  },
     portfolioLinks: {
       behance: "",
       dribbble: "",

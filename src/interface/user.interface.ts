@@ -24,6 +24,10 @@ export interface IUser {
     mail: string;
     whatsapp: string;
   };
+  jobs:{
+    savedJobs: string[];
+    appliedJobs: string[];
+  }
   portfolioLinks: {
     behance: string;
     dribbble: string;
