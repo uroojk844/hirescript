@@ -1,8 +1,15 @@
-import { collection, doc, getDoc, getDocs } from "firebase/firestore";
-import { fireDB } from "@/firebase/config";
+import {
+  arrayUnion,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  updateDoc,
+} from "firebase/firestore";
+import { auth, fireDB } from "@/firebase/config";
 import type { IJobDetails } from "@/interface/jobs.interface";
 import { useSortByTime } from "@/composables/use-sort-by-time";
-
+import { useUserStore } from "@/stores/user.store";
 
 const jobs = useSortByTime(collection(fireDB, "jobs"));
 
@@ -15,7 +22,7 @@ export async function getJobs() {
 
 export async function getJobByID(id: string) {
   const res = await getDoc(doc(fireDB, "jobs", id));
-  return  { ...res.data(), id } as IJobDetails;
+  return { ...res.data(), id } as IJobDetails;
 }
 
 export async function searchJobs(title: string, location?: string) {
@@ -54,7 +61,7 @@ export async function searchJobs(title: string, location?: string) {
   });
 }
 
-export const shareJob = async (job:IJobDetails) => {
+export const shareJob = async (job: IJobDetails) => {
   console.log("Sharing job:", job);
   const shareData = {
     title: `${job.title} at ${job.company}`,
@@ -64,7 +71,7 @@ export const shareJob = async (job:IJobDetails) => {
 
   try {
     if (navigator.share) {
-      console.log(shareData)
+      console.log(shareData);
       await navigator.share(shareData);
     } else {
       await navigator.clipboard.writeText(shareData.url);
@@ -76,3 +83,16 @@ export const shareJob = async (job:IJobDetails) => {
     throw err;
   }
 };
+
+export async function applyJob(jobID: string) {
+  const uid = auth.currentUser?.uid
+  if (uid) {
+    const userRef = doc(fireDB, "users", uid);
+    await updateDoc(userRef, {
+      'jobs.appliedJobs': arrayUnion(jobID),
+    });
+    useUserStore().updateAppliedJobs(jobID);
+  } else {
+    console.error("User ID is required!");
+  }
+}
