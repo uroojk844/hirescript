@@ -2,7 +2,6 @@ import { defineStore } from "pinia";
 import type { IUser } from "@/interface/user.interface.ts";
 import { signOut, } from "firebase/auth";
 import { auth } from "@/firebase/config";
-// import { useRouter } from "vue-router";
 import { router } from "@/router";
 import { nextTick } from "vue";
 
