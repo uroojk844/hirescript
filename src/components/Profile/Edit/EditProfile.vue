@@ -69,7 +69,7 @@ async function updateUserData() {
       getUserData();
     }
     catch (error) {
-      alert(error)
+      console.log(error)
     }
   }
   saving.value = false;
