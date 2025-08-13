@@ -12,7 +12,7 @@ import { storeToRefs } from "pinia";
 import Tag from "@/components/Tag.vue";
 import Portfolios from "@/components/Profile/Portfolios.vue";
 
-const EditProfile =  defineAsyncComponent(() =>import("@/components/Profile/Edit/EditProfile.vue"));
+const EditProfile = defineAsyncComponent(() => import("@/components/Profile/Edit/EditProfile.vue"));
 
 
 const userStore = useUserStore();
@@ -90,11 +90,11 @@ provide("edit", edit);
               </div>
             </div>
           </SectionCard>
-          
+
           <SectionCard title="Portfolios">
             <Portfolios />
           </SectionCard>
-          
+
           <SectionCard title="Linked accounts">
             <LinkedAcccounts />
           </SectionCard>
@@ -109,9 +109,10 @@ provide("edit", edit);
             <div class="py-4 px-8">
               <section v-if="getUser" class="border-b border-gray-300 pb-4">
                 <div class="text-primary pb-2 font-medium">About me</div>
-                <div class="text-sm">
-                  {{ getUser.bio || "No description provided." }}
+                <div v-if="getUser.bio" class="text-sm">
+                  {{ getUser.bio }}
                 </div>
+                <div v-else class="text-sm text-gray">No description provided.</div>
               </section>
 
               <section class="border-b border-gray-300 py-4">
