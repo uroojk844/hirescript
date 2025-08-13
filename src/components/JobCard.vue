@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useSalary } from "@/composables/use-salary";
 import type { IJob } from "@/interface/jobs.interface";
+import OutlineButton from "./OutlineButton.vue";
 
 const { trending = false } = defineProps<{ job: IJob, trending?: boolean, index?: number }>();
 const colors = ["#e2f5cd", "#e9ecf8", "#e4eefa"];
@@ -35,10 +36,8 @@ const colors = ["#e2f5cd", "#e9ecf8", "#e4eefa"];
           </div>
           <div class="text-gray text-sm">{{ job.salaryType }}</div>
         </div>
-        <button
-          class="text-sm font-medium border border-primary rounded-full flex-1 py-3 hover:bg-primary hover:text-white transition-all duration-300 cursor-pointer">
-          View Details
-        </button>
+        
+        <OutlineButton varient="primary">View Details</OutlineButton>
       </div>
     </div>
   </RouterLink>

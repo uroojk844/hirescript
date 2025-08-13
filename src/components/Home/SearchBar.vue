@@ -40,6 +40,6 @@ const handleSearch = () => {
       <CityAutocomplete v-model="location" placeholder="Search cities in India..." input-id="search-job-location" />
     </div>
 
-    <PrimaryButton @click="handleSearch">Search</PrimaryButton>
+    <PrimaryButton variant="accent" @click="handleSearch">Search</PrimaryButton>
   </div>
 </template>

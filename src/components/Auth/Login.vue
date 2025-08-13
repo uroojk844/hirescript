@@ -1,12 +1,14 @@
 <script setup lang="ts">
-import { ref, inject } from 'vue';
+import { ref } from 'vue';
 import GoogleLogin from './GoogleLogin.vue';
 import { loginUser } from '@/api/user.api';
 import { useAuthStore } from '@/stores/authShow.store';
 import { useUserStore } from '@/stores/user.store';
 import type { IUser } from '@/interface/user.interface';
+import PrimaryButton from '../PrimaryButton.vue';
+import Separator from '../Separator.vue';
+import InputField from '../InputField.vue';
 
-const current = inject('authCurrent');
 const userStore = useUserStore();
 const authStore = useAuthStore();
 
@@ -18,7 +20,7 @@ const message = ref('');
 async function handlelogin() {
     message.value = '';
     if (!email.value || !password.value) {
-        message.value = "Please enter Required  Field.";
+        message.value = "Please enter required field!";
         return;
     }
     loading.value = true;
@@ -29,46 +31,38 @@ async function handlelogin() {
     });
     if (res.success) {
         userStore.setUser(res.user as IUser);
-        console.log("Login successful", res.user);
         authStore.hideAuth();
-    }
-    else {
-        message.value=res.message || "Login failed";
+    } else {
+        message.value = res.message || "Wrong username or password!";
     }
     loading.value = false;
 }
-
-
 </script>
 
 <template>
-    <div class="grid gap-y-5">
+    <form @submit.prevent="handlelogin" method="post" class="grid gap-y-5">
         <div class="text-2xl font-bold text-primary">Sign in to continue</div>
 
-        <input v-model="email" type="text" class="border border-gray-300 w-full py-3 px-4 rounded-full text-sm"
-            placeholder="Enter your email" />
-        <input v-model="password" type="password" class="border border-gray-300 w-full py-3 px-4 rounded-full text-sm"
-            placeholder="Enter password" />
-        <div v-if="!password || message">
+        <InputField v-model.trim="email" type="email" name="email" placeholder="Enter your email" />
+
+        <InputField v-model.trim="password" type="password" name="password" placeholder="Enter password" />
+
+        <PrimaryButton :loading>Continue</PrimaryButton>
+
+        <div v-if="message">
             <div class="text-sm text-red-500">{{ message }}</div>
         </div>
 
-        <button class="w-full p-3 text-sm bg-primary text-white rounded-full" :disabled="loading" @click="handlelogin">
-            {{ loading ? "Signing in..." : "Continue" }}
-        </button>
-
-        <div class="text-sm text-gray-500 cursor-pointer" @click="current = 'Forgot'">Forgot password?</div>
-
-        <div class="flex items-center justify-center gap-4">
-            <div class="flex-1 h-px bg-gray-300"></div>
-            <div class="text-gray-500 text-sm">or</div>
-            <div class="flex-1 h-px bg-gray-300"></div>
+        <div class="text-sm text-gray-500 cursor-pointer w-fit" @click="authStore.setSeletedForm('Forgot')">
+            Forgot password?
         </div>
+
+        <Separator />
 
         <GoogleLogin />
 
-        <div @click="current = 'Signup'" class="text-sm text-gray-500 text-center cursor-pointer">New to HireScript?
-            Signup!</div>
-
-    </div>
+        <div @click="authStore.setSeletedForm('Signup')" class="text-sm text-gray-500 text-center cursor-pointer">New to
+            HireScript? Signup!
+        </div>
+    </form>
 </template>
