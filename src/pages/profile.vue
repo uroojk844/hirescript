@@ -2,15 +2,17 @@
 import AppFooter from "@/components/AppFooter.vue";
 import MaxWidth from "@/components/MaxWidth.vue";
 import NavBar from "@/components/NavBar.vue";
-import EditProfile from "@/components/Profile/Edit/EditProfile.vue";
 import LinkedAcccounts from "@/components/Profile/LinkedAcccounts.vue";
 import ProfileSocials from "@/components/Profile/ProfileSocials.vue";
 import SectionCard from "@/components/Profile/SectionCard.vue";
 import { Icon } from "@iconify/vue";
-import { provide, ref } from "vue";
+import { defineAsyncComponent, provide, ref } from "vue";
 import { useUserStore } from "@/stores/user.store";
 import { storeToRefs } from "pinia";
 import Tag from "@/components/Tag.vue";
+import Portfolios from "@/components/Profile/Portfolios.vue";
+
+const EditProfile =  defineAsyncComponent(() =>import("@/components/Profile/Edit/EditProfile.vue"));
 
 
 const userStore = useUserStore();
@@ -68,7 +70,7 @@ provide("edit", edit);
             <div class="flex flex-col  items-center gap-4">
 
               <button @click="edit = true"
-                class="text-white bg-primary px-4 py-3 rounded-lg font-medium text-sm w-full md:w-auto">
+                class="text-white bg-primary px-4 py-3 rounded-lg font-medium text-sm cursor-pointer">
                 Edit profile
               </button>
             </div>
@@ -88,9 +90,11 @@ provide("edit", edit);
               </div>
             </div>
           </SectionCard>
+          
           <SectionCard title="Portfolios">
-            <ProfileSocials />
+            <Portfolios />
           </SectionCard>
+          
           <SectionCard title="Linked accounts">
             <LinkedAcccounts />
           </SectionCard>
