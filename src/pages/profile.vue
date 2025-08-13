@@ -10,6 +10,7 @@ import { defineAsyncComponent, provide, ref } from "vue";
 import { useUserStore } from "@/stores/user.store";
 import { storeToRefs } from "pinia";
 import Tag from "@/components/Tag.vue";
+import Portfolios from "@/components/Profile/Portfolios.vue";
 
 const EditProfile =  defineAsyncComponent(() =>import("@/components/Profile/Edit/EditProfile.vue"));
 
@@ -89,9 +90,11 @@ provide("edit", edit);
               </div>
             </div>
           </SectionCard>
+          
           <SectionCard title="Portfolios">
-            <ProfileSocials />
+            <Portfolios />
           </SectionCard>
+          
           <SectionCard title="Linked accounts">
             <LinkedAcccounts />
           </SectionCard>

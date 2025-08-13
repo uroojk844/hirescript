@@ -6,28 +6,21 @@ import { storeToRefs } from 'pinia';
 
 const userStore = useUserStore();
 const { getUser } = storeToRefs(userStore);
+
+const icons = {
+    "dribble": "logos:dribbble-icon",
+    "behance": "devicon:behance",
+    "canva": "devicon:canva",
+    "github": "logos:github-icon",
+}
+
 </script>
 <template>
-    <div class="flex gap-2 flex-wrap"
-        v-if="getUser?.portfolioLinks?.behance || getUser?.portfolioLinks?.dribble || getUser?.portfolioLinks?.github || getUser?.portfolioLinks?.canva">
-        <div v-if="getUser?.portfolioLinks?.behance"
-            class="rounded-full border border-gray-300 p-2 cursor-pointer hover:bg-gray-100">
-            <Icon icon="logos:behance" class="text-sm" />
-        </div>
-        <div v-if="getUser?.portfolioLinks?.dribble"
-            class="rounded-full border border-gray-300 p-2 cursor-pointer hover:bg-gray-100">
-            <Icon icon="logos:dribbble" class="" />
-        </div>
-        <div v-if="getUser?.portfolioLinks?.github"
-            class="rounded-full border border-gray-300 p-2 cursor-pointer hover:bg-gray-100">
-            <Icon icon="logos:github" />
-        </div>
-        <div v-if="getUser?.portfolioLinks?.canva"
-            class="rounded-full border border-gray-300 p-2 cursor-pointer hover:bg-gray-100">
-            <img class="w-14"
-                src="https://upload.wikimedia.org/wikipedia/en/thumb/b/bb/Canva_Logo.svg/2560px-Canva_Logo.svg.png"
-                alt="">
-        </div>
+    <div v-if="getUser?.portfolioLinks" class="flex gap-2 flex-wrap">
+        <a v-for="(item, key) in getUser.portfolioLinks" :key="key" :href="item" target="_blank"
+            class="rounded-full border border-gray-300 p-1 cursor-pointer hover:bg-gray-100" :class="{ hidden: !item }">
+            <Icon :icon="icons[key]" class="text-sm size-5" />
+        </a>
     </div>
     <div v-else class="text-xs text-gray">
         No portfolios added yet.
