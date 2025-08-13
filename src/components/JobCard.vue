@@ -16,9 +16,7 @@ const colors = ["#e2f5cd", "#e9ecf8", "#e4eefa"];
         <img class="size-8 object-cover object-center" :src="job.companyLogo" :alt="job.company + ' logo'" />
       </div>
       <div class="text-primary text-sm">{{ job.company }}</div>
-      <div class="text-gray text-sm line-clamp-2 text-ellipsis">
-        {{ job.jobDescription || job.description }}
-      </div>
+      <div class="text-gray text-sm line-clamp-2 text-ellipsis" v-html="job.jobDescription || job.description"></div>
       <div class="flex items-center gap-4 text-gray">
         <div class="text-xs flex items-center gap-2">
           <Icon icon="ic:sharp-location-on" class="text-lg" />
@@ -36,7 +34,7 @@ const colors = ["#e2f5cd", "#e9ecf8", "#e4eefa"];
           </div>
           <div class="text-gray text-sm">{{ job.salaryType }}</div>
         </div>
-        
+
         <OutlineButton varient="primary">View Details</OutlineButton>
       </div>
     </div>
