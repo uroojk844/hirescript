@@ -120,7 +120,7 @@ onMounted(() => {
           <span>Skill Needed</span>
           <span class="flex items-center gap-2">
             <Icon icon="material-symbols:check-circle" class="text-emerald-600" />
-            <small class="text-gray">{{matchingSkills?.length}}/5 of your skills match for this iob</small>
+            <small class="text-gray">{{matchingSkills?.length}}/5 of your skills match for this job</small>
           </span>
         </div>
         <OutlinedCard direction="row" class="my-2 flex-wrap max-w-none">
