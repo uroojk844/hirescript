@@ -22,7 +22,7 @@ export async function getJobs() {
 
 export async function getJobByID(id: string) {
   const res = await getDoc(doc(fireDB, "jobs", id));
-  return { ...res.data(), id } as IJobDetails;
+  return { ...res.data(), id } as any;
 }
 
 export async function searchJobs(title: string, location?: string) {

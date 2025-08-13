@@ -10,6 +10,7 @@ import { Icon } from "@iconify/vue";
 import { ref } from "vue";
 import { useUserStore } from "@/stores/user.store";
 import { storeToRefs } from "pinia";
+import Tag from "@/components/Tag.vue";
 
 
 const userStore = useUserStore();
@@ -78,10 +79,9 @@ const edit = ref(false);
         <div class="col-span-1">
           <SectionCard title="Skills">
             <div class="flex gap-3 flex-wrap">
-              <div v-if="getUser?.skills?.length" v-for="(skill, idx) in getUser?.skills" :key="idx"
-                class="rounded text-xs border py-0.5 px-2 border-gray-300">
+              <Tag v-if="getUser?.skills?.length" v-for="(skill, idx) in getUser?.skills" :key="idx">
                 {{ skill }}
-              </div>
+              </Tag>
               <div v-else class="text-gray text-xs">
                 No skills added yet.
               </div>

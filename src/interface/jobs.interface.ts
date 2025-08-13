@@ -27,7 +27,7 @@ export interface IJob {
 
 export interface IJobDetails extends IJob {
   postedBy?: string;
-  skills: string;
+  skills: string[];
   about?: string;
   website?: string;
 }
