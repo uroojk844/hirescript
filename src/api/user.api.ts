@@ -11,9 +11,7 @@ import {
 } from "firebase/auth";
 import { fireDB, auth } from "@/firebase/config";
 import type { IUser } from "@/interface/user.interface";
-
-
-
+import { useUserStore } from "@/stores/user.store";
 export async function saveUser(userData: IUser) {
   try {
     const usersRef = collection(fireDB, "users");
@@ -61,6 +59,17 @@ export async function saveUser(userData: IUser) {
   }
 }
 
+export async function getUserData() {
+  const userStore = useUserStore();
+  const { setUser } = userStore;
+  const user = auth.currentUser?.email;
+  const usersRef = collection(fireDB, "users");
+  const q = query(usersRef, where("email", "==", user));
+  const querySnapshot = await getDocs(q);
+  const userData = querySnapshot.docs[0].data() as IUser;
+  setUser(userData);
+}
+
 export async function loginUser({
   email,
   password,
@@ -85,44 +94,12 @@ export async function loginUser({
   } catch (error: any) {
     let msg = "Login failed.";
     if (error.code === "auth/user-not-found") msg = "User not found.";
-    if (error.code === "auth/invalid-credential" || error.code === "auth/wrong-password") {
+    if (
+      error.code === "auth/invalid-credential" ||
+      error.code === "auth/wrong-password"
+    ) {
       msg = "Incorrect Email or Password.";
     }
     return { success: false, message: msg };
   }
 }
-
-// export async function updateUserProfile(data, user) {
-//   try {
-//     const userRef = doc(fireDB, "users", user.uid);
-//     const userSnap = await getDoc(userRef);
-
-//     const updatePayload = {
-//       name: data.fullname || "",
-//       phoneNumber: data.phone || "",
-//       skills: data.skills || "",
-//       bio: data.bio || "",
-//       designation: data.designation || "",
-//     };
-
-//     if (userSnap.exists()) {
-//       await updateDoc(userRef, updatePayload);
-//     } else {
-//       // create the document first
-//       await setDoc(userRef, updatePayload);
-//     }
-
-//     return {
-//       success: true,
-//       user: {
-//         ...user,
-//         ...updatePayload,
-//       },
-//     };
-//   } catch (error:any) {
-//     console.error("Error updating user profile:", error);
-//     return {
-//       success: false,
-//       message: error.message,
-//     };
-//   
