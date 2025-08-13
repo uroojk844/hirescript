@@ -4,6 +4,9 @@ import {
   query,
   where,
   getDocs,
+  doc,
+  getDoc,
+  updateDoc,
 } from "firebase/firestore";
 import {
   createUserWithEmailAndPassword,
@@ -11,9 +14,7 @@ import {
 } from "firebase/auth";
 import { fireDB, auth } from "@/firebase/config";
 import type { IUser } from "@/interface/user.interface";
-
-
-
+import { useUserStore } from "@/stores/user.store";
 export async function saveUser(userData: IUser) {
   try {
     const usersRef = collection(fireDB, "users");
@@ -61,6 +62,17 @@ export async function saveUser(userData: IUser) {
   }
 }
 
+export async function getUserData() {
+  const userStore = useUserStore();
+  const { setUser } = userStore;
+  const user = auth.currentUser?.email;
+  const usersRef = collection(fireDB, "users");
+  const q = query(usersRef, where("email", "==", user));
+  const querySnapshot = await getDocs(q);
+  const userData = querySnapshot.docs[0].data() as IUser;
+  setUser(userData);
+}
+
 export async function loginUser({
   email,
   password,
@@ -85,44 +97,138 @@ export async function loginUser({
   } catch (error: any) {
     let msg = "Login failed.";
     if (error.code === "auth/user-not-found") msg = "User not found.";
-    if (error.code === "auth/invalid-credential" || error.code === "auth/wrong-password") {
+    if (
+      error.code === "auth/invalid-credential" ||
+      error.code === "auth/wrong-password"
+    ) {
       msg = "Incorrect Email or Password.";
     }
     return { success: false, message: msg };
   }
 }
+export async function updateBasicDetails(
+  uid: string,
+  updatedData: Partial<IUser>
+) {
+  try {
+    const userDocRef = doc(fireDB, "users", uid);
 
-// export async function updateUserProfile(data, user) {
-//   try {
-//     const userRef = doc(fireDB, "users", user.uid);
-//     const userSnap = await getDoc(userRef);
+    // Check if user exists
+    const userSnap = await getDoc(userDocRef);
+    if (!userSnap.exists()) {
+      return { success: false, message: "User not found in Firestore." };
+    }
 
-//     const updatePayload = {
-//       name: data.fullname || "",
-//       phoneNumber: data.phone || "",
-//       skills: data.skills || "",
-//       bio: data.bio || "",
-//       designation: data.designation || "",
-//     };
+    // Never allow password overwrite here
+    const { password, ...safeData } = updatedData;
 
-//     if (userSnap.exists()) {
-//       await updateDoc(userRef, updatePayload);
-//     } else {
-//       // create the document first
-//       await setDoc(userRef, updatePayload);
-//     }
+    await updateDoc(userDocRef, safeData);
+    console.log("User updated successfully");
 
-//     return {
-//       success: true,
-//       user: {
-//         ...user,
-//         ...updatePayload,
-//       },
-//     };
-//   } catch (error:any) {
-//     console.error("Error updating user profile:", error);
-//     return {
-//       success: false,
-//       message: error.message,
-//     };
-//   
+    return { success: true, message: "User updated successfully." };
+  } catch (error) {
+    console.error("Error updating user:", error);
+    return { success: false, message: "Error updating user." };
+  }
+}
+
+export async function persistExperience(
+  uid: string,
+  updatedData: Partial<IUser>
+) {
+  try {
+    const userRef = doc(fireDB, "users", uid);
+    await updateDoc(userRef, {
+      experience: updatedData.experience,
+    });
+
+    console.log("Experience updated successfully for:", uid);
+  } catch (error) {
+    console.error("Error updating experience:", error);
+  }
+}
+export async function fetchExperiences(uid: string) {
+  try {
+    const userRef = doc(fireDB, "users", uid);
+    const snap = await getDoc(userRef);
+
+    if (!snap.exists()) {
+      return { success: false, message: "User not found." };
+    }
+
+    const data = snap.data();
+    if (Array.isArray(data.experience)) {
+      return { success: true, experiences: data.experience };
+    } else {
+      return { success: true, experiences: [] };
+    }
+  } catch (error) {
+    console.error("Error fetching experiences:", error);
+    return { success: false, message: "Error fetching experiences." };
+  }
+}
+export async function updateLinkedAccounts(
+  uid: string,
+  links: {
+    facebook?: string;
+    linkedin?: string;
+    twitter?: string;
+    dribbble?: string;
+    github?: string;
+    whatsapp?: string;
+  }
+) {
+  try {
+    const userDocRef = doc(fireDB, "users", uid);
+
+    const userSnap = await getDoc(userDocRef);
+    if (!userSnap.exists()) {
+      return { success: false, message: "User not found in Firestore." };
+    }
+
+    await updateDoc(userDocRef, {
+      "socialLinks.facebook": links.facebook || "",
+      "socialLinks.linkedin": links.linkedin || "",
+      "socialLinks.twitter": links.twitter || "",
+      "socialLinks.dribbble": links.dribbble || "",
+      "socialLinks.whatsapp": links.whatsapp || "",
+    });
+
+    console.log("Linked accounts updated successfully");
+    return { success: true, message: "Linked accounts updated successfully." };
+  } catch (error) {
+    console.error("Error updating linked accounts:", error);
+    return { success: false, message: "Error updating linked accounts." };
+  }
+}
+export async function updatePortfolioLinks(
+  uid: string,
+  links: {
+    behance?: string;
+    canva?: string;
+    github?: string;
+    dribble?: string;
+  }
+) {
+  try {
+    const userDocRef = doc(fireDB, "users", uid);
+
+    const userSnap = await getDoc(userDocRef);
+    if (!userSnap.exists()) {
+      return { success: false, message: "User not found in Firestore." };
+    }
+
+    await updateDoc(userDocRef, {
+      "portfolioLinks.behance": links.behance || "",
+      "portfolioLinks.canva": links.canva || "",
+      "portfolioLinks.github": links.github || "",
+      "portfolioLinks.dribbble": links.dribble || "",
+    });
+
+    console.log("Portfolio links updated successfully");
+    return { success: true, message: "Portfolio links updated successfully." };
+  } catch (error) {
+    console.error("Error updating portfolio links:", error);
+    return { success: false, message: "Error updating portfolio links." };
+  }
+}

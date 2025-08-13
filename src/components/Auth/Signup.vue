@@ -20,13 +20,13 @@ async function handleSignup() {
   }
 
   loading.value = true;
-
   const newUser: IUser = {
     name: fullname.value,
     profilePhotoUrl: "",
     email: email.value,
     password: password.value,
     coverPhotoUrl: "",
+    designation: "",
     bio: "",
     skills: [],
     education: {
@@ -42,18 +42,18 @@ async function handleSignup() {
     },
     socialLinks: {
       facebook: "",
-      instagram: "",
-      dribbble: "",
-      mail: "",
+      dribble: "",
+      twitter: "",
       whatsapp: "",
+      linkedin: ""
     },
-    jobs:{
-    savedJobs:[],
-    appliedJobs: [],
-  },
+    jobs: {
+      savedJobs: [],
+      appliedJobs: [],
+    },
     portfolioLinks: {
       behance: "",
-      dribbble: "",
+      dribble: "",
       canva: "",
       github: "",
     },
@@ -80,30 +80,14 @@ async function handleSignup() {
   <div class="grid gap-y-5">
     <div class="text-2xl font-bold text-primary">Create your account</div>
 
-    <input
-      v-model="fullname"
-      type="text"
-      class="border border-gray-300 w-full p-3 rounded-full text-sm"
-      placeholder="Enter your Full name"
-    />
-    <input
-      v-model="email"
-      type="text"
-      class="border border-gray-300 w-full p-3 rounded-full text-sm"
-      placeholder="Enter your email"
-    />
-    <input
-      v-model="password"
-      type="password"
-      class="border border-gray-300 w-full p-3 rounded-full text-sm"
-      placeholder="Create a password"
-    />
+    <input v-model="fullname" type="text" class="border border-gray-300 w-full p-3 rounded-full text-sm"
+      placeholder="Enter your Full name" />
+    <input v-model="email" type="text" class="border border-gray-300 w-full p-3 rounded-full text-sm"
+      placeholder="Enter your email" />
+    <input v-model="password" type="password" class="border border-gray-300 w-full p-3 rounded-full text-sm"
+      placeholder="Create a password" />
 
-    <button
-      class="w-full p-3 text-sm bg-primary text-white rounded-full"
-      :disabled="loading"
-      @click="handleSignup"
-    >
+    <button class="w-full p-3 text-sm bg-primary text-white rounded-full" :disabled="loading" @click="handleSignup">
       {{ loading ? "Creating..." : "Continue" }}
     </button>
 
@@ -115,10 +99,7 @@ async function handleSignup() {
 
     <GoogleLogin />
 
-    <div
-      @click="current = 'Login'"
-      class="text-sm text-gray-500 text-center cursor-pointer"
-    >
+    <div @click="current = 'Login'" class="text-sm text-gray-500 text-center cursor-pointer">
       Already registered? Login!
     </div>
   </div>
