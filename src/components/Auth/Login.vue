@@ -29,8 +29,11 @@ async function handlelogin() {
         email: email.value,
         password: password.value,
     });
-    if (res.success) {
-        userStore.setUser(res.user as IUser);
+    if (res.success && res.user) {
+        userStore.setUser({
+            ...res.user,
+            skills: res.user.skills.map((s) => s.trim().toLowerCase())
+        } as IUser);
         authStore.hideAuth();
     } else {
         message.value = res.message || "Wrong username or password!";

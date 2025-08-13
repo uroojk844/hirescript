@@ -17,7 +17,7 @@ const colors = ["#e2f5cd", "#e9ecf8", "#e4eefa"];
       </div>
       <div class="text-primary text-sm">{{ job.company }}</div>
       <div class="text-gray text-sm line-clamp-2 text-ellipsis">
-        {{ job.description }}
+        {{ job.jobDescription || job.description }}
       </div>
       <div class="flex items-center gap-4 text-gray">
         <div class="text-xs flex items-center gap-2">

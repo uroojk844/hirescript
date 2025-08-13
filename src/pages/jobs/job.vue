@@ -74,7 +74,8 @@ const isApplied = computed(() => {
 });
 
 const matchingSkills = computed(() => {
-  return getJobDetails.value?.skills.replace(/\s+/, ' ').split(",").filter((s) => getUser.value?.skills.includes(s.toLowerCase()));
+  return getJobDetails.value?.skills
+    .filter((s) => getUser.value?.skills.includes(s)) || [];
 });
 
 onMounted(() => {
@@ -120,12 +121,13 @@ onMounted(() => {
           <span>Skill Needed</span>
           <span class="flex items-center gap-2">
             <Icon icon="material-symbols:check-circle" class="text-emerald-600" />
-            <small class="text-gray">{{matchingSkills?.length}}/5 of your skills match for this job</small>
+            <small class="text-gray">{{ matchingSkills?.length }}/{{ getJobDetails.skills.length }} of your skills match
+              for this job</small>
           </span>
         </div>
         <OutlinedCard direction="row" class="my-2 flex-wrap max-w-none">
-          <Tag v-for="(tag, index) in getJobDetails.skills.split(',')" :key="index" v-text="tag"
-          :class="{'bg-green-200':matchingSkills?.includes(tag)}" />
+          <Tag v-for="(tag, index) in getJobDetails.skills" :key="index" v-text="tag"
+            :class="{ 'bg-green-200': matchingSkills?.includes(tag.toLowerCase()) }" />
         </OutlinedCard>
       </section>
     </div>

@@ -26,8 +26,8 @@ export const useJobStore = defineStore("jobs", {
   },
   actions: {
     async fetchJobs() {
-      if(this.jobs.length) return;
-      
+      if (this.jobs.length) return;
+
       try {
         this.isLoadingJobs = true;
         this.jobs = await getJobs();
@@ -40,7 +40,14 @@ export const useJobStore = defineStore("jobs", {
     async fetchJobById(id: string) {
       try {
         this.isLoadingJobDetails = true;
-        this.jobDetails = await getJobByID(id);
+        const res = await getJobByID(id);
+        this.jobDetails = {
+          ...res,
+          skills: res.skills
+            .replace(/\s+/, " ")
+            .split(",")
+            .map((s: string) => s.trim().toLowerCase()),
+        };
       } catch (error) {
         console.log(error);
       } finally {
