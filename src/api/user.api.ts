@@ -4,9 +4,6 @@ import {
   query,
   where,
   getDocs,
-  doc,
-  getDoc,
-  updateDoc,
 } from "firebase/firestore";
 import {
   createUserWithEmailAndPassword,
