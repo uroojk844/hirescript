@@ -7,7 +7,7 @@ import LinkedAcccounts from "@/components/Profile/LinkedAcccounts.vue";
 import ProfileSocials from "@/components/Profile/ProfileSocials.vue";
 import SectionCard from "@/components/Profile/SectionCard.vue";
 import { Icon } from "@iconify/vue";
-import { ref } from "vue";
+import { provide, ref } from "vue";
 import { useUserStore } from "@/stores/user.store";
 import { storeToRefs } from "pinia";
 import Tag from "@/components/Tag.vue";
@@ -17,10 +17,10 @@ const userStore = useUserStore();
 const { getUser } = storeToRefs(userStore);
 
 const edit = ref(false);
+provide("edit", edit);
 </script>
 
 <template>
-
   <EditProfile v-if="edit" />
 
   <div v-if="getUser" class="bg-[#ecf4f6]">
@@ -39,29 +39,30 @@ const edit = ref(false);
               class="w-20 h-20 sm:size-42 inline-block rounded-full -mt-20 sm:-mt-20" />
             <div class="grid gap-y-2">
               <div class="font-bold text-primary text-lg">{{ getUser.name || "User Name" }}</div>
-              <div class="text-sm text-gray">{{ getUser?.experience?.[0] || "Current Workplace" }}</div>
-              <div
+              <div class="text-sm text-gray" v-if="getUser?.experience?.length">{{ getUser?.experience[0]?.designation +
+                " @ " + getUser?.experience[0]?.companyName || "Current Workplace" }}</div>
+              <div v-if="getUser?.location?.city && getUser?.location?.state"
                 class="text-xs bg-[#c3dce3] text-primary text-center p-1 flex items-center justify-center gap-2 rounded">
                 <Icon class="text-xl" icon="material-symbols-light:location-on" />
-                {{ getUser?.location?.city || "Current City" }}, {{ getUser?.location?.state || "Current State" }}
+                {{ getUser?.location?.city }} {{ getUser?.location?.state }}
               </div>
               <ProfileSocials class="mt-3" />
             </div>
           </div>
+
           <div class="flex flex-col md:flex-row items-start gap-4">
-            <div class="flex flex-col sm:flex-row border border-gray-300 rounded-lg p-2 w-full max-sm:hidden md:w-auto">
-              <div v-if="getUser?.experience"
+            <div v-if="getUser?.experience?.length && getUser?.education?.college"
+              class="flex flex-col sm:flex-row border border-gray-300 rounded-lg p-2 w-full max-sm:hidden md:w-auto">
+              <div v-if="getUser?.experience?.length"
                 class="text-sm p-3 pr-6 border-b sm:border-b-0 sm:border-r border-gray-300">
                 <div class="font-bold text-primary">Work</div>
-                <div class="text-gray">{{ getUser.experience?.[0] || "company name" }}, {{ getUser.experience?.[0] ||
-                  "company location" }}</div>
-                <div class="text-gray">{{ getUser.experience?.[0] || "company state" }}</div>
+                <div class="text-gray">{{ getUser.experience[0]?.companyName || "company name" }}</div>
+                <div class="text-gray">{{ getUser.experience[0]?.designation || "company state" }}</div>
               </div>
-              <div v-if="getUser?.education" class="text-sm p-3 pl-6">
+              <div v-if="getUser?.education?.college != ''" class="text-sm p-3 pl-6">
                 <div class="font-bold">Education</div>
-                <div class="text-gray">{{ getUser.education?.college || "College Name" }}, {{ getUser.education?.city ||
-                  "College city" }} </div>
-                <div class="text-gray">{{ getUser.education?.state || "College State" }}</div>
+                <div class="text-gray">{{ getUser.education?.college }}, {{ getUser.education?.city }} </div>
+                <div class="text-gray">{{ getUser.education?.state }}</div>
               </div>
             </div>
             <div class="flex flex-col  items-center gap-4">
@@ -99,8 +100,6 @@ const edit = ref(false);
           <div class="bg-white rounded-lg">
             <div class="flex text-sm gap-x-12 p-4 border-b border-gray-300 overflow-x-auto">
               <div class="text-primary font-medium">Background</div>
-              <div class="text-gray">Recommendations</div>
-              <div class="text-gray">Following</div>
             </div>
 
             <div class="py-4 px-8">
@@ -113,22 +112,23 @@ const edit = ref(false);
 
               <section class="border-b border-gray-300 py-4">
                 <div class="text-primary pb-4 font-medium">Experience</div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  <div v-if="getUser?.experience?.length" v-for="(exp, idx) in getUser?.experience" :key="idx"
-                    class="flex items-center gap-4">
-                    <img :src="exp?.logo || 'https://via.placeholder.com/64'" alt="Company Logo"
-                      class="size-16 object-cover" />
+
+                <div v-if="getUser?.experience?.length" class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <div v-for="(exp, idx) in getUser.experience" :key="idx" class="flex items-center gap-4">
+                    <img :src="`https://img.logo.dev/${exp?.companyName}.com?token=pk_OQqBffoyQ_mPP_urHDkMsg`"
+                      :alt="`${exp?.companyName || 'Company'} Logo`" class="size-16 object-cover"
+                      @error="($event.target as HTMLImageElement).src = 'https://via.placeholder.com/64x64/e2e8f0/64748b?text=Logo'" />
                     <div class="grid gap-y-1">
-                      <div class="text-primary font-medium">{{ exp?.company }}</div>
-                      <div class="text-primary">{{ exp?.years }}</div>
-                      <div class="text-sm text-gray">{{ exp?.position }}</div>
+                      <div class="text-primary font-medium">{{ exp?.companyName || 'Unknown Company' }}</div>
+                      <div class="text-primary">{{ exp?.duration || 'N/A' }}</div>
+                      <div class="text-sm text-gray">{{ exp?.designation || 'Position not specified' }}</div>
                     </div>
-                  </div>
-                  <div v-else class="text-gray text-sm">
-                    No experience added yet.
                   </div>
                 </div>
 
+                <div v-else class="text-gray text-sm">
+                  No experience added yet.
+                </div>
               </section>
 
               <!-- Responsive portfolio image grid -->

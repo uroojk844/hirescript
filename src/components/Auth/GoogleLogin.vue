@@ -34,6 +34,7 @@ const handleGoogleLogin = async () => {
         profilePhotoUrl: firebaseUser.photoURL || "",
         email: firebaseUser.email || "",
         password: "",
+        designation: "",
         coverPhotoUrl: "",
         bio: "",
         skills: [],
@@ -50,10 +51,10 @@ const handleGoogleLogin = async () => {
         },
         socialLinks: {
           facebook: "",
-          instagram: "",
-          dribbble: "",
-          mail: firebaseUser.email || "",
+          dribble: "",
+          twitter: "",
           whatsapp: "",
+          linkedin: ""
         },
         jobs: {
           savedJobs: [],
@@ -61,7 +62,7 @@ const handleGoogleLogin = async () => {
         },
         portfolioLinks: {
           behance: "",
-          dribbble: "",
+          dribble: "",
           canva: "",
           github: "",
         },

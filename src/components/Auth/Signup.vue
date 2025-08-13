@@ -31,13 +31,13 @@ async function handleSignup() {
   }
 
   loading.value = true;
-
   const newUser: IUser = {
     name: fullname.value,
     profilePhotoUrl: "",
     email: email.value,
     password: password.value,
     coverPhotoUrl: "",
+    designation: "",
     bio: "",
     skills: [],
     education: {
@@ -53,18 +53,19 @@ async function handleSignup() {
     },
     socialLinks: {
       facebook: "",
-      instagram: "",
-      dribbble: "",
-      mail: "",
+      dribble: "",
+      twitter: "",
       whatsapp: "",
+      linkedin: ""
     },
     jobs: {
       savedJobs: [],
       appliedJobs: [],
     },
+
     portfolioLinks: {
       behance: "",
-      dribbble: "",
+      dribble: "",
       canva: "",
       github: "",
     },

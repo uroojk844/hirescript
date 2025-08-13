@@ -3,6 +3,7 @@ export interface IUser {
   profilePhotoUrl: string;
   email: string;
   password: string;
+  designation: string;
   coverPhotoUrl: string;
   bio: string;
   skills: string[];
@@ -19,22 +20,22 @@ export interface IUser {
   };
   socialLinks: {
     facebook: string;
-    instagram: string;
-    dribbble: string;
-    mail: string;
+    dribble: string;
+    twitter: string;
     whatsapp: string;
+    linkedin: string;
   };
-  jobs:{
+  jobs: {
     savedJobs: string[];
     appliedJobs: string[];
-  }
+  };
   portfolioLinks: {
     behance: string;
-    dribbble: string;
+    dribble: string;
     canva: string;
     github: string;
   };
   experience: any[];
   portfolio: any[];
-  uid: string;
+  uid: string;
 }
