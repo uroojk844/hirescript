@@ -16,8 +16,8 @@ const icons = {
 
 </script>
 <template>
-    <div v-if="getUser?.portfolioLinks" class="flex gap-2 flex-wrap">
-        <a v-for="(item, key) in getUser.portfolioLinks" :key="key" :href="item" target="_blank"
+    <div v-if="Object.keys(getUser?.portfolioLinks || {}).length" class="flex gap-2 flex-wrap">
+        <a v-for="(item, key) in getUser?.portfolioLinks" :key="key" :href="item" target="_blank"
             class="rounded-full border border-gray-300 p-1 cursor-pointer hover:bg-gray-100" :class="{ hidden: !item }">
             <Icon :icon="icons[key]" class="text-sm size-5" />
         </a>
