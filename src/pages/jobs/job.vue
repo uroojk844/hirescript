@@ -56,11 +56,11 @@ function confirmApplied() {
 }
 
 function handleApplyJob() {
-  if(getUser.value) {
+  if (getUser.value) {
     window.open(getJobDetails.value?.applyLink, "_blank");
     window.addEventListener("focus", confirmApplied);
   } else {
-    useAuthStore().showAuth();   
+    useAuthStore().showAuth();
   }
 }
 
@@ -69,14 +69,18 @@ async function markJobApplied() {
   isModelActive.value = false;
 }
 
-const isApplied = computed(()=> {
+const isApplied = computed(() => {
   return getUser.value?.jobs.appliedJobs.includes(id);
+});
+
+const matchingSkills = computed(() => {
+  return getJobDetails.value?.skills.replace(/\s+/, ' ').split(",").filter((s) => getUser.value?.skills.includes(s.toLowerCase()));
 });
 
 onMounted(() => {
   jobsStore.fetchJobs();
   jobsStore.fetchJobById(id);
-})
+});
 </script>
 
 <template>
@@ -114,13 +118,14 @@ onMounted(() => {
       <section>
         <div class="flex items-center gap-4">
           <span>Skill Needed</span>
-          <!-- <span class="flex items-center gap-2">
+          <span class="flex items-center gap-2">
             <Icon icon="material-symbols:check-circle" class="text-emerald-600" />
-            <small class="text-gray">3/5 of your skills match for this iob</small>
-          </span> -->
+            <small class="text-gray">{{matchingSkills?.length}}/5 of your skills match for this job</small>
+          </span>
         </div>
         <OutlinedCard direction="row" class="my-2 flex-wrap max-w-none">
-          <Tag v-for="(tag, index) in getJobDetails.skills.split(',')" :key="index" v-text="tag" />
+          <Tag v-for="(tag, index) in getJobDetails.skills.split(',')" :key="index" v-text="tag"
+          :class="{'bg-green-200':matchingSkills?.includes(tag)}" />
         </OutlinedCard>
       </section>
     </div>
@@ -135,13 +140,14 @@ onMounted(() => {
           </Tag>
         </div>
         <div class="flex items-center gap-6">
-          <PrimaryButton v-if="!isApplied" @click="handleApplyJob" class="bg-primary text-white flex-1">Apply</PrimaryButton>
-          <PrimaryButton v-else class="bg-primary text-white flex-1">Applied</PrimaryButton>
+          <PrimaryButton v-if="!isApplied" @click="handleApplyJob" class="flex-1">Apply</PrimaryButton>
+          <PrimaryButton v-else class="flex-1">Applied</PrimaryButton>
           <Icon @click="shareJob(getJobDetails)" icon="uil:share-alt" class="text-lg cursor-pointer text-gray" />
-          <Icon v-if="getUser?.jobs?.savedJobs" icon="material-symbols:favorite-rounded" class="text-lg text-red-400" />
+          <!-- TODO: Will be added later -->
+          <!-- <Icon icon="material-symbols:favorite-outline-rounded" class="text-lg hidden" /> -->
         </div>
       </section>
-      
+
       <div>
         <div>Job Information & Benefits</div>
         <OutlinedCard class="mt-2 max-w-none">

@@ -1,21 +1,32 @@
 <script setup lang="ts">
-import { inject, ref, type Ref } from "vue";
+import { computed, ref } from "vue";
 import GoogleLogin from "./GoogleLogin.vue";
 import { saveUser } from "@/api/user.api";
 import { useUserStore } from "@/stores/user.store";
 import type { IUser } from "@/interface/user.interface";
+import PrimaryButton from "../PrimaryButton.vue";
+import InputField from "../InputField.vue";
+import Separator from "../Separator.vue";
+import { useAuthStore } from "@/stores/authShow.store";
 
-const current = inject<Ref<string>>("authCurrent", ref("Login"));
 const userStore = useUserStore();
+
+const message = ref("");
 
 const fullname = ref("");
 const email = ref("");
 const password = ref("");
+const confirmPassword = ref("");
+
+const isPasswordMatching = computed(() => password.value === confirmPassword.value);
+
 const loading = ref(false);
+
+const authStore = useAuthStore();
 
 async function handleSignup() {
   if (!fullname.value || !email.value || !password.value) {
-    alert("Please fill all fields");
+    message.value = "Please fill all fields";
     return;
   }
 
@@ -47,10 +58,10 @@ async function handleSignup() {
       mail: "",
       whatsapp: "",
     },
-    jobs:{
-    savedJobs:[],
-    appliedJobs: [],
-  },
+    jobs: {
+      savedJobs: [],
+      appliedJobs: [],
+    },
     portfolioLinks: {
       behance: "",
       dribbble: "",
@@ -66,10 +77,9 @@ async function handleSignup() {
 
   if (res.success && res.user) {
     userStore.setUser(res.user);
-    console.log("Signup successful", res.user);
-    current.value = "Login";
+    authStore.setSeletedForm('Login');
   } else {
-    alert(res.message);
+    console.error(res.message);
   }
 
   loading.value = false;
@@ -77,49 +87,29 @@ async function handleSignup() {
 </script>
 
 <template>
-  <div class="grid gap-y-5">
+  <form @submit.prevent="handleSignup" method="post" class="grid gap-y-5">
     <div class="text-2xl font-bold text-primary">Create your account</div>
 
-    <input
-      v-model="fullname"
-      type="text"
-      class="border border-gray-300 w-full p-3 rounded-full text-sm"
-      placeholder="Enter your Full name"
-    />
-    <input
-      v-model="email"
-      type="text"
-      class="border border-gray-300 w-full p-3 rounded-full text-sm"
-      placeholder="Enter your email"
-    />
-    <input
-      v-model="password"
-      type="password"
-      class="border border-gray-300 w-full p-3 rounded-full text-sm"
-      placeholder="Create a password"
-    />
+    <InputField v-model="fullname" name="name" placeholder="Enter your full name" />
 
-    <button
-      class="w-full p-3 text-sm bg-primary text-white rounded-full"
-      :disabled="loading"
-      @click="handleSignup"
-    >
-      {{ loading ? "Creating..." : "Continue" }}
-    </button>
+    <InputField v-model="email" type="email" name="email" placeholder="Enter your email" />
 
-    <div class="flex items-center justify-center gap-4">
-      <div class="flex-1 h-px bg-gray-300"></div>
-      <div class="text-gray-500 text-sm">or</div>
-      <div class="flex-1 h-px bg-gray-300"></div>
+    <InputField v-model="password" type="password" placeholder="Create a password" />
+
+    <InputField v-model="confirmPassword" type="password" placeholder="Confirm password" />
+
+    <PrimaryButton :loading :disabled="!isPasswordMatching">Continue</PrimaryButton>
+
+    <div v-if="message">
+      <div class="text-sm text-red-500">{{ message }}</div>
     </div>
+
+    <Separator />
 
     <GoogleLogin />
 
-    <div
-      @click="current = 'Login'"
-      class="text-sm text-gray-500 text-center cursor-pointer"
-    >
+    <div @click="authStore.setSeletedForm('Login')" class="text-sm text-gray-500 text-center cursor-pointer">
       Already registered? Login!
     </div>
-  </div>
+  </form>
 </template>

@@ -2,37 +2,41 @@
 import { Icon } from '@iconify/vue';
 import Login from './Login.vue';
 import Signup from './Signup.vue';
-import { onMounted, provide, ref, watch } from 'vue';
+import { onMounted, watch } from 'vue';
 import ForgotPassword from './ForgotPassword.vue';
 import { useAuthStore } from '@/stores/authShow.store';
-const current = ref<"Login" | "Signup" | "Forgot" | "null">("Login");
-provide('authCurrent', current);
+import { storeToRefs } from 'pinia';
+
+const authStore = useAuthStore();
+const { getSelectedForm } = storeToRefs(authStore);
+
 function updateBodyOverflow(value: string) {
     document.body.style.overflow = value !== "null" ? "hidden" : "auto";
 }
 
-watch(current, (value) => {
+watch(getSelectedForm, (value) => {
     updateBodyOverflow(value);
 });
 
 onMounted(() => {
-    updateBodyOverflow(current.value);
+    updateBodyOverflow(getSelectedForm.value);
 });
 
-const authStore = useAuthStore();
 function closeAuth() {
     authStore.hideAuth();
 }
 </script>
 
 <template>
-    <div v-if="authStore.isAuthVisible" class="inset-0 fixed bg-black/50 grid place-items-center z-50">
-        <div
-            class="w-[90%] sm:w-[80%] md:w-[60%] lg:w-[40%] xl:w-[26%] p-6 sm:p-8 md:p-10 lg:p-12 rounded-4xl bg-white relative">
-            <Icon @click="closeAuth" icon="clarity:times-line"
-                class="text-2xl absolute right-4 top-4 sm:right-5 sm:top-5 md:right-6 md:top-6 cursor-pointer" />
-            <Login v-if="current === 'Login'" />
-            <Signup v-else-if="current === 'Signup'" />
+    <div v-if="authStore.isAuthVisible" @click.self="authStore.hideAuth"
+        class="inset-0 fixed bg-black/50 grid place-items-center z-50 p-4" title="Click here to close this pop-up">
+        <div class="cursor-pointer absolute right-12 top-12 text-white text-4xl">
+            <Icon @click="closeAuth" icon="iconamoon:sign-times-bold" />
+        </div>
+
+        <div class="max-w-md w-full p-12 rounded-4xl bg-white relative">
+            <Login v-if="getSelectedForm === 'Login'" />
+            <Signup v-else-if="getSelectedForm === 'Signup'" />
             <ForgotPassword v-else />
         </div>
     </div>

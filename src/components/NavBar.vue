@@ -44,6 +44,8 @@ function logout() {
   router.push("/");
 }
 
+const userBtn = ref<HTMLElement | null>(null);
+useHandleClickOutside(userBtn, isModalOpen);
 </script>
 
 <template>
@@ -65,8 +67,8 @@ function logout() {
 
         <template v-if="userStore.user">
           <div class="relative hidden  sm:inline-block">
-            <span class="flex items-center gap-2 cursor-pointer group" @click="toggleModal">
-              <PrimaryButton class=" px-4 py-2">
+            <span ref="userBtn" class="flex items-center gap-2 cursor-pointer group" @click="toggleModal">
+              <PrimaryButton variant="accent" class=" px-4 py-2">
                 <div class="flex gap-2 items-center">
                   {{ getUser?.name }}
                   <svg :class="{ 'rotate-180': isModalOpen }" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
@@ -96,7 +98,7 @@ function logout() {
 
           </div>
           <div class="sm:hidden w-full flex flex-col gap-2">
-            <PrimaryButton class="w-full px-4 py-2" @click="goToProfile">
+            <PrimaryButton variant="accent" class="w-full px-4 py-2" @click="goToProfile">
               My Profile
             </PrimaryButton>
             <button class="w-full text-left px-4 py-2 text-red-600 hover:bg-red-50 transition-colors duration-150 mt-2"
@@ -106,7 +108,7 @@ function logout() {
           </div>
         </template>
         <template v-else>
-          <PrimaryButton class="w-full sm:w-auto" @click="handleAuthClick">
+          <PrimaryButton variant="accent" class="w-full sm:w-auto" @click="handleAuthClick">
             Register now
           </PrimaryButton>
         </template>

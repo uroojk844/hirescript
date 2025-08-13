@@ -99,7 +99,7 @@ const courseDetails = computed(() => {
                         <Icon icon="mdi:link-variant" /> 20 downloadable resources
                     </li>
                 </ul>
-                <PrimaryButton variant="primary">Start course</PrimaryButton>
+                <PrimaryButton>Start course</PrimaryButton>
             </div>
 
             <div class="border border-gray-200 rounded-2xl overflow-hidden p-2 card">
