@@ -13,7 +13,10 @@ const colors = ["#e2f5cd", "#e9ecf8", "#e4eefa"];
       :style="trending && { backgroundColor: colors[index! % 3] }">
       <div class="flex items-center justify-between">
         <div class="text-primary font-medium line-clamp-1">{{ job.title }}</div>
-        <img class="size-8 object-cover object-center" :src="job.companyLogo" :alt="job.company + ' logo'" />
+        <div class="size-8">
+          <img class="size-full object-cover object-center mix-blend-multiply" :src="job.companyLogo" :alt="job.company + ' logo'"
+          @error="($event.target as HTMLImageElement).src = 'https://icons.veryicon.com/png/o/miscellaneous/zr_icon/company-23.png'" />
+        </div>
       </div>
       <div class="text-primary text-sm">{{ job.company }}</div>
       <div class="text-gray text-sm line-clamp-2 text-ellipsis" v-html="job.jobDescription || job.description"></div>
