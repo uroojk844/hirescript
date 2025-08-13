@@ -70,11 +70,9 @@ onMounted(() => {
           Subscribe to stay up to date on insights, events and new solutions.
           You can unsubscribe anytime
         </div>
-        <div class="flex bg-white max-w-md mx-auto rounded-full overflow-hidden mt-8">
-          <input class="w-full outline-none px-4 py-2 text-sm" type="text" placeholder="Enter your email address" />
-          <button class="flex-none text-primary text-sm font-medium bg-accent p-4 cursor-pointer">
-            Subscribe
-          </button>
+        <div class="flex bg-white max-w-lg mx-auto rounded-full overflow-hidden mt-8">
+          <input class="w-full outline-none px-6 py-3 text-sm" type="text" placeholder="Enter your email address" />
+          <PrimaryButton variant="accent" class="rounded-l-none">Subscribe</PrimaryButton>
         </div>
       </div>
     </MaxWidth>
