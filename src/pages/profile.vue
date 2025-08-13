@@ -68,7 +68,7 @@ provide("edit", edit);
             <div class="flex flex-col  items-center gap-4">
 
               <button @click="edit = true"
-                class="text-white bg-primary px-4 py-3 rounded-lg font-medium text-sm w-full md:w-auto">
+                class="text-white cursor-pointer bg-primary px-4 py-3 rounded-lg font-medium text-sm w-full md:w-auto">
                 Edit profile
               </button>
             </div>
