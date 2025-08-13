@@ -18,7 +18,6 @@ const authStore = useAuthStore();
 
 function handleAuthClick() {
   if (userStore.user) {
-    alert("You are already logged in");
     return;
   }
   authStore.showAuth();

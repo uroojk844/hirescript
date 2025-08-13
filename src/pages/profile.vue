@@ -10,6 +10,7 @@ import { Icon } from "@iconify/vue";
 import { provide, ref } from "vue";
 import { useUserStore } from "@/stores/user.store";
 import { storeToRefs } from "pinia";
+import Portfolios from "@/components/Profile/Portfolios.vue";
 
 
 const userStore = useUserStore();
@@ -44,7 +45,7 @@ provide("edit", edit);
               <div v-if="getUser?.location?.city && getUser?.location?.state"
                 class="text-xs bg-[#c3dce3] text-primary text-center p-1 flex items-center justify-center gap-2 rounded">
                 <Icon class="text-xl" icon="material-symbols-light:location-on" />
-                {{ getUser?.location?.city }} {{ getUser?.location?.state }}
+                {{ getUser?.location?.city }}, {{ getUser?.location?.state }}
               </div>
               <ProfileSocials class="mt-3" />
             </div>
@@ -90,7 +91,7 @@ provide("edit", edit);
             </div>
           </SectionCard>
           <SectionCard title="Portfolios">
-            <ProfileSocials />
+            <Portfolios />
           </SectionCard>
           <SectionCard title="Linked accounts">
             <LinkedAcccounts />
@@ -111,7 +112,7 @@ provide("edit", edit);
                 </div>
               </section>
 
-              <section class="border-b border-gray-300 py-4">
+              <section class="py-4">
                 <div class="text-primary pb-4 font-medium">Experience</div>
 
                 <div v-if="getUser?.experience?.length" class="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -129,19 +130,6 @@ provide("edit", edit);
 
                 <div v-else class="text-gray text-sm">
                   No experience added yet.
-                </div>
-              </section>
-
-              <!-- Responsive portfolio image grid -->
-              <section class="border-gray-300 py-4">
-                <div class="text-primary pb-4 font-medium">Portfolio</div>
-                <div v-if="getUser?.portfolio?.length" class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-                  <img v-for="(item, idx) in getUser?.portfolio" :key="idx"
-                    :src="item.image || 'https://via.placeholder.com/300'" alt="Portfolio item"
-                    class="rounded-lg object-cover w-full h-48" />
-                </div>
-                <div v-else class="text-gray text-sm">
-                  No portfolio items added yet.
                 </div>
               </section>
             </div>
