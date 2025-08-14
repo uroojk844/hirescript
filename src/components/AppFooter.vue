@@ -8,25 +8,21 @@ import { Icon } from "@iconify/vue";
     <div class="grid grid-cols-1 md:grid-cols-5 gap-8 md:gap-0">
       <div class="text-primary font-bold text-2xl">HireScript</div>
       <div class="text-sm text-gray flex flex-col gap-y-3">
-        <div>About</div>
-        <div>Press</div>
-        <div>Blog</div>
-        <div>Relationships</div>
+        <div class="font-bold">Quick Links</div>
+        <RouterLink to="/jobs"><div>Jobs</div></RouterLink>
+        <a target="_blank" rel="noopener" href="mailto:@hirescript.work@gmail.com"><div>Help</div></a>
+        <a target="_blank" rel="noopener" href="https://blogs.hirescript.tech/blog/1gwFMIcPVs2pzQCSaoik"><div>About Us</div></a>
       </div>
       <div class="text-sm text-gray flex flex-col gap-y-3">
-        <div>Jobs</div>
-        <div>Jobs Referrals</div>
-        <div>Help</div>
-        <div>Contact Us</div>
+        <div class="font-bold">Customer links</div>
+        <RouterLink to="/jobs"><div>Find Jobs</div></RouterLink>
+        <RouterLink to="/courses"><div>Skill Up</div></RouterLink>
+        <a target="_blank" rel="noopener" href="mailto:@hirescript.work@gmail.com"><div>Customer Support</div></a>
       </div>
       <div class="text-sm text-gray flex flex-col gap-y-3">
-        <div>Careers</div>
-        <div>Help</div>
-        <div>Support</div>
-      </div>
-      <div class="text-sm text-gray flex flex-col gap-y-3">
-        <div>Privacy Policy</div>
-        <div>Terms of Service</div>
+        <div class="font-bold">Terms and Conditions</div>
+        <RouterLink to="/privacy"><div>Privacy Policy</div></RouterLink>
+        <RouterLink to="/use"><div>Terms of Use</div></RouterLink>
       </div>
     </div>
     <div class="border-0.5 border-t border-gray-500 mt-6 py-4">
@@ -54,10 +50,6 @@ import { Icon } from "@iconify/vue";
             />
           </a>
           
-        </div>
-        <div class="text-sm text-gray flex gap-4 justify-center">
-          <div>Privacy Policy</div>
-          <div>Terms Of Use</div>
         </div>
         <div class="text-gray text-sm text-center md:text-right mt-2 md:mt-0">
           @2025 HireScript. All rights reserved.
