@@ -1,6 +1,8 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 import Home from "./pages/home.vue";
 import { useUserStore } from "@/stores/user.store";
+import Privacy from "./pages/Policies/Privacy.vue";
+import TermsUse from "./pages/Policies/TermsUse.vue";
 
 const routes = [
   { path: "/", component: Home , name: "home" },
@@ -41,6 +43,8 @@ const routes = [
     ],
   },
   { path: "/profile", component: () => import("./pages/profile.vue") ,meta: { requiresAuth: true } },
+  { path: "/privacy", component : Privacy , name:"privacy"},
+  { path: "/use" , component : TermsUse , name:"use"},
 ];
 
 

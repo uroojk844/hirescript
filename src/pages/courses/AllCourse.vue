@@ -2,7 +2,13 @@
 import { courses } from '@/assets/courses';
 import AppHeader from '@/components/AppHeader.vue';
 import Card from '@/components/Course/Card.vue';
+import { onMounted } from 'vue';
 
+
+
+onMounted(() => {
+  window.scrollTo(0, 0);
+});
 </script>
 
 <template>

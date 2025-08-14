@@ -79,9 +79,11 @@ const matchingSkills = computed(() => {
 });
 
 onMounted(() => {
+  window.scrollTo(0, 0);
   jobsStore.fetchJobs();
   jobsStore.fetchJobById(id);
 });
+
 </script>
 
 <template>
