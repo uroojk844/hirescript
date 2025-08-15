@@ -61,7 +61,7 @@ useHandleClickOutside(userBtn, isModalOpen);
         <div class="flex gap-8 links">
           <RouterLink to="/">Home</RouterLink>
           <RouterLink to="/jobs">Find Jobs</RouterLink>
-          <RouterLink to="/courses">Master Classes</RouterLink>
+          <a href="https://blogs.hirescript.tech" target="_blank">Blogs</a>
         </div>
 
         <template v-if="userStore.user">

@@ -3,9 +3,9 @@
     <MaxWidth>
       <Header text="One Platform Many Solutions" />
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
-        <RouterLink v-for="job in jobTypes" :key="job.jobType" :to="`/jobs/category/${job.jobType}`">
+        <div v-for="job in jobTypes" :key="job.jobType" :to="`/jobs/category/${job.jobType}`">
           <JobTypesCard :job-type="job.jobType" :icon="job.icon" :job-count="job.jobCount" />
-        </RouterLink>
+        </div>
       </div>
     </MaxWidth>
   </div>

@@ -46,7 +46,7 @@ provide("edit", edit);
               <div v-if="getUser?.location?.city && getUser?.location?.state"
                 class="text-xs bg-[#c3dce3] text-primary text-center p-1 flex items-center justify-center gap-2 rounded">
                 <Icon class="text-xl" icon="material-symbols-light:location-on" />
-                {{ getUser?.location?.city }} {{ getUser?.location?.state }}
+                {{ getUser?.location?.city }}, {{ getUser?.location?.state }}
               </div>
               <ProfileSocials class="mt-3" />
             </div>

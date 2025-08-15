@@ -30,7 +30,7 @@ onMounted(() => {
       </h1>
 
       <p class="text-gray text-center mt-4 mb-8 xl:text-lg">
-        1,80,570 jobs listed here! Your dream jobs is waiting.
+        Get started now! Your dream jobs is waiting.
       </p>
 
       <SearchBar />
