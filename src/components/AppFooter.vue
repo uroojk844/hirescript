@@ -5,7 +5,7 @@ import { Icon } from "@iconify/vue";
 
 <template>
   <MaxWidth class="py-18">
-    <div class="grid grid-cols-1 md:grid-cols-5 gap-8 md:gap-0">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-0">
       <div class="text-primary font-bold text-2xl">HireScript</div>
       <div class="text-sm text-gray flex flex-col gap-y-3">
         <div class="font-bold">Quick Links</div>
@@ -17,7 +17,7 @@ import { Icon } from "@iconify/vue";
         <div class="font-bold">Customer links</div>
         <RouterLink to="/jobs"><div>Find Jobs</div></RouterLink>
         <RouterLink to="/courses"><div>Skill Up</div></RouterLink>
-        <a target="_blank" rel="noopener" href="mailto:@hirescript.work@gmail.com"><div>Customer Support</div></a>
+        <a target="_blank" rel="noopener" href="mailto:hirescript.work@gmail.com"><div>Customer Support</div></a>
       </div>
       <div class="text-sm text-gray flex flex-col gap-y-3">
         <div class="font-bold">Terms and Conditions</div>
@@ -30,13 +30,6 @@ import { Icon } from "@iconify/vue";
         class="flex flex-col md:flex-row md:items-center md:justify-between gap-4"
       >
         <div class="flex items-center justify-center md:justify-start gap-4">
-          <a href="https://blogs.hirescript.tech/" target="_blank" rel="noopener">
-            <Icon
-              icon="mdi:blogger"
-              class="text-xl text-gray hover:text-primary transition"
-            />
-          </a>
-          
           <a href="https://www.linkedin.com/company/hirescript-app/" target="_blank" rel="noopener">
             <Icon
               icon="mdi:linkedin"

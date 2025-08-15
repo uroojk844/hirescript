@@ -81,14 +81,14 @@ useHandleClickOutside(userBtn, isModalOpen);
 
             <div v-if="isModalOpen"
               class="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-200 z-50 transition-all duration-200">
-              <div class="flex flex-col py-2">
+              <div class="flex flex-col">
                 <button
-                  class="bg-white text-left px-4 py-2 text-gray-700 hover:bg-gray-200 hover:text-primary  transition-colors duration-150"
+                  class="bg-white cursor-pointer text-left px-3 py-2 text-gray-700 hover:bg-gray-200 hover:text-primary  transition-colors duration-150"
                   @click="goToProfile">
                   My Profile
                 </button>
-                <div class="border-gray-300 border-t my-1"></div>
-                <button class="text-left px-4 py-2 text-red-600 hover:bg-red-50 transition-colors duration-150"
+                <div class="border-gray-300 border-t"></div>
+                <button class="text-left cursor-pointer px-3 py-2 text-red-600 hover:bg-red-50 transition-colors duration-150 rounded-b-xl "
                   @click="logout">
                   Logout
                 </button>
