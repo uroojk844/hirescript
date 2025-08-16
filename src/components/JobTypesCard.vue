@@ -1,6 +1,6 @@
 <template>
   <div
-    class="bg-white p-2 rounded-full hover:bg-primary group flex items-center justify-between cursor-pointer transition-all duration-300"
+    class="bg-white p-2 rounded-full hover:bg-primary group flex items-center justify-between transition-all duration-300"
   >
     <div class="flex items-center gap-4">
       <div class="p-2 bg-gray-100 rounded-full group-hover:bg-accent">
@@ -15,10 +15,7 @@
         </div>
       </div>
     </div>
-    <Icon
-      icon="material-symbols:chevron-right-rounded"
-      class="text-primary text-2xl group-hover:text-white"
-    />
+    
   </div>
 </template>
 <script setup lang="ts">

@@ -106,14 +106,14 @@ onMounted(() => {
 
       <section>
         <div>Job Description</div>
-        <OutlinedCard class="my-2 max-w-none">
+        <OutlinedCard class="my-2 max-w-none break-all">
           <div v-html="getJobDetails.jobDescription || getJobDetails.description"></div>
         </OutlinedCard>
       </section>
 
       <section v-if="getJobDetails.jobRequirements">
         <div>Requirement And Responsibilities</div>
-        <OutlinedCard class="my-2 max-w-none">
+        <OutlinedCard class="my-2 max-w-none break-all">
           <div v-html="getJobDetails.jobRequirements"></div>
         </OutlinedCard>
       </section>
@@ -127,7 +127,7 @@ onMounted(() => {
               for this job</small>
           </span>
         </div>
-        <OutlinedCard direction="row" class="my-2 flex-wrap break-all max-w-none">
+        <OutlinedCard direction="row" class="my-2 break-all max-w-none">
           <Tag v-for="(tag, index) in getJobDetails.skills" :key="index" v-text="tag"
             class="whitespace-nowrap" :class="{ 'bg-green-200': matchingSkills?.includes(tag.toLowerCase())  }" />
         </OutlinedCard>
@@ -166,10 +166,12 @@ onMounted(() => {
             </OutlinedCard>
             <OutlinedCard direction="row" size="sm">
               <Icon icon="tdesign:money" /> <span :title="useSalary(getJobDetails.salary, 'standard')"
-                class="max-w-32 text-ellipsis overflow-hidden">{{ useSalary(getJobDetails.salary, "standard") }}</span>
+                class="lg:max-w-32 text-ellipsis overflow-hidden">{{ useSalary(getJobDetails.salary, "standard")
+                }}</span>
             </OutlinedCard>
             <OutlinedCard direction="row" size="sm">
-              <Icon icon="uil:location-point" /> {{ getJobDetails.location }}
+              <Icon icon="uil:location-point" /> <span
+                class="line-clamp-1 lg:max-w-32 text-ellipsis whitespace-nowrap">{{ getJobDetails.location }}</span>
             </OutlinedCard>
           </div>
         </OutlinedCard>
@@ -179,11 +181,9 @@ onMounted(() => {
         <div class="mb-2">Company</div>
         <OutlinedCard class="max-w-none">
           <div class="font-bold">About {{ getJobDetails.company }}</div>
-          <p class="text-gray text-xs">
-          <div v-html="getJobDetails.companyDescription"></div>
-          </p>
-          <a v-if="getJobDetails.website" class="text-blue-700 hover:underline text-xs" :href="getJobDetails.website"
-            target="_blank">{{ getJobDetails.website }}</a>
+          <p class="text-gray text-xs break-all" v-html="getJobDetails.companyDescription"></p>
+          <a v-if="getJobDetails.website" class=" break-all text-blue-700 hover:underline text-xs"
+            :href="getJobDetails.website" target="_blank">{{ getJobDetails.website }}</a>
         </OutlinedCard>
       </div>
     </div>
