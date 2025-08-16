@@ -3,6 +3,7 @@ import Home from "./pages/home.vue";
 import { useUserStore } from "@/stores/user.store";
 import Privacy from "./pages/Policies/Privacy.vue";
 import TermsUse from "./pages/Policies/TermsUse.vue";
+import NotFound from "./components/NotFound.vue";
 
 const routes = [
   { path: "/", component: Home , name: "home" },
@@ -28,23 +29,27 @@ const routes = [
       },
     ],
   },
-  {
-    path: "/courses",
-    component: () => import("@/pages/courses/CourseView.vue"),
-    children: [
-      {
-        path: "",
-        component: () => import("@/pages/courses/AllCourse.vue"),
-      },
-      {
-        path: ":id",
-        component: () => import("@/pages/courses/CourseDetails.vue"),
-      },
-    ],
-  },
+  // {
+  //   path: "/courses",
+  //   component: () => import("@/pages/courses/CourseView.vue"),
+  //   children: [
+  //     {
+  //       path: "",
+  //       component: () => import("@/pages/courses/AllCourse.vue"),
+  //     },
+  //     {
+  //       path: ":id",
+  //       component: () => import("@/pages/courses/CourseDetails.vue"),
+  //     },
+  //   ],
+  // },
   { path: "/profile", component: () => import("./pages/profile.vue") ,meta: { requiresAuth: true } },
   { path: "/privacy", component : Privacy , name:"privacy"},
   { path: "/use" , component : TermsUse , name:"use"},
+  {
+    path: "/:pathMatch(.*)*",
+    component: NotFound,
+  },
 ];
 
 
