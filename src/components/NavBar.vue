@@ -65,16 +65,12 @@ useHandleClickOutside(userBtn, isModalOpen);
         </div>
 
         <template v-if="userStore.user">
-          <div class="relative hidden  lg:inline-block">
+          <div class="relative hidden md:inline-block">
             <span ref="userBtn" class="flex items-center gap-2 cursor-pointer group" @click="toggleModal">
               <PrimaryButton variant="accent" class=" px-4 py-2">
                 <div class="flex gap-2 items-center">
                   {{ getUser?.name }}
-                  <svg :class="{ 'rotate-180': isModalOpen }" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                    viewBox="0 0 24 24"
-                    class="text-gray-500 group-hover:text-gray-700 transition-transform duration-200">
-                    <path fill="currentColor" d="m5.84 9.59l5.66 5.66l5.66-5.66l-.71-.7l-4.95 4.95l-4.95-4.95z" />
-                  </svg>
+                  <Icon icon="mdi:chevron-down" :class="{ 'rotate-180': isModalOpen }" />
                 </div>
               </PrimaryButton>
             </span>
@@ -94,9 +90,9 @@ useHandleClickOutside(userBtn, isModalOpen);
                 </button>
               </div>
             </div>
-
           </div>
-          <div class="lg:hidden w-full flex flex-col gap-2">
+
+          <div class="md:hidden flex flex-col gap-2">
             <PrimaryButton variant="accent" class="w-full px-4 py-2" @click="goToProfile">
               My Profile
             </PrimaryButton>

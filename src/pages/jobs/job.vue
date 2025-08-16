@@ -70,7 +70,9 @@ async function markJobApplied() {
 }
 
 const isApplied = computed(() => {
-  return getUser.value?.jobs.appliedJobs.includes(id);
+  if (route.params?.id) {    
+    return getUser.value?.jobs.appliedJobs.includes(route.params.id as string);
+  }
 });
 
 const matchingSkills = computed(() => {
@@ -91,7 +93,7 @@ onMounted(() => {
   <Loader v-if="getIsLoadingJobDetails" />
   <NotFound v-else-if="getJobDetails == null">Job not found!</NotFound>
   <main ref="top" v-else class="grid lg:flex gap-4">
-    <div class="contents lg:grid gap-4 content-start">
+    <div class="contents lg:grid gap-4 content-start flex-1">
       <section class="flex items-center gap-6 mb-2">
         <Avatar :src="getJobDetails.companyLogo" class="size-20" />
         <div>
@@ -123,13 +125,15 @@ onMounted(() => {
           <span>Skill Needed</span>
           <span class="flex items-center gap-2">
             <Icon icon="material-symbols:check-circle" class="text-emerald-600" />
-            <small class="text-gray">{{ matchingSkills?.length }}/{{ getJobDetails.skills.length }} of your skills match
-              for this job</small>
+            <small class="text-gray flex gap-1">{{ matchingSkills?.length }}/{{ getJobDetails.skills.length }}
+              <span class="hidden sm:block">of your skills match for this job</span>
+              <span class="block sm:hidden">matching skills</span>
+            </small>
           </span>
         </div>
-        <OutlinedCard direction="row" class="my-2 flex-wrap break-all max-w-none ">
-          <Tag v-for="(tag, index) in getJobDetails.skills" :key="index" v-text="tag"
-            class="whitespace-nowrap" :class="{ 'bg-green-200': matchingSkills?.includes(tag.toLowerCase())  }" />
+        <OutlinedCard direction="row" class="my-2 flex-wrap max-w-none">
+          <Tag v-for="(tag, index) in getJobDetails.skills" :key="index" v-text="tag" class="whitespace-break-spaces break-all"
+            :class="{ 'bg-green-200': matchingSkills?.includes(tag.toLowerCase()) }" />
         </OutlinedCard>
       </section>
     </div>
@@ -182,7 +186,7 @@ onMounted(() => {
         <OutlinedCard class="max-w-none">
           <div class="font-bold">About {{ getJobDetails.company }}</div>
           <p class="text-gray text-xs break-all" v-html="getJobDetails.companyDescription"></p>
-          <a v-if="getJobDetails.website" class=" break-all text-blue-700 hover:underline text-xs"
+          <a v-if="getJobDetails.website" class="break-all text-blue-700 hover:underline text-xs"
             :href="getJobDetails.website" target="_blank">{{ getJobDetails.website }}</a>
         </OutlinedCard>
       </div>
