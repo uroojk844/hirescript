@@ -65,7 +65,7 @@ useHandleClickOutside(userBtn, isModalOpen);
         </div>
 
         <template v-if="userStore.user">
-          <div class="relative hidden  sm:inline-block">
+          <div class="relative hidden  lg:inline-block">
             <span ref="userBtn" class="flex items-center gap-2 cursor-pointer group" @click="toggleModal">
               <PrimaryButton variant="accent" class=" px-4 py-2">
                 <div class="flex gap-2 items-center">
@@ -83,7 +83,7 @@ useHandleClickOutside(userBtn, isModalOpen);
               class="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-200 z-50 transition-all duration-200">
               <div class="flex flex-col">
                 <button
-                  class="bg-white cursor-pointer text-left px-3 py-2 text-gray-700 hover:bg-gray-200 hover:text-primary  transition-colors duration-150"
+                  class="bg-white cursor-pointer text-left px-3 py-2 text-gray-700 hover:bg-gray-200 hover:text-primary  transition-colors duration-150 rounded-t-xl"
                   @click="goToProfile">
                   My Profile
                 </button>
@@ -96,7 +96,7 @@ useHandleClickOutside(userBtn, isModalOpen);
             </div>
 
           </div>
-          <div class="sm:hidden w-full flex flex-col gap-2">
+          <div class="lg:hidden w-full flex flex-col gap-2">
             <PrimaryButton variant="accent" class="w-full px-4 py-2" @click="goToProfile">
               My Profile
             </PrimaryButton>
