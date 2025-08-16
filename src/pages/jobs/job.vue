@@ -127,7 +127,7 @@ onMounted(() => {
               for this job</small>
           </span>
         </div>
-        <OutlinedCard direction="row" class="my-2 flex-wrap max-w-none">
+        <OutlinedCard direction="row" class="my-2 flex-wrap break-all max-w-none">
           <Tag v-for="(tag, index) in getJobDetails.skills" :key="index" v-text="tag"
             class="whitespace-nowrap" :class="{ 'bg-green-200': matchingSkills?.includes(tag.toLowerCase())  }" />
         </OutlinedCard>
