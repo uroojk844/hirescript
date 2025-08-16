@@ -129,7 +129,7 @@ onMounted(() => {
         </div>
         <OutlinedCard direction="row" class="my-2 break-all max-w-none">
           <Tag v-for="(tag, index) in getJobDetails.skills" :key="index" v-text="tag"
-            :class="{ 'whitespace-nowrap bg-green-200': matchingSkills?.includes(tag.toLowerCase())  }" />
+            class="whitespace-nowrap" :class="{ 'bg-green-200': matchingSkills?.includes(tag.toLowerCase())  }" />
         </OutlinedCard>
       </section>
     </div>
