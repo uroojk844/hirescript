@@ -11,9 +11,9 @@ const colors = ["#e2f5cd", "#e9ecf8", "#e4eefa"];
   <RouterLink :to="'/jobs/' + job.id">
     <div class="rounded-lg p-6 grid gap-y-2 bg-white" :class="{ 'border border-gray-300': !trending }"
       :style="trending && { backgroundColor: colors[index! % 3] }">
-      <div class="flex items-center justify-between">
+      <div class="grid grid-cols-[auto_40px] items-center gap-4 justify-between">
         <div class="text-primary font-medium line-clamp-1">{{ job.title }}</div>
-        <div class="size-8">
+        <div class="size-10">
           <img class="size-full object-cover object-center mix-blend-multiply" :src="job.companyLogo" :alt="job.company + ' logo'"
           @error="($event.target as HTMLImageElement).src = 'https://icons.veryicon.com/png/o/miscellaneous/zr_icon/company-23.png'" />
         </div>
