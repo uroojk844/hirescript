@@ -12,7 +12,9 @@ function handleCancel() {
     emit('cancel');
 }
 
-watch(isActive, useOverflowToggle)
+watch(isActive, (newValue) => {
+    if (newValue) useOverflowToggle();
+});
 </script>
 
 <template>
