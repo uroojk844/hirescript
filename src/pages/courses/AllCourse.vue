@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import { courses } from '@/assets/courses';
 import AppHeader from '@/components/AppHeader.vue';
 import Card from '@/components/Course/Card.vue';
+import { useCourseStore } from '@/stores/course.store';
 import { onMounted } from 'vue';
 
-
+const courseStore = useCourseStore();
 
 onMounted(() => {
+  courseStore.fetchCourses()  
   window.scrollTo(0, 0);
 });
 </script>
@@ -15,7 +16,7 @@ onMounted(() => {
     <AppHeader text="All Courses" />
 
     <section class="grid-res">
-        <Card v-for="course in courses" :key="course.id" :course />
+        <Card v-for="course in courseStore.courses" :key="course.id" :course="course" />
     </section>
 </template>
 
