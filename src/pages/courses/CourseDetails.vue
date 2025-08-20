@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import AppHeader from '@/components/AppHeader.vue';
-import Loader from '@/components/Loader.vue';
 import MaxWidth from '@/components/MaxWidth.vue';
 import PrimaryButton from '@/components/PrimaryButton.vue';
 import Tag from '@/components/Tag.vue';
