@@ -16,4 +16,5 @@ export interface ICourseDetails extends ICourse {
   link: string;
   registeredStudents: any[];
   reviews: any[];
+  startDate:string;
 }
