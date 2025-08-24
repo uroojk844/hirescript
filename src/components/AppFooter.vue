@@ -11,13 +11,13 @@ import { Icon } from "@iconify/vue";
       <div class="text-sm text-gray flex flex-col gap-y-3">
         <div class="font-bold">Quick Links</div>
         <RouterLink to="/jobs"><div>Jobs</div></RouterLink>
-        <a target="_blank" rel="noopener" href="mailto:@hirescript.work@gmail.com"><div>Help</div></a>
+        <a target="_blank" rel="noopener" href="mailto:hirescript.work@gmail.com"><div>Help</div></a>
         <a target="_blank" rel="noopener" href="https://blogs.hirescript.tech/blog/1gwFMIcPVs2pzQCSaoik"><div>About Us</div></a>
       </div>
       <div class="text-sm text-gray flex flex-col gap-y-3">
         <div class="font-bold">Customer links</div>
         <RouterLink to="/jobs"><div>Find Jobs</div></RouterLink>
-        <!-- <RouterLink to="/courses"><div>Skill Up</div></RouterLink> -->
+        <RouterLink to="/courses"><div>Skill Up</div></RouterLink>
         <a target="_blank" rel="noopener" href="mailto:hirescript.work@gmail.com"><div>Customer Support</div></a>
       </div>
       <div class="text-sm text-gray flex flex-col gap-y-3">

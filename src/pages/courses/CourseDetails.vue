@@ -3,7 +3,6 @@ import AppHeader from '@/components/AppHeader.vue';
 import Loader from '@/components/Loader.vue';
 // import MaxWidth from '@/components/MaxWidth.vue';
 import PrimaryButton from '@/components/PrimaryButton.vue';
-import Tag from '@/components/Tag.vue';
 import { useSalary } from '@/composables/use-salary';
 import { fireDB } from '@/firebase/config';
 import type { ICourseDetails } from '@/interface/course.interface';
