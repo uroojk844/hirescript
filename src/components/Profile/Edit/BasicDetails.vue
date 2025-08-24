@@ -24,7 +24,7 @@ const skillsInput = computed({
   <div class="text-primary font-semibold">Basic details</div>
 
   <div class="grid gap-y-4 mt-4" v-if="data">
-    <input v-model="data.name" type="text" placeholder="Name"
+    <input v-model="data.name" type="text"  maxlength="20" placeholder="Name"
       class="w-full border border-gray-300 rounded-lg p-2 text-sm" required />
 
     <textarea v-model="data.bio" placeholder="Bio" class="border border-gray-300 rounded-lg p-2 text-sm w-full"

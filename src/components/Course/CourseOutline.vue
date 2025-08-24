@@ -6,15 +6,9 @@ defineProps<{ courseDetails: ICourseDetails }>();
 
 <template>
     <div class="p-2">
-        <div class="flex gap-2 text-2xl font-semibold my-4">
-            <Icon icon="noto:bookmark-tabs" class="text-3xl" /> Course content
+        <div class="flex gap-2 text-2xl font-semibold my-4 max-sm:text-xl">
+            <Icon icon="noto:bookmark-tabs" class="text-3xl max-sm:text-2xl" /> Course content
         </div>
-        <ul class="bg-gray-100 p-4 rounded-xl flex flex-col gap-3 list-inside overview">
-            <li v-for="(item, index) in (courseDetails?.courseContent ? courseDetails?.courseContent.split(',') : [])"
-                :key="index" v-html="item.trim()"
-                class="break-words leading-relaxed text-sm sm:text-base">
-            </li>
-        </ul>
-
+         <div v-html="courseDetails.courseContent" class="bg-gray-100 p-4 rounded-xl max-sm:text-sm"></div>
     </div>
 </template>

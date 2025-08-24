@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import AppHeader from '@/components/AppHeader.vue';
-import MaxWidth from '@/components/MaxWidth.vue';
+import Loader from '@/components/Loader.vue';
+// import MaxWidth from '@/components/MaxWidth.vue';
 import PrimaryButton from '@/components/PrimaryButton.vue';
-import Tag from '@/components/Tag.vue';
 import { useSalary } from '@/composables/use-salary';
 import { fireDB } from '@/firebase/config';
 import type { ICourseDetails } from '@/interface/course.interface';
@@ -18,7 +18,7 @@ const authStore = useAuthStore();
 
 const buttonLoading = ref(false);
 const disabled = ref(false);
-
+const loading = ref(true);
 
 
 const courseStore = useCourseStore();
@@ -51,10 +51,9 @@ const tabs = [
 const selectedTabView = computed(() => {
     return tabs.find((t) => t.key === selectedTab.value)?.component || NotFound;
 });
+// 
 
-
-
-//Course Registration Logic
+//Course Registration Logic Starts Here
 
 
 const openCourseLink = (link: string) => {
@@ -67,7 +66,7 @@ const hasCourseStarted = (startDate: string | undefined | null) => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    const [year,month,day] = startDate.split("-").map(Number);
+    const [year, month, day] = startDate.split("-").map(Number);
     const courseDate = new Date(year, month - 1, day);
     return today >= courseDate;
 }
@@ -91,9 +90,7 @@ const handleRegister = async (courseId: string) => {
         await updateDoc(courseRef, {
             registeredStudents: arrayUnion(userStore.getUser?.email),
         });
-
-        window.location.reload();
-        disabled.value = true;
+        course.value?.registeredStudents.push(userStore.getUser?.email);
     } catch (error) {
         console.error("Error registering user:", error);
     } finally {
@@ -107,7 +104,15 @@ const isRegistered = computed(() => {
 
 const buttonText = computed(() => {
     if (!isRegistered.value) return "Register Now";
-    if (!hasCourseStarted(course.value?.startDate)) return "Course starts on " + course.value?.startDate;
+
+      if (!hasCourseStarted(course.value?.startDate)) {
+        const startDate = course.value?.startDate;
+        const formattedDate = startDate
+      ? new Date(startDate).toLocaleDateString("en-GB").replace(/\//g, "-")
+      : "";
+    return "Course starts on " + formattedDate;
+  }
+  
     return "Start Now";
 });
 
@@ -123,7 +128,11 @@ const handleButtonClick = () => {
     }
 };
 
+const registeredCount = computed(() => {
+    return course.value?.registeredStudents.includes(userStore.getUser?.email) ? course.value?.registeredStudents.length : (course.value?.registeredStudents.length || 0);
+});
 
+// Course Registration Logic Ends Here
 
 onMounted(async () => {
     window.scrollTo(0, 0);
@@ -132,23 +141,21 @@ onMounted(async () => {
     if (result) {
         course.value = result;
     }
+    loading.value = false;
 })
 
 </script>
 
 <template>
-    <AppHeader text="All Courses" />
-    <MaxWidth >
+    <Loader v-if="loading" />
+    <div v-else>
+        <AppHeader class="max-sm:text-3xl" text="Course Details" />
         <section class="grid gap-4 md:grid-cols-[1fr_400px] grid-cols-1 items-start">
             <div class="border border-gray-200 rounded-2xl overflow-hidden">
                 <div class="p-4 grid gap-4">
-                    <div class="text-3xl font-bold">{{ course?.title }}</div>
+                    <div class="text-3xl font-bold max-sm:text-xl">{{ course?.title }}</div>
                     <div class="flex gap-2 items-center">
-                        <Tag class="flex items-center gap-1 bg-orange-100/70">
-                            <Icon icon="mdi:star" class="text-orange-400" /> <span class="font-semibold text-primary">{{
-                                course?.rating }}</span>
-                        </Tag>
-                        <span class="text-gray text-sm">{{ course?.registeredStudents.length }} students</span>
+                        <span class="text-gray text-sm">{{ registeredCount }} students registered</span>
                     </div>
                     <div class="text-gray text-sm mt-2">
                         {{ course?.description }}
@@ -156,14 +163,15 @@ onMounted(async () => {
                 </div>
             </div>
 
-            <div class="group p-4 border border-gray-200 rounded-2xl grid gap-4 sm:max-w-md md:col-start-2 md:row-span-2">
+            <div
+                class="group p-4 border border-gray-200 rounded-2xl grid gap-4 sm:max-w-full md:col-start-2 md:row-span-2 max-sm:row-start-1">
                 <div class="w-full aspect-video rounded-lg overflow-hidden">
                     <img :src="course?.image" :alt="course?.title"
                         class="object-cover object-center size-full group-hover:scale-110 duration-500 transition-transform" />
                 </div>
-                <div class="text-2xl font-bold">{{ useSalary(course?.price ?? 0, 'standard') }}</div>
-                <div class="font-semibold -mt-2">This course includes:</div>
-                <ul class="grid gap-2 text-gray">
+                <div class="text-2xl font-bold max-sm:text-xl">{{ useSalary(course?.price ?? 0, 'standard') }}</div>
+                <div class="font-semibold -mt-2 max-sm:text-lg">This course includes:</div>
+                <ul class="grid gap-2 text-gray max-sm:text-sm">
                     <li class="flex items-center gap-2">
                         <Icon icon="mdi:web" /> {{ course?.language }}
                     </li>
@@ -197,18 +205,20 @@ onMounted(async () => {
             </div>
 
             <div class="border border-gray-200 rounded-2xl overflow-hidden p-2 card">
-                <div class="bg-gray-100 p-2 flex gap-2 rounded-xl flex-wrap">
+                <div class="bg-gray-100 p-2 flex gap-2 max-sm:gap-1 rounded-xl flex-wrap 
+            max-sm:flex-nowrap max-sm:overflow-x-auto max-sm:whitespace-nowrap">
                     <button v-for="tab in tabs" :key="tab.key" @click="selectedTab = tab.key"
-                        class="py-2 flex-1 text-center rounded-lg cursor-pointer max-sm:text-sm"
+                        class="py-2 flex-1 text-center rounded-lg max-sm:text-sm px-2 max-sm:flex-shrink-0"
                         :class="{ 'bg-gray-200': selectedTab == tab.key }">
                         {{ tab.name }}
                     </button>
                 </div>
 
+
                 <component :is="selectedTabView" :courseDetails="course" />
             </div>
         </section>
-    </MaxWidth>
+    </div>
 </template>
 
 <style>
