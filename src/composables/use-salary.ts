@@ -9,11 +9,13 @@ export function useSalary(
   value: number,
   display: "compact" | "standard" = "compact"
 ) {
-  const format = Intl.NumberFormat("en-us", {
+  const format = Intl.NumberFormat("en-in", {
     style: "currency",
     currency: "inr",
     notation: display,
   });
 
-  return format.format(value);
+  let result = format.format(value);
+  result = result.replace("T", "K");
+  return result;
 }

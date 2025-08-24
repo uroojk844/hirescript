@@ -65,7 +65,7 @@ export const shareJob = async (job:IJobDetails) => {
   const shareData = {
     title: `${job.title} at ${job.company}`,
     text: `Check out this ${job.title} job at ${job.company}!`,
-    url: `https://hirescript.vercel.app/#/jobs/${job.id}`,
+    url: `https://www.hirescript.tech/#/jobs/${job.id}`,
   };
 
   try {

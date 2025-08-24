@@ -39,6 +39,7 @@ export const useCourseStore = defineStore("course", {
         console.error("Error fetching Course:", err);
         throw err;
       }
-    }
+    },
+    
   }
 });
