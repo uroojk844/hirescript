@@ -4,6 +4,7 @@ import { Icon } from "@iconify/vue";
 </script>
 
 <template>
+  
   <MaxWidth class="py-18">
     <div class="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-0">
       <div class="text-primary font-bold text-2xl">HireScript</div>
