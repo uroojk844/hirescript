@@ -8,6 +8,7 @@ import { useUserStore } from "@/stores/user.store";
 import { useAuthStore } from "@/stores/authShow.store";
 import { useRouter } from "vue-router";
 import { storeToRefs } from "pinia";
+import  logo  from "../assets/images/logo.png";
 const mobileNav = ref<HTMLElement | null>(null);
 const isOpen = ref(false);
 useHandleClickOutside(mobileNav, isOpen);
@@ -51,7 +52,7 @@ useHandleClickOutside(userBtn, isModalOpen);
   <nav class="py-6 xl:py-8">
     <MaxWidth class="flex items-center justify-between">
       <RouterLink to="/" class="flex items-center gap-2 text-2xl font-bold text-primary">
-        <Logo /> HireScript
+        <img class="w-18" :src="logo" alt="HireScript"> HireScript
       </RouterLink>
       <div ref="mobileNav" class="mobile-nav sm:contents" :class="{ open: isOpen }">
         <RouterLink to="/" class="flex items-center gap-2 text-2xl font-bold text-primary mb-8 mobile-title">

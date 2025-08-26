@@ -108,15 +108,15 @@ onMounted(() => {
 
       <section>
         <div>Job Description</div>
-        <OutlinedCard class="my-2 max-w-none break-all">
-          <div v-html="getJobDetails.jobDescription || getJobDetails.description"></div>
+        <OutlinedCard class="my-2 max-w-none break-all ">
+          <div class="max-sm:text-sm break-words break-normal" v-html="getJobDetails.jobDescription || getJobDetails.description"></div>
         </OutlinedCard>
       </section>
 
       <section v-if="getJobDetails.jobRequirements">
         <div>Requirement And Responsibilities</div>
         <OutlinedCard class="my-2 max-w-none break-all">
-          <div v-html="getJobDetails.jobRequirements"></div>
+          <div class="max-sm:text-sm break-words break-normal" v-html="getJobDetails.jobRequirements"></div>
         </OutlinedCard>
       </section>
 
@@ -185,7 +185,7 @@ onMounted(() => {
         <div class="mb-2">Company</div>
         <OutlinedCard class="max-w-none">
           <div class="font-bold">About {{ getJobDetails.company }}</div>
-          <p class="text-gray text-xs break-all" v-html="getJobDetails.companyDescription"></p>
+          <p class="text-gray text-xs max-sm:text-sm break-words break-normal" v-html="getJobDetails.companyDescription"></p>
           <a v-if="getJobDetails.website" class="break-all text-blue-700 hover:underline text-xs"
             :href="getJobDetails.website" target="_blank">{{ getJobDetails.website }}</a>
         </OutlinedCard>
@@ -215,5 +215,8 @@ ul {
   li::marker {
     color: var(--color-primary);
   }
+}
+.job-description  {
+  white-space: pre-line;
 }
 </style>
