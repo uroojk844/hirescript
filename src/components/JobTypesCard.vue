@@ -10,9 +10,6 @@
         <div class="font-medium text-primary group-hover:text-white">
           {{ props.jobType }}
         </div>
-        <div class="text-sm group-hover:text-white">
-          {{ props.jobCount }} Jobs available
-        </div>
       </div>
     </div>
     
@@ -25,6 +22,5 @@ import { defineProps } from "vue";
 const props = defineProps<{
   jobType: string;
   icon: string;
-  jobCount: number;
 }>();
 </script>
