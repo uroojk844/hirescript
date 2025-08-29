@@ -116,11 +116,4 @@ export async function applyJob(jobID: string) {
   }
 }
 
-export async function jobsForHome(LimitCount = 15){
-  const q = query(collection(fireDB, "jobs"), orderBy("createdAt","desc") , limit(LimitCount));
-  const res = await getDocs(q)
-  return res.docs.map((r) => ({
-    ...r.data(),
-    id: r.id,
-  })) as IJobDetails[];
-}
+

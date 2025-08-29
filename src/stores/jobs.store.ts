@@ -1,21 +1,18 @@
-import { getJobs, getJobByID, jobsForHome } from "@/api/jobs.api";
+import { getJobs, getJobByID } from "@/api/jobs.api";
 import { defineStore } from "pinia";
 import type { IJobsStore } from "./jobs.interface";
 
 export const useJobStore = defineStore("jobs", {
-  state: (): IJobsStore & { lastDoc: any; hasMore: boolean ;homeJobs: IJobsStore['jobs']; isLoadingHomeJobs: boolean} => ({
+  state: (): IJobsStore & { lastDoc: any; hasMore: boolean } => ({
     isLoadingJobs: false,
-    isLoadingHomeJobs: false,
     jobs: [],
-    homeJobs: [],
     isLoadingJobDetails: false,
     jobDetails: null,
     lastDoc: null,
     hasMore: true,
   }),
   getters: {
-    gethomejobs: (state) => state.homeJobs,
-    getIsHomeJobsLoading: (state) => state.isLoadingHomeJobs,
+    
     getIsLoadingJobs: (state) => state.isLoadingJobs,
     getJobs: (state) => state.jobs,
     getIsLoadingJobDetails: (state) => state.isLoadingJobDetails,
@@ -58,24 +55,6 @@ export const useJobStore = defineStore("jobs", {
       } finally {
         this.isLoadingJobDetails = false;
       }
-    },
-
-    async fetchForHome(limitCount = 15) {
-  
-  this.isLoadingHomeJobs = true;
-  try {
-    const jobs = await jobsForHome(limitCount);
-     
-    this.homeJobs = jobs;
-    this.hasMore = jobs.length >= limitCount;
-    this.lastDoc = null; 
-  } catch (err: any) {
-    console.error("Error fetching jobs for home:", err);
-  } finally {
-    this.isLoadingHomeJobs = false;
-  }
-}
-
-    
+    },    
   },
 });

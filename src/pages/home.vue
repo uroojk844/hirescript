@@ -33,6 +33,7 @@ const subTexts = [
   "Find your dream role with the right guidance and resources",
   "Enhance your abilities and achieve your career goals",
   "Transform your skills into real-world success",
+  "Empowering you to reach new heights in your career"
 ];
 
 
