@@ -26,7 +26,7 @@ onMounted(() => {
   </section>
     <div v-if="getHasMore && getJobs.length" class="flex justify-center mt-6">
     <button
-      class="px-6 py-2 bg-[#d6fd60] text-[#013b52] font-bold rounded-full disabled:opacity-50"
+      class="px-6 py-2 bg-[#d6fd60] text-[#013b52] font-bold rounded-full disabled:opacity-50 cursor-pointer"
       @click="jobsStore.fetchJobs()"
       :disabled="isLoadingJobs"
     >
