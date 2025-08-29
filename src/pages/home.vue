@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import 'animate.css';
 import JobTypes from "@/components/Home/JobTypes.vue";
 import SearchBar from "@/components/Home/SearchBar.vue";
 import NavBar from "@/components/NavBar.vue";
@@ -11,12 +12,41 @@ import { onMounted } from "vue";
 import { useJobStore } from "@/stores/jobs.store";
 import { storeToRefs } from "pinia";
 import Loader from "@/components/Loader.vue";
+import { ref } from "vue";
 
 const jobsStore = useJobStore();
-const { getIsLoadingJobs, getJobs } = storeToRefs(jobsStore);
+const { getIsLoadingJobs , getJobs} = storeToRefs(jobsStore);
+
+const heroTexts = [
+  "Boost your skills, land your dream job!",
+  "Learn, grow, succeed – start your journey today",
+  "Opportunities are everywhere, grab yours now",
+  "Upskill. Apply. Achieve",
+  "The right skills lead to the right career",
+  "Bridging the gap between Career and Learning"
+];
+
+
+const subTexts = [
+  "Discover new opportunities and take your career to the next level",
+  "Step into a world of learning and professional growth",
+  "Find your dream role with the right guidance and resources",
+  "Enhance your abilities and achieve your career goals",
+  "Transform your skills into real-world success",
+  "Empowering you to reach new heights in your career"
+];
+
+
+const randomIndex = Math.floor(Math.random() * heroTexts.length);
+
+const heroText = ref(heroTexts[randomIndex]);
+const subText = ref(subTexts[randomIndex]);
+
 
 onMounted(() => {
+  if (jobsStore.getJobs.length<15) {
   jobsStore.fetchJobs();
+}
 });
 </script>
 
@@ -25,12 +55,12 @@ onMounted(() => {
     <NavBar />
     <MaxWidth>
       <h1
-        class="text-6xl xl:text-[80px] font-bold text-primary mt-8 sm:mt-24 max-w-lg xl:max-w-2xl text-center mx-auto leading-[1.3] xl:leading-[1.3]">
-        Get The Right Job You Deserve
+        class="animate__animated animate__fadeIn text-wrap max-sm:text-4xl text-6xl xl:text-[80px] font-bold text-primary mt-8 sm:mt-24 max-w-lg xl:max-w-2xl text-center mx-auto leading-[1.3] xl:leading-[1.3]">
+        {{ heroText }}
       </h1>
 
-      <p class="text-gray text-center mt-4 mb-8 xl:text-lg">
-        Get started now! Your dream jobs is waiting.
+      <p class="animate__animated animate__fadeIn text-gray text-center mt-4 mb-8 xl:text-lg">
+        {{ subText }}
       </p>
 
       <SearchBar />

@@ -5,19 +5,43 @@ import {
   getDoc,
   getDocs,
   updateDoc,
+  query,
+  orderBy,
+  limit,
+  startAfter,
 } from "firebase/firestore";
 import { auth, fireDB } from "@/firebase/config";
 import type { IJobDetails } from "@/interface/jobs.interface";
-import { useSortByTime } from "@/composables/use-sort-by-time";
 import { useUserStore } from "@/stores/user.store";
 
-const jobs = useSortByTime(collection(fireDB, "jobs"));
+const jobs = collection(fireDB, "jobs");
+/**
+ * Paginated getJobs
+ * @param pageSize - number of jobs to load per page
+ * @param lastDoc - last fetched doc for pagination
+ */
 
-export async function getJobs() {
-  const res = await getDocs(jobs);
-  return res.docs.map((r) => {
-    return { ...r.data(), id: r.id } as unknown as IJobDetails;
+export async function getJobs(pageSize = 15, lastDoc: any = null) {
+  let q = query(jobs, orderBy("createdAt", "desc"), limit(pageSize));
+
+  if (lastDoc) {
+    q = query(
+      jobs,
+      orderBy("createdAt", "desc"),
+      startAfter(lastDoc),
+      limit(pageSize)
+    );
+  }
+
+  const res = await getDocs(q);
+  const docs = res.docs.map((r) => {
+    return { ...r.data(), id: r.id } as IJobDetails;
   });
+
+  return {
+    jobs: docs,
+    lastDoc: res.docs.length ? res.docs[res.docs.length - 1] : null,
+  };
 }
 
 export async function getJobByID(id: string) {
@@ -91,3 +115,5 @@ export async function applyJob(jobID: string) {
     console.error("User ID is required!");
   }
 }
+
+

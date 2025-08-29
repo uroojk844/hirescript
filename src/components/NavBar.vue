@@ -50,11 +50,11 @@ useHandleClickOutside(userBtn, isModalOpen);
 <template>
   <nav class="py-6 xl:py-8">
     <MaxWidth class="flex items-center justify-between">
-      <RouterLink to="/" class="flex items-center gap-2 text-2xl font-bold text-primary">
+      <RouterLink to="/" class="flex items-center gap-2 text-2xl font-medium  text-primary">
         <img class="w-18 max-sm:w-14" :src="logo" alt="HireScript"> HireScript
       </RouterLink>
       <div ref="mobileNav" class="mobile-nav sm:contents" :class="{ open: isOpen }">
-        <RouterLink to="/" class="flex items-center gap-2 text-2xl font-bold text-primary mb-8 mobile-title">
+        <RouterLink to="/" class="flex items-center gap-2 text-2xl font-medium  text-primary mb-8 mobile-title">
           <img class="w-12" :src="logo" alt="HireScript"> HireScript
         </RouterLink>
 

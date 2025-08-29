@@ -3,40 +3,42 @@ import { defineStore } from "pinia";
 import type { IJobsStore } from "./jobs.interface";
 
 export const useJobStore = defineStore("jobs", {
-  state: (): IJobsStore => ({
+  state: (): IJobsStore & { lastDoc: any; hasMore: boolean } => ({
     isLoadingJobs: false,
     jobs: [],
-
     isLoadingJobDetails: false,
     jobDetails: null,
+    lastDoc: null,
+    hasMore: true,
   }),
   getters: {
-    getIsLoadingJobs(state) {
-      return state.isLoadingJobs;
-    },
-    getJobs(state) {
-      return state.jobs;
-    },
-    getIsLoadingJobDetails(state) {
-      return state.isLoadingJobDetails;
-    },
-    getJobDetails(state) {
-      return state.jobDetails;
-    },
+    
+    getIsLoadingJobs: (state) => state.isLoadingJobs,
+    getJobs: (state) => state.jobs,
+    getIsLoadingJobDetails: (state) => state.isLoadingJobDetails,
+    getJobDetails: (state) => state.jobDetails,
+    getHasMore: (state) => state.hasMore,
   },
   actions: {
-    async fetchJobs() {
-      if (this.jobs.length) return;
-
+    
+    async fetchJobs(pageSize = 15) {
+      if (this.isLoadingJobs || !this.hasMore) return;
       try {
         this.isLoadingJobs = true;
-        this.jobs = await getJobs();
+        const { jobs, lastDoc } = await getJobs(pageSize, this.lastDoc);
+        if (jobs.length < pageSize) {
+          this.hasMore = false; 
+        }
+        this.jobs.push(...jobs);
+        this.lastDoc = lastDoc;
       } catch (error) {
-        console.log(error);
+        console.error(error);
       } finally {
         this.isLoadingJobs = false;
       }
     },
+
+
     async fetchJobById(id: string) {
       try {
         this.isLoadingJobDetails = true;
@@ -53,6 +55,6 @@ export const useJobStore = defineStore("jobs", {
       } finally {
         this.isLoadingJobDetails = false;
       }
-    },
+    },    
   },
 });
