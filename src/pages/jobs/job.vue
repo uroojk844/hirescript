@@ -9,7 +9,7 @@ import Tag from "@/components/Tag.vue";
 import { useJobStore } from "@/stores/jobs.store";
 import moment from "moment";
 import { storeToRefs } from "pinia";
-import { computed, onMounted, ref, watch, } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import { applyJob, shareJob } from "@/api/jobs.api";
 import Loader from "@/components/Loader.vue";
@@ -17,9 +17,11 @@ import { useUserStore } from "@/stores/user.store";
 import NotFound from "@/components/NotFound.vue";
 import { useAuthStore } from "@/stores/authShow.store";
 import ModalBox from "@/components/ModalBox.vue";
+import { Icon } from "@iconify/vue";
 
 const jobsStore = useJobStore();
-const { getIsLoadingJobDetails, getJobDetails, getJobs } = storeToRefs(jobsStore);
+const { getIsLoadingJobDetails, getJobDetails, getJobs } =
+  storeToRefs(jobsStore);
 
 const userStore = useUserStore();
 const { getUser } = storeToRefs(userStore);
@@ -29,24 +31,34 @@ const id = route.params?.id as string;
 
 const similarJobs = computed(() => {
   if (getJobs.value && getJobDetails.value) {
-    return getJobs.value.
-      filter((job) => job.id != id && getJobDetails.value?.title.split(" ")
-        .map((word) => job.title.includes(word)));
+    return getJobs.value.filter(
+      (job) =>
+        job.id != id &&
+        getJobDetails.value?.title
+          .split(" ")
+          .map((word) => job.title.includes(word))
+    );
   } else return [];
 });
 
 const lastDate = computed(() => {
   if (getJobDetails.value != null) {
-    return moment(getJobDetails.value.createdAt.seconds * 1000).add(7, "day").format('ll');
+    return moment(getJobDetails.value.createdAt.seconds * 1000)
+      .add(7, "day")
+      .format("ll");
   }
-})
+});
 
 const top = ref<HTMLElement | null>(null);
 
-watch(() => route.params.id, async (newId, _) => {
-  await jobsStore.fetchJobById(newId as string);
-  top.value?.scrollIntoView({ behavior: "smooth" });
-}, { deep: true, immediate: true })
+watch(
+  () => route.params.id,
+  async (newId, _) => {
+    await jobsStore.fetchJobById(newId as string);
+    top.value?.scrollIntoView({ behavior: "smooth" });
+  },
+  { deep: true, immediate: true }
+);
 
 const isModelActive = ref<boolean>(false);
 
@@ -70,25 +82,81 @@ async function markJobApplied() {
 }
 
 const isApplied = computed(() => {
-  if (route.params?.id) {    
+  if (route.params?.id) {
     return getUser.value?.jobs.appliedJobs.includes(route.params.id as string);
   }
 });
 
 const matchingSkills = computed(() => {
-  return getJobDetails.value?.skills
-    .filter((s) => getUser.value?.skills.includes(s)) || [];
+  return (
+    getJobDetails.value?.skills.filter((s) =>
+      getUser.value?.skills.includes(s)
+    ) || []
+  );
 });
 
 onMounted(() => {
   window.scrollTo(0, 0);
   jobsStore.fetchJobs();
   jobsStore.fetchJobById(id);
+  if (localStorage.getItem("whatsappPromptShown")) {
+    showWhatsAppPrompt.value = false;
+  }
 });
 
+const showWhatsAppPrompt = ref(true);
+
+const handleJoinWhatsApp = () => {
+  window.open(
+    "https://chat.whatsapp.com/JhXYXasBWB2FJailZ6JFqH?mode=ac_t",
+    "_blank"
+  );
+  showWhatsAppPrompt.value = false;
+  localStorage.setItem("whatsappPromptShown", "true");
+};
+
+const hideWhatsAppPrompt = () => {
+  showWhatsAppPrompt.value = false;
+};
 </script>
 
 <template>
+  <div
+    v-if="showWhatsAppPrompt"
+    class="inset-0 fixed bg-black/50 grid place-items-center"
+  >
+    <div
+      class="bg-white p-8 rounded-lg flex w-[50%] max-sm:w-[95%] gap-5 items-center relative"
+    >
+      <Icon
+        @click="hideWhatsAppPrompt"
+        icon="mdi:close"
+        class="absolute top-4 right-4 cursor-pointer"
+      />
+      <Icon
+        icon="logos:whatsapp-icon"
+        class="size-22 max-sm:hidden"
+      />
+      <div>
+        <div class="font-bold text-lg text-primary">
+          Join our Whatsapp group for latest job updates!
+        </div>
+        <div class="text-sm mt-2 max-sm:mt-4">
+          Join our WhatsApp group to receive the latest job opportunities,
+          internships, campus drives, and career resources directly on your
+          phone.
+        </div>
+        <div class="flex gap-4 mt-4">
+          <button
+            @click="handleJoinWhatsApp"
+            class="bg-primary text-white text-sm px-6 py-2 rounded-full cursor-pointer"
+          >
+            Join now
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
   <ModalBox v-model="isModelActive" @confirm="markJobApplied" />
   <Loader v-if="getIsLoadingJobDetails" />
   <NotFound v-else-if="getJobDetails == null">Job not found!</NotFound>
@@ -97,26 +165,36 @@ onMounted(() => {
       <section class="flex items-center gap-6 mb-2">
         <Avatar :src="getJobDetails.companyLogo" class="size-20" />
         <div>
-          <div class="font-bold text-2xl capitalize">{{ getJobDetails.title }}</div>
+          <div class="font-bold text-2xl capitalize">
+            {{ getJobDetails.title }}
+          </div>
           <div class="text-sm text-gray mb-2 capitalize">
             {{ getJobDetails.company }}
           </div>
-          <div v-if="getJobDetails.postedBy" class="text-xs text-gray">Posted by</div>
+          <div v-if="getJobDetails.postedBy" class="text-xs text-gray">
+            Posted by
+          </div>
           <div class="text-sm capitalize">{{ getJobDetails.postedBy }}</div>
         </div>
       </section>
 
       <section>
         <div>Job Description</div>
-        <OutlinedCard class="my-2 max-w-none break-all ">
-          <div class="max-sm:text-sm break-words break-normal" v-html="getJobDetails.jobDescription || getJobDetails.description"></div>
+        <OutlinedCard class="my-2 max-w-none break-all">
+          <div
+            class="max-sm:text-sm break-words break-normal"
+            v-html="getJobDetails.jobDescription || getJobDetails.description"
+          ></div>
         </OutlinedCard>
       </section>
 
       <section v-if="getJobDetails.jobRequirements">
         <div>Requirement And Responsibilities</div>
         <OutlinedCard class="my-2 max-w-none break-all">
-          <div class="max-sm:text-sm break-words break-normal" v-html="getJobDetails.jobRequirements"></div>
+          <div
+            class="max-sm:text-sm break-words break-normal"
+            v-html="getJobDetails.jobRequirements"
+          ></div>
         </OutlinedCard>
       </section>
 
@@ -124,33 +202,60 @@ onMounted(() => {
         <div class="flex items-center gap-4">
           <span>Skill Needed</span>
           <span class="flex items-center gap-2">
-            <Icon icon="material-symbols:check-circle" class="text-emerald-600" />
-            <small class="text-gray flex gap-1">{{ matchingSkills?.length }}/{{ getJobDetails.skills.length }}
-              <span class="hidden sm:block">of your skills match for this job</span>
+            <Icon
+              icon="material-symbols:check-circle"
+              class="text-emerald-600"
+            />
+            <small class="text-gray flex gap-1"
+              >{{ matchingSkills?.length }}/{{ getJobDetails.skills.length }}
+              <span class="hidden sm:block"
+                >of your skills match for this job</span
+              >
               <span class="block sm:hidden">matching skills</span>
             </small>
           </span>
         </div>
         <OutlinedCard direction="row" class="my-2 flex-wrap max-w-none">
-          <Tag v-for="(tag, index) in getJobDetails.skills" :key="index" v-text="tag" class="whitespace-break-spaces break-all"
-            :class="{ 'bg-green-200': matchingSkills?.includes(tag.toLowerCase()) }" />
+          <Tag
+            v-for="(tag, index) in getJobDetails.skills"
+            :key="index"
+            v-text="tag"
+            class="whitespace-break-spaces break-all"
+            :class="{
+              'bg-green-200': matchingSkills?.includes(tag.toLowerCase()),
+            }"
+          />
         </OutlinedCard>
       </section>
     </div>
 
     <div class="contents lg:grid gap-4 md:min-w-sm md:max-w-sm content-start">
       <section class="grid gap-4 content-start max-lg:row-start-2">
-        <div class="flex max-sm:flex-col max-sm:items-start items-center justify-between gap-4">
+        <div
+          class="flex max-sm:flex-col max-sm:items-start items-center justify-between gap-4"
+        >
           <div class="font-bold max-sm:hidden">Submit Application</div>
-          <Tag v-if="getJobDetails.createdAt" class="flex items-center gap-1 bg-red-100 text-red-500 font-medium">
+          <Tag
+            v-if="getJobDetails.createdAt"
+            class="flex items-center gap-1 bg-red-100 text-red-500 font-medium"
+          >
             <span>Apply before {{ lastDate }}</span>
             <Icon icon="uil:info-circle" />
           </Tag>
         </div>
         <div class="flex items-center gap-6">
-          <PrimaryButton v-if="!isApplied" @click="handleApplyJob" class="flex-1">Apply</PrimaryButton>
+          <PrimaryButton
+            v-if="!isApplied"
+            @click="handleApplyJob"
+            class="flex-1"
+            >Apply</PrimaryButton
+          >
           <PrimaryButton v-else class="flex-1">Applied</PrimaryButton>
-          <Icon @click="shareJob(getJobDetails)" icon="uil:share-alt" class="text-lg cursor-pointer text-gray" />
+          <Icon
+            @click="shareJob(getJobDetails)"
+            icon="uil:share-alt"
+            class="text-lg cursor-pointer text-gray"
+          />
           <!-- TODO: Will be added later -->
           <!-- <Icon icon="material-symbols:favorite-outline-rounded" class="text-lg hidden" /> -->
         </div>
@@ -165,17 +270,27 @@ onMounted(() => {
               <Icon icon="ic:round-computer" /> {{ getJobDetails.type }}
             </OutlinedCard>
             <OutlinedCard direction="row" size="sm">
-              <Icon icon="uil:suitcase-alt" /> {{ getJobDetails.experience == null ? "Not specified" :
-                getJobDetails.experience }}
+              <Icon icon="uil:suitcase-alt" />
+              {{
+                getJobDetails.experience == null
+                  ? "Not specified"
+                  : getJobDetails.experience
+              }}
             </OutlinedCard>
             <OutlinedCard direction="row" size="sm">
-              <Icon icon="tdesign:money" /> <span :title="useSalary(getJobDetails.salary, 'standard')"
-                class="lg:max-w-32 text-ellipsis overflow-hidden">{{ useSalary(getJobDetails.salary, "standard")
-                }}</span>
+              <Icon icon="tdesign:money" />
+              <span
+                :title="useSalary(getJobDetails.salary, 'standard')"
+                class="lg:max-w-32 text-ellipsis overflow-hidden"
+                >{{ useSalary(getJobDetails.salary, "standard") }}</span
+              >
             </OutlinedCard>
             <OutlinedCard direction="row" size="sm">
-              <Icon icon="uil:location-point" /> <span
-                class="line-clamp-1 lg:max-w-32 text-ellipsis whitespace-nowrap">{{ getJobDetails.location }}</span>
+              <Icon icon="uil:location-point" />
+              <span
+                class="line-clamp-1 lg:max-w-32 text-ellipsis whitespace-nowrap"
+                >{{ getJobDetails.location }}</span
+              >
             </OutlinedCard>
           </div>
         </OutlinedCard>
@@ -185,9 +300,17 @@ onMounted(() => {
         <div class="mb-2">Company</div>
         <OutlinedCard class="max-w-none">
           <div class="font-bold">About {{ getJobDetails.company }}</div>
-          <p class="text-gray text-xs max-sm:text-sm break-words break-normal" v-html="getJobDetails.companyDescription"></p>
-          <a v-if="getJobDetails.website" class="break-all text-blue-700 hover:underline text-xs"
-            :href="getJobDetails.website" target="_blank">{{ getJobDetails.website }}</a>
+          <p
+            class="text-gray text-xs max-sm:text-sm break-words break-normal"
+            v-html="getJobDetails.companyDescription"
+          ></p>
+          <a
+            v-if="getJobDetails.website"
+            class="break-all text-blue-700 hover:underline text-xs"
+            :href="getJobDetails.website"
+            target="_blank"
+            >{{ getJobDetails.website }}</a
+          >
         </OutlinedCard>
       </div>
     </div>
@@ -216,7 +339,7 @@ ul {
     color: var(--color-primary);
   }
 }
-.job-description  {
+.job-description {
   white-space: pre-line;
 }
 </style>
