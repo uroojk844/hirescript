@@ -48,13 +48,13 @@ export const useJobStore = defineStore("jobs", {
           skills: res.skills
             .replace(/\s+/, " ")
             .split(",")
-            .map((s: string) => s.trim().toLowerCase()),
+            .map((s: string) => s.trim()),
         };
       } catch (error) {
         console.log(error);
       } finally {
         this.isLoadingJobDetails = false;
       }
-    },    
+    },
   },
 });

@@ -9,6 +9,7 @@ import type { IUser } from '@/interface/user.interface';
 import OutlineButton from '../OutlineButton.vue';
 
 
+
 const userStore = useUserStore();
 const authStore = useAuthStore();
 const loading = ref(false);
@@ -76,6 +77,7 @@ const handleGoogleLogin = async () => {
     }
 
     userStore.setUser(userData);
+    loading.value = false;
     authStore.hideAuth();
   } catch (error: any) {
     console.error("Google sign-in failed:", error.message);
@@ -86,7 +88,10 @@ const handleGoogleLogin = async () => {
 </script>
 <template>
   <OutlineButton @click="handleGoogleLogin" :disabled="loading">
-    <Icon icon="logos:google-icon" class="text-lg" />
+    <div class="flex flex-wrap items-center gap-1" v-if="!loading">
+    <Icon  icon="logos:google-icon" class="text-lg" />
     <span>Continue with Google</span>
+    </div>
+    <span v-if="loading"><Icon icon="svg-spinners:3-dots-bounce" class="text-xl text-gray-400" /></span>
   </OutlineButton>
 </template>
