@@ -6,7 +6,7 @@ import TermsUse from "./pages/Policies/TermsUse.vue";
 import NotFound from "./components/NotFound.vue";
 
 const routes = [
-  { path: "/", component: Home , name: "home" },
+  { path: "/", component: Home, name: "home" },
   {
     path: "/jobs",
     component: () => import("@/pages/jobs/JobView.vue"),
@@ -37,15 +37,28 @@ const routes = [
         path: "",
         component: () => import("@/pages/courses/AllCourse.vue"),
       },
+     
       {
         path: ":id",
         component: () => import("@/pages/courses/CourseDetails.vue"),
       },
+
+      // route to place the Hackathons in courses component at /courses/hackathons
+       {
+        path:"hackathons",
+        component:()=>import("@/pages/courses/Hackathons.vue"),
+      },
+      
+      // route to place the Internships in courses component at /courses/internships
+       {
+        path:"internships",
+        component:()=>import("@/pages/courses/Internships.vue"),
+      },
     ],
   },
-  { path: "/profile", component: () => import("./pages/profile.vue") ,meta: { requiresAuth: true } },
-  { path: "/privacy", component : Privacy , name:"privacy"},
-  { path: "/use" , component : TermsUse , name:"use"},
+  { path: "/profile", component: () => import("./pages/profile.vue"), meta: { requiresAuth: true } },
+  { path: "/privacy", component: Privacy, name: "privacy" },
+  { path: "/use", component: TermsUse, name: "use" },
   {
     path: "/:pathMatch(.*)*",
     component: NotFound,

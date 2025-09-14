@@ -120,7 +120,7 @@ export async function applyJob(jobID: string) {
   }
 }
 
-
+// used to create store for hackathons
 export async function getHackathons() {
   const q = query(
     jobs,
@@ -136,6 +136,8 @@ export async function getHackathons() {
     jobs: docs,
   };
 }
+
+// used in creating store for internships 
 export async function getInternship() {
   const q = query(
     jobs,
