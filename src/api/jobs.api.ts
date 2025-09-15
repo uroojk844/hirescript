@@ -71,7 +71,7 @@ export async function searchJobs(title: string, location?: string) {
   return allJobs.filter((job) => {
     const jobTitle = job.title?.toLowerCase() || "";
     const jobLocation = job.location?.toLowerCase() || "";
-    const jobDescription = job.description?.toLowerCase() || "";
+    const jobDescription = job.jobDescription?.toLowerCase() || "";
     const jobType = job.type?.toLowerCase() || "";
 
     const titleMatches = searchTokens.every(

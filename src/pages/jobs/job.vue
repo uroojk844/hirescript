@@ -20,7 +20,6 @@ import ModalBox from "@/components/ModalBox.vue";
 import { Icon } from "@iconify/vue";
 import WhatsAppPopUp from "@/components/WhatsAppPopUp.vue";
 
-
 const jobsStore = useJobStore();
 const { getIsLoadingJobDetails, getJobDetails, getJobs } =
   storeToRefs(jobsStore);
@@ -52,7 +51,6 @@ const lastDate = computed(() => {
 });
 
 const top = ref<HTMLElement | null>(null);
-
 
 watch(
   () => route.params.id,
@@ -91,16 +89,13 @@ const isApplied = computed(() => {
 });
 
 const matchingSkills = computed(() => {
-  const jobSkills = getJobDetails.value?.skills?.map((s: string) =>
-    s.toLowerCase()
-  ) || [];
-  const userSkills = getUser.value?.skills?.map((s: string) =>
-    s.toLowerCase()
-  ) || [];
+  const jobSkills =
+    getJobDetails.value?.skills?.map((s: string) => s.toLowerCase()) || [];
+  const userSkills =
+    getUser.value?.skills?.map((s: string) => s.toLowerCase()) || [];
 
   return jobSkills.filter((s) => userSkills.includes(s));
 });
-
 
 onMounted(() => {
   window.scrollTo(0, 0);
@@ -111,7 +106,6 @@ onMounted(() => {
   }
 });
 const showWhatsAppPrompt = ref(true);
-
 </script>
 
 <template>
@@ -119,7 +113,7 @@ const showWhatsAppPrompt = ref(true);
   <Loader v-if="getIsLoadingJobDetails" />
   <NotFound v-else-if="getJobDetails == null">Job not found!</NotFound>
   <main ref="top" v-else class="grid lg:flex gap-4">
-    <WhatsAppPopUp/>
+    <WhatsAppPopUp />
     <div class="contents lg:grid gap-4 content-start flex-1">
       <section class="flex items-center gap-6 mb-2">
         <Avatar :src="getJobDetails.companyLogo" class="size-20" />
@@ -142,7 +136,7 @@ const showWhatsAppPrompt = ref(true);
         <OutlinedCard class="my-2 max-w-none break-all">
           <div
             class="max-sm:text-sm break-words break-normal"
-            v-html="getJobDetails.jobDescription || getJobDetails.description"
+            v-html="getJobDetails.jobDescription"
           ></div>
         </OutlinedCard>
       </section>
@@ -240,8 +234,15 @@ const showWhatsAppPrompt = ref(true);
               <Icon icon="tdesign:money" />
               <span
                 :title="useSalary(getJobDetails.salary, 'standard')"
-                class="lg:max-w-32 text-ellipsis overflow-hidden"
-                >{{ getJobDetails.type.toLowerCase()=="hackathon"?"Prize Money":getJobDetails.salary==0.00?"Not Mentioned":useSalary(getJobDetails.salary, "standard") }}</span
+                class="lg:max-w-32 text-ellipsis line-clamp-1"
+              >
+                {{
+                  getJobDetails.type.toLowerCase() == "hackathon"
+                    ? "Prize Money"
+                    : !getJobDetails.salary
+                    ? "Not Mentioned"
+                    : useSalary(getJobDetails.salary, "standard")
+                }}</span
               >
             </OutlinedCard>
             <OutlinedCard direction="row" size="sm">

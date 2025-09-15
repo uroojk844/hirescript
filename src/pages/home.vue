@@ -15,7 +15,6 @@ import Loader from "@/components/Loader.vue";
 import { ref } from "vue";
 import { heroTexts, subTexts } from '@/assets/HomeText';
 
-
 const jobsStore = useJobStore();
 const { getIsLoadingJobs , getJobs} = storeToRefs(jobsStore);
 
