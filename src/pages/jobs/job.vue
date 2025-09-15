@@ -18,6 +18,8 @@ import NotFound from "@/components/NotFound.vue";
 import { useAuthStore } from "@/stores/authShow.store";
 import ModalBox from "@/components/ModalBox.vue";
 import { Icon } from "@iconify/vue";
+import WhatsAppPopUp from "@/components/WhatsAppPopUp.vue";
+
 
 const jobsStore = useJobStore();
 const { getIsLoadingJobDetails, getJobDetails, getJobs } =
@@ -50,6 +52,7 @@ const lastDate = computed(() => {
 });
 
 const top = ref<HTMLElement | null>(null);
+
 
 watch(
   () => route.params.id,
@@ -88,12 +91,16 @@ const isApplied = computed(() => {
 });
 
 const matchingSkills = computed(() => {
-  return (
-    getJobDetails.value?.skills.filter((s) =>
-      getUser.value?.skills.includes(s)
-    ) || []
-  );
+  const jobSkills = getJobDetails.value?.skills?.map((s: string) =>
+    s.toLowerCase()
+  ) || [];
+  const userSkills = getUser.value?.skills?.map((s: string) =>
+    s.toLowerCase()
+  ) || [];
+
+  return jobSkills.filter((s) => userSkills.includes(s));
 });
+
 
 onMounted(() => {
   window.scrollTo(0, 0);
@@ -103,64 +110,16 @@ onMounted(() => {
     showWhatsAppPrompt.value = false;
   }
 });
-
 const showWhatsAppPrompt = ref(true);
 
-const handleJoinWhatsApp = () => {
-  window.open(
-    "https://chat.whatsapp.com/JhXYXasBWB2FJailZ6JFqH?mode=ac_t",
-    "_blank"
-  );
-  showWhatsAppPrompt.value = false;
-  localStorage.setItem("whatsappPromptShown", "true");
-};
-
-const hideWhatsAppPrompt = () => {
-  showWhatsAppPrompt.value = false;
-};
 </script>
 
 <template>
-  <div
-    v-if="showWhatsAppPrompt"
-    class="inset-0 fixed bg-black/50 grid place-items-center"
-  >
-    <div
-      class="bg-white p-8 rounded-lg flex w-[50%] max-sm:w-[95%] gap-5 items-center relative"
-    >
-      <Icon
-        @click="hideWhatsAppPrompt"
-        icon="mdi:close"
-        class="absolute top-4 right-4 cursor-pointer"
-      />
-      <Icon
-        icon="logos:whatsapp-icon"
-        class="size-22 max-sm:hidden"
-      />
-      <div>
-        <div class="font-bold text-lg text-primary">
-          Join our Whatsapp group for latest job updates!
-        </div>
-        <div class="text-sm mt-2 max-sm:mt-4">
-          Join our WhatsApp group to receive the latest job opportunities,
-          internships, campus drives, and career resources directly on your
-          phone.
-        </div>
-        <div class="flex gap-4 mt-4">
-          <button
-            @click="handleJoinWhatsApp"
-            class="bg-primary text-white text-sm px-6 py-2 rounded-full cursor-pointer"
-          >
-            Join now
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
   <ModalBox v-model="isModelActive" @confirm="markJobApplied" />
   <Loader v-if="getIsLoadingJobDetails" />
   <NotFound v-else-if="getJobDetails == null">Job not found!</NotFound>
   <main ref="top" v-else class="grid lg:flex gap-4">
+    <WhatsAppPopUp/>
     <div class="contents lg:grid gap-4 content-start flex-1">
       <section class="flex items-center gap-6 mb-2">
         <Avatar :src="getJobDetails.companyLogo" class="size-20" />
@@ -282,7 +241,7 @@ const hideWhatsAppPrompt = () => {
               <span
                 :title="useSalary(getJobDetails.salary, 'standard')"
                 class="lg:max-w-32 text-ellipsis overflow-hidden"
-                >{{ useSalary(getJobDetails.salary, "standard") }}</span
+                >{{ getJobDetails.type.toLowerCase()=="hackathon"?"Prize Money":getJobDetails.salary==0.00?"Not Mentioned":useSalary(getJobDetails.salary, "standard") }}</span
               >
             </OutlinedCard>
             <OutlinedCard direction="row" size="sm">

@@ -9,6 +9,7 @@ import {
   orderBy,
   limit,
   startAfter,
+  where,
 } from "firebase/firestore";
 import { auth, fireDB } from "@/firebase/config";
 import type { IJobDetails } from "@/interface/jobs.interface";
@@ -20,6 +21,9 @@ const jobs = collection(fireDB, "jobs");
  * @param pageSize - number of jobs to load per page
  * @param lastDoc - last fetched doc for pagination
  */
+//Adnan -> bold -> <p><strong>Adnan</strong></p>
+// adnan 
+//<p>adnan</p>
 
 export async function getJobs(pageSize = 15, lastDoc: any = null) {
   let q = query(jobs, orderBy("createdAt", "desc"), limit(pageSize));
@@ -114,6 +118,38 @@ export async function applyJob(jobID: string) {
   } else {
     console.error("User ID is required!");
   }
+}
+
+
+export async function getHackathons() {
+  const q = query(
+    jobs,
+    where("type", "==", "Hackathon"),
+  );
+
+  const res = await getDocs(q);
+  const docs = res.docs.map((r) => {
+    return { ...r.data(), id: r.id } as IJobDetails;
+  });
+
+  return {
+    jobs: docs,
+  };
+}
+export async function getInternship() {
+  const q = query(
+    jobs,
+    where("type", "==", "Internship"),
+  );
+
+  const res = await getDocs(q);
+  const docs = res.docs.map((r) => {
+    return { ...r.data(), id: r.id } as IJobDetails;
+  });
+
+  return {
+    jobs: docs,
+  };
 }
 
 
