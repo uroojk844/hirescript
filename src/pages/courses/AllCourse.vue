@@ -67,10 +67,7 @@ var langs = ['Java', 'Javascript', 'Express', 'Python', 'Nodejs', 'PHP', 'TypeSc
 
   <section class="py-6">
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-      <AppHeader text="Learn to code" />
-      <div class="flex items-center gap-2 font-bold text-primary cursor-pointer max-sm:mb-2">See all
-        <Icon icon="material-symbols:arrow-right-alt" />
-      </div>
+    <!-- removed see all from languages section -->
     </div>
     <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
       <div v-for="language in langs"
@@ -87,9 +84,12 @@ var langs = ['Java', 'Javascript', 'Express', 'Python', 'Nodejs', 'PHP', 'TypeSc
   <section class="py-6">
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
       <AppHeader text="Compete with others" />
+      <!-- functional see all for hackathon filteration -->
+      <RouterLink to="/jobs/category/Hackathon">
       <div class="flex items-center gap-2 font-bold text-primary cursor-pointer max-sm:mb-2">See all
         <Icon icon="material-symbols:arrow-right-alt" />
       </div>
+      </RouterLink>
     </div>
     <Loader v-if="loading" />
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -101,9 +101,12 @@ var langs = ['Java', 'Javascript', 'Express', 'Python', 'Nodejs', 'PHP', 'TypeSc
   <section class="py-6">
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
       <AppHeader text="Get Internships" />
+      <!-- functional see all for internship filteration -->
+      <RouterLink to="/jobs/category/Internship">
       <div class="flex items-center gap-2 font-bold text-primary cursor-pointer max-sm:mb-2">See all
         <Icon icon="material-symbols:arrow-right-alt" />
       </div>
+      </RouterLink>
     </div>
       <Loader v-if="loading" />
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
