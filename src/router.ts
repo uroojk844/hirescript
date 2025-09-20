@@ -15,9 +15,11 @@ const routes = [
         path: "",
         component: () => import("@/pages/jobs/List.vue"),
       },
+
+      // filteration job according to category
       {
         path: "category/:category",
-        component: () => import("@/pages/jobs/category.vue"),
+        component: () => import("@/pages/jobs/List.vue"),
       },
       {
         path: "/jobs/search/:params(.*)*",

@@ -136,6 +136,7 @@ export async function getHackathons() {
     jobs: docs,
   };
 }
+
 export async function getInternship() {
   const q = query(
     jobs,
@@ -151,5 +152,24 @@ export async function getInternship() {
     jobs: docs,
   };
 }
+
+// fething jobs by category if category is present
+export async function getJobsByCategory(category: string) {
+  const q = query(
+    jobs,
+    where("type", "==", category)
+  );
+
+  const res = await getDocs(q);
+  const docs = res.docs.map((r) => {
+    return { ...r.data(), id: r.id } as IJobDetails;
+  });
+
+  return {
+    jobs: docs,
+  };
+}
+
+
 
 
