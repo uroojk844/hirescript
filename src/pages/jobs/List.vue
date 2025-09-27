@@ -33,11 +33,11 @@ watch(() => route.params.category, loadJobs);
 </script>
 
 <template>
-  <AppHeader :text="route.params.category ? `All ${route.params.category}s` : 'All Jobs'" />
+  <AppHeader :text="route.params.category ? `All ${route.params.category}s` : 'All Jobs'"/>
 
   <Loader v-if="isLoadingJobs && !getJobs.length" />
 
-  <section v-else class="grid-view">
+  <section v-else class="grid-view mt-8">
     <JobCard v-for="job in getJobs" :key="job.id" :job />
   </section>
 

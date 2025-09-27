@@ -82,13 +82,13 @@ var langs = ['Java', 'Javascript', 'Express', 'Python', 'Nodejs', 'PHP', 'TypeSc
   </section>
 
   <section class="py-6">
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-      <AppHeader text="Compete with others" />
+    <div class="flex flex-row items-center justify-between gap-3 mb-8">
+      <AppHeader text="Join Hackathons" />
       <!-- functional see all for hackathon filteration -->
-      <RouterLink to="/jobs/category/Hackathon">
-      <div class="flex items-center gap-2 font-bold text-primary cursor-pointer max-sm:mb-2">See all
+      <RouterLink to="/jobs/category/Hackathon"
+        class="flex items-center gap-2 font-bold text-primary cursor-pointer  whitespace-nowrap">
+        See all
         <Icon icon="material-symbols:arrow-right-alt" />
-      </div>
       </RouterLink>
     </div>
     <Loader v-if="loading" />
@@ -99,34 +99,33 @@ var langs = ['Java', 'Javascript', 'Express', 'Python', 'Nodejs', 'PHP', 'TypeSc
 
 
   <section class="py-6">
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+    <div class="flex flex-row items-center justify-between gap-3 mb-8">
       <AppHeader text="Get Internships" />
       <!-- functional see all for internship filteration -->
-      <RouterLink to="/jobs/category/Internship">
-      <div class="flex items-center gap-2 font-bold text-primary cursor-pointer max-sm:mb-2">See all
+      <RouterLink class="flex items-center gap-2 font-bold text-primary cursor-pointer whitespace-nowrap"
+        to="/jobs/category/Internship">
+        See all
         <Icon icon="material-symbols:arrow-right-alt" />
-      </div>
       </RouterLink>
     </div>
-      <Loader v-if="loading" />
+    <Loader v-if="loading" />
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
       <JobCard v-for="(job, index) in internship" :key="job.id" :job :trending="true" :index />
     </div>
   </section>
-  
+
   <div class="py-6">
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+    <div class="flex flex-row items-center justify-between gap-3 mb-8">
       <AppHeader text="Master classes" />
-      <div class="flex items-center gap-2 font-bold text-primary cursor-pointer max-sm:mb-2">See all
+      <div class="flex items-center gap-2 font-bold text-primary cursor-pointer">See all
         <Icon icon="material-symbols:arrow-right-alt" />
       </div>
     </div>
-      <Loader v-if="loading" />
+    <Loader v-if="loading" />
     <section class="grid-res">
       <Card v-for="course in courseStore.courses" :key="course.id" :course="course" />
     </section>
   </div>
-
 </template>
 
 <style scoped>
