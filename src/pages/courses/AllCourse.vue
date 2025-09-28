@@ -82,6 +82,7 @@ var langs = ['Java', 'Javascript', 'Express', 'Python', 'Nodejs', 'PHP', 'TypeSc
   </section>
 
   <section class="py-6">
+
     <div class="flex flex-row items-center justify-between gap-3 mb-8">
       <AppHeader text="Join Hackathons" />
       <!-- functional see all for hackathon filteration -->
@@ -89,6 +90,7 @@ var langs = ['Java', 'Javascript', 'Express', 'Python', 'Nodejs', 'PHP', 'TypeSc
         class="flex items-center gap-2 font-bold text-primary cursor-pointer  whitespace-nowrap">
         See all
         <Icon icon="material-symbols:arrow-right-alt" />
+
       </RouterLink>
     </div>
     <Loader v-if="loading" />
