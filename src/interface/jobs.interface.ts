@@ -1,33 +1,48 @@
+import type { Timestamp } from "firebase/firestore";
+
 type TJobType = "Full Time" | "Part time" | "Contract" | "Internship";
 
 type TSalaryType = "Annual" | "Monthly";
 
+interface IMinMax {
+  min: number;
+  max: number;
+}
+
+export type TMinMax = IMinMax | string;
+
+/**
+ * Job Card Schema
+ */
 export interface IJob {
   id: string;
   title: string;
-  company: string;
+
   companyLogo: string;
-  description: string;
-  experience: string;
+  company: string;
+
+  jobDescription: string;
   location: string;
   type: TJobType;
-  salary: number;
+  salary: TMinMax;
   salaryType: TSalaryType;
-  color?: string;
-  createdAt: {
-    seconds: number;
-    nanoseconds: number;
-  };
-  updatedAt: string;
-  jobDescription: string; 
-  jobRequirements: string;
-  companyDescription: string;
-  applyLink: string;
 }
 
+/**
+ * For job details
+ * @type: "Full Time" | "Part time" | "Contract" | "Internship";
+ * @website: company website url
+ * @salaryType: Annual | Monthly 
+ */
 export interface IJobDetails extends IJob {
-  postedBy?: string;
   skills: string[];
-  about?: string;
+  jobRequirements: string;
+  experience: TMinMax;
+  applyLink: string;
+  postedBy?: string;
+
+  companyDescription: string;
   website?: string;
+
+  createdAt: Timestamp;
 }
