@@ -8,6 +8,7 @@ import JobCard from "@/components/JobCard.vue";
 import PrimaryButton from "@/components/PrimaryButton.vue";
 import AppHeader from "@/components/AppHeader.vue";
 import AppFooter from "@/components/AppFooter.vue";
+import CallToAction from '@/components/CallToAction.vue'
 import { onMounted } from "vue";
 import { useJobStore } from "@/stores/jobs.store";
 import { storeToRefs } from "pinia";
@@ -17,7 +18,7 @@ import { heroTexts, subTexts } from '@/assets/HomeText';
 
 
 const jobsStore = useJobStore();
-const { getIsLoadingJobs , getJobs} = storeToRefs(jobsStore);
+const { getIsLoadingJobs, getJobs } = storeToRefs(jobsStore);
 
 const randomIndex = Math.floor(Math.random() * heroTexts.length);
 const heroText = ref(heroTexts[randomIndex]);
@@ -25,9 +26,9 @@ const subText = ref(subTexts[randomIndex]);
 
 
 onMounted(() => {
-  if (jobsStore.getJobs.length<15) {
-  jobsStore.fetchJobs();
-}
+  if (jobsStore.getJobs.length < 15) {
+    jobsStore.fetchJobs();
+  }
 });
 </script>
 
@@ -43,12 +44,13 @@ onMounted(() => {
       <p class="animate__animated animate__fadeIn text-gray text-center mt-4 mb-8 xl:text-lg">
         {{ subText }}
       </p>
-
       <SearchBar />
-
+      <CallToAction title="Start Learning Today"
+        description="
+            Don't just chase the future—build it. At HireScript Academy we transform your ambition into expertise. Your journey from learner to leader starts right here."
+        buttonText="Explore" />
       <section class="my-16">
         <AppHeader text="Trending Jobs" />
-
         <Loader v-if="getIsLoadingJobs" />
         <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           <JobCard v-for="(job, index) in getJobs.slice(0, 3)" :key="job.id" :job :trending="true" :index />
